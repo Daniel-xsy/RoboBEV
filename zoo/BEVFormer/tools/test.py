@@ -244,7 +244,7 @@ def main():
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
 
-    logging_path = os.path.join('log', f'{cfg.model.type}.log')
+    logging_path = os.path.join('log', f'{args.config[:-3]}.log')
     if not os.path.isdir('log'): os.makedirs('log')
     logging = Logging_str(logging_path)
 
