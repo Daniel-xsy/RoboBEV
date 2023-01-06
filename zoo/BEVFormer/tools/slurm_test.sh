@@ -7,7 +7,7 @@ JOB_NAME=RoboDet
 CONFIG=projects/configs/robust_test/bevformer_base.py
 CHECKPOINT=../../models/BEVFormer/bevformer_r101_dcn_24ep.pth
 CUDA_HOME=/mnt/cache/share/cuda-11.1/
-GPUS=1
+GPUS=4
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH
 srun --partition=${PARTITION} \
