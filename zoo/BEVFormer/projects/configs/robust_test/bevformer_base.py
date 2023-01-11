@@ -197,7 +197,7 @@ test_pipeline = [
 
 data = dict(
     samples_per_gpu=1,
-    workers_per_gpu=4,
+    workers_per_gpu=16,
     train=dict(
         type=dataset_type,
         data_root=data_root,
@@ -257,5 +257,5 @@ log_config = dict(
 
 checkpoint_config = dict(interval=1)
 
-corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
-# 'Clean'
+corruptions = ['LowLight', 'CameraCrash', 'FrameLost']
+# 'Clean', 'MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 

@@ -244,7 +244,8 @@ def main():
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
 
-    logging_path = os.path.join('log', f'{args.config[:-3]}.log')
+    config_file = os.path.basename(args.config)
+    logging_path = os.path.join('log', f'{config_file[:-3]}.log')
     if not os.path.isdir('log'): os.makedirs('log')
     logging = Logging_str(logging_path)
 
@@ -256,7 +257,7 @@ def main():
 
             logging.write(f'### Evaluating {corruption}\n')
 
-            for severity in range(1, 6):
+            for severity in [2, 4, 5]:
 
                 logging.write(f'#### Severity-{severity}\n')
 

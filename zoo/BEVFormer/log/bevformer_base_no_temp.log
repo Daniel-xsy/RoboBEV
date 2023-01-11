@@ -1,0 +1,13 @@
+### Evaluating Clean
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.4129    | 0.3461    | 0.7549     | 0.2832     | 0.4520     | 0.8917     | 0.2194     |
+
+
+### Evaluating MotionBlur
+
+#### Severity-2
+
