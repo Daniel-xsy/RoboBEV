@@ -189,6 +189,7 @@ def main():
         if samples_per_gpu > 1:
             for ds_cfg in cfg.data.test:
                 ds_cfg.pipeline = replace_ImageToTensor(ds_cfg.pipeline)
+    print(f'Batch size per GPU: {samples_per_gpu}')
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
@@ -249,6 +250,9 @@ def main():
     if not os.path.isdir('log'): os.makedirs('log')
     logging = Logging_str(logging_path)
 
+    import time
+    logging.write(f'Time: {time.asctime(time.localtime(time.time()))}\n')
+
     if args.corruption_test:
 
         for corruption in cfg.corruptions:
@@ -259,10 +263,13 @@ def main():
 
             for severity in [2, 4, 5]:
 
-                logging.write(f'#### Severity-{severity}\n')
+                if not corruption == 'Clean':
+                    logging.write(f'#### Severity-{severity}\n')
+                    outputs = custom_multi_gpu_corruption_test(model, data_loader, corruption, severity, 
+                                                                    args.tmpdir, args.gpu_collect)
+                else:
+                    outputs = custom_multi_gpu_test(model, data_loader, args.tmpdir, args.gpu_collect)
 
-                outputs = custom_multi_gpu_corruption_test(model, data_loader, corruption, severity, 
-                                                                args.tmpdir, args.gpu_collect)
                 rank, _ = get_dist_info()
                 if rank == 0:
                     if args.out:
@@ -295,8 +302,9 @@ def main():
                 if corruption == 'Clean':
                     break
             if rank == 0:
-                logging.write(f'#### Average\n')
-                collect_average_metric(results_dict_list, logging)
+                if not corruption == 'Clean':
+                    logging.write(f'#### Average\n')
+                    collect_average_metric(results_dict_list, logging)
 
     else:
         outputs = custom_multi_gpu_test(model, data_loader, args.tmpdir,

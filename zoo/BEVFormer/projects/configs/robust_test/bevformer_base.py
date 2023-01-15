@@ -216,12 +216,12 @@ data = dict(
              data_root=data_root,
              ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
              pipeline=test_pipeline,  bev_size=(bev_h_, bev_w_),
-             classes=class_names, modality=input_modality, samples_per_gpu=1),
+             classes=class_names, modality=input_modality, samples_per_gpu=4),
     test=dict(type=dataset_type,
               data_root=data_root,
               ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
               pipeline=test_pipeline, bev_size=(bev_h_, bev_w_),
-              classes=class_names, modality=input_modality),
+              classes=class_names, modality=input_modality, samples_per_gpu=4),
     shuffler_sampler=dict(type='DistributedGroupSampler'),
     nonshuffler_sampler=dict(type='DistributedSampler')
 )
@@ -257,5 +257,5 @@ log_config = dict(
 
 checkpoint_config = dict(interval=1)
 
-corruptions = ['LowLight', 'CameraCrash', 'FrameLost']
+corruptions = ['Clean', 'LowLight', 'CameraCrash', 'FrameLost']
 # 'Clean', 'MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 

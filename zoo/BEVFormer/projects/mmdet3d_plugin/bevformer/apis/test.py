@@ -76,12 +76,6 @@ def custom_multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     have_mask = False
     for i, data in enumerate(data_loader):
 
-        # create natural corruption
-        img = data['img'][0].data[0]
-        # new_img
-        new_img = make_corruption(img, 'motion_blur', norm_config)
-        data['img'][0].data[0] = torch.tensor(new_img)
-
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
             # encode mask results
