@@ -2,3 +2,6 @@
 models
 # data
 data
+# vs code config
+.vscode
+*.cpython-38.pyc

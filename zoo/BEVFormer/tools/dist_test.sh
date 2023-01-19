@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-CONFIG=$1
-CHECKPOINT=$2
-GPUS=$3
+CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVFormer/projects/configs/robust_test/bevformer_base.py
+CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/BEVFormer/bevformer_r101_dcn_24ep.pth
+GPUS=1
 PORT=${PORT:-29503}
 
-PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
-CUDA_VISIBLE_DEVICES=0,1,2,3 \
-python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
-    $(dirname "$0")/test.py $CONFIG $CHECKPOINT --launcher pytorch ${@:4} --eval bbox --corruption_test
+PYTHONPATH="/nvme/konglingdong/models/RoboDet/zoo/BEVFormer":$PYTHONPATH \
+python -m debugpy --listen 5677 --wait-for-client -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
+    $(dirname "$0")/test.py $CONFIG $CHECKPOINT --launcher pytorch ${@:4} --eval bbox
