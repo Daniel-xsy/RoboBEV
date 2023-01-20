@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-CONFIG=/nvme/konglingdong/models/RoboDet/zoo/DETR3D/projects/configs/robust_test/detr3d_res101_gridmask_cbgs.py
-CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/DETR3D/detr3d_resnet101_cbgs.pth
-GPUS=1
-PORT=${PORT:-29500}
+CONFIG=/nvme/konglingdong/models/RoboDet/zoo/PETR/projects/configs/robust_test/petr_r50dcn_gridmask_p4.py
+CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/DETR3D/petr_r50_p4_1408x512.pth
+GPUS=8
+PORT=${PORT:-29501}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
 python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
