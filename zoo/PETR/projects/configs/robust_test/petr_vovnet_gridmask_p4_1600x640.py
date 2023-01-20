@@ -1,6 +1,6 @@
 _base_ = [
-    '../../../mmdetection3d/configs/_base_/datasets/nus-3d.py',
-    '../../../mmdetection3d/configs/_base_/default_runtime.py'
+    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/datasets/nus-3d.py',
+    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/default_runtime.py'
 ]
 backbone_norm_cfg = dict(type='LN', requires_grad=True)
 plugin=True
@@ -106,7 +106,9 @@ model = dict(
             pc_range=point_cloud_range))))
 
 dataset_type = 'CustomNuScenesDataset'
-data_root = '/data/Dataset/nuScenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '../../data/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 
 file_client_args = dict(backend='disk')
 
@@ -174,7 +176,7 @@ train_pipeline = [
     dict(type='Collect3D', keys=['gt_bboxes_3d', 'gt_labels_3d', 'img'])
 ]
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles', to_float32=True),
+    dict(type='Custom_LoadMultiViewImageFromFiles', to_float32=True, corruption_root=corruption_root),
     dict(type='ResizeCropFlipImage', data_aug_conf = ida_aug_conf, training=False),
     dict(type='NormalizeMultiviewImage', **img_norm_cfg),
     dict(type='PadMultiViewImage', size_divisor=32),
@@ -198,7 +200,7 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file=data_root + 'nuscenes_infos_train.pkl',
+        ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
         pipeline=train_pipeline,
         classes=class_names,
         modality=input_modality,
@@ -207,8 +209,20 @@ data = dict(
         # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
         # and box_type_3d='Depth' in sunrgbd and scannet dataset.
         box_type_3d='LiDAR'),
-    val=dict(type=dataset_type, pipeline=test_pipeline, classes=class_names, modality=input_modality),
-    test=dict(type=dataset_type, pipeline=test_pipeline, classes=class_names, modality=input_modality))
+    val=dict(
+        type=dataset_type, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        pipeline=test_pipeline, 
+        classes=class_names, 
+        modality=input_modality),
+    test=dict(
+        type=dataset_type, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        pipeline=test_pipeline, 
+        classes=class_names, 
+        modality=input_modality),)
 
 optimizer = dict(
     type='AdamW', 
@@ -237,3 +251,5 @@ find_unused_parameters = False
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='ckpts/fcos3d_vovnet_imgbackbone-remapped.pth'
 resume_from=None
+
+corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
