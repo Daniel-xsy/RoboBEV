@@ -18,6 +18,8 @@ from mmdet3d.datasets import build_dataloader, build_dataset
 from mmdet3d.models import build_model
 from mmdet.apis import multi_gpu_test, set_random_seed
 from mmdet.datasets import replace_ImageToTensor
+from tools.analysis_tools.parse_results import (Logging_str, collect_metric, 
+                        collect_average_metric)
 
 
 
@@ -221,29 +223,27 @@ def main():
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
-        # outputs = single_gpu_test(model, data_loader, args.show, args.show_dir)
     else:
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
             broadcast_buffers=False)
-        # outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-        #                          args.gpu_collect)
 
     config_file = os.path.basename(args.config)
-    logging_path = os.path.join('log', f'{config_file[:-3]}.log')
+    logging_path = os.path.join('../../log', f'{config_file[:-3]}.log')
     if not os.path.isdir('log'): os.makedirs('log')
-    # logging = Logging_str(logging_path)
+    logging = Logging_str(logging_path)
 
-    # import time
-    # logging.write(f'Time: {time.asctime(time.localtime(time.time()))}\n')
+    import time
+    logging.write(f'Time: {time.asctime(time.localtime(time.time()))}\n')
 
     for corruption in cfg.corruptions:
 
         results_dict_list = []
-        # logging.write(f'### Evaluating {corruption}\n')
+        logging.write(f'### Evaluating {corruption}\n')
 
         for severity in ['easy', 'mid', 'hard']:
+            logging.write(f'#### Severity {severity}\n')
             data_loader.dataset.pipeline.transforms[0].corruption = corruption
             data_loader.dataset.pipeline.transforms[0].severity = severity
             outputs = multi_gpu_test(model, data_loader, args.tmpdir,
@@ -266,7 +266,15 @@ def main():
                     ]:
                         eval_kwargs.pop(key, None)
                     eval_kwargs.update(dict(metric=args.eval, **kwargs))
-                    print(dataset.evaluate(outputs, **eval_kwargs))
+                    # print(dataset.evaluate(outputs, **eval_kwargs))
+                    results_dict = dataset.evaluate(outputs, **eval_kwargs)
+                    results_dict['corruption'] = corruption
+                    results_dict['severity'] = severity
+                    results_dict_list.append(results_dict)
+                    collect_metric(results_dict, logging)
+        if rank == 0:
+            logging.write(f'#### Average\n')
+            collect_average_metric(results_dict_list, logging)
 
 
 if __name__ == '__main__':
