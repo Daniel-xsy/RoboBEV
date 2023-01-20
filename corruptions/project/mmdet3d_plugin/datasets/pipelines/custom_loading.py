@@ -54,10 +54,12 @@ class Custom_LoadMultiViewImageFromFiles(object):
                 - scale_factor (float): Scale factor.
                 - img_norm_cfg (dict): Normalization configuration of images.
         """
-        filenames = results['img_filename']
+        orig_filenames = results['img_filename']
         # img is of shape (h, w, c, num_views)
 
-        filenames = [os.path.split(filename)[1] for filename in filenames]
+        filenames = [os.path.split(filename)[1] for filename in orig_filenames]
+        subfolders = [os.path.split(os.path.split(filename)[0])[1] for filename in orig_filenames]
+        filenames = [os.path.join(subfolder, filename) for subfolder, filename in zip(subfolders, filenames)]
         filenames = [get_corruption_path(self.corruption_root, self.corruption, self.severity, filename) for filename in filenames]
 
         img = np.stack(
