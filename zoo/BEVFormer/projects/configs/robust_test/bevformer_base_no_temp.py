@@ -160,13 +160,15 @@ model = dict(
             pc_range=point_cloud_range))))
 
 dataset_type = 'CustomNuScenesDataset'
-data_root = '/mnt/petrelfs/share_data/liuyouquan/nuScenes/'
-anno_root = '/mnt/petrelfs/konglingdong/models/RoboDet/data/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+# anno_root = '/mnt/petrelfs/konglingdong/models/RoboDet/data/'
+anno_root = '/nvme/konglingdong/models/RoboDet/data/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 file_client_args = dict(backend='disk')
 
 
 train_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles', to_float32=True),
+    dict(type='Custom_LoadMultiViewImageFromFiles', to_float32=True, corruption_root=corruption_root),
     dict(type='PhotoMetricDistortionMultiViewImage'),
     dict(type='LoadAnnotations3D', with_bbox_3d=True, with_label_3d=True, with_attr_label=False),
     dict(type='ObjectRangeFilter', point_cloud_range=point_cloud_range),
@@ -221,7 +223,7 @@ data = dict(
               data_root=data_root,
               ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
               pipeline=test_pipeline, bev_size=(bev_h_, bev_w_),
-              classes=class_names, modality=input_modality),
+              classes=class_names, modality=input_modality, samples_per_gpu=1),
     shuffler_sampler=dict(type='DistributedGroupSampler'),
     nonshuffler_sampler=dict(type='DistributedSampler')
 )
@@ -258,4 +260,4 @@ log_config = dict(
 checkpoint_config = dict(interval=1)
 
 corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
-# 'Clean'
+# 'Clean', 'MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 
