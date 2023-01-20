@@ -230,7 +230,7 @@ def main():
             broadcast_buffers=False)
 
     config_file = os.path.basename(args.config)
-    logging_path = os.path.join('log', f'{config_file[:-3]}.log')
+    logging_path = os.path.join('../../log', f'{config_file[:-3]}.log')
     if not os.path.isdir('log'): os.makedirs('log')
     logging = Logging_str(logging_path)
 
