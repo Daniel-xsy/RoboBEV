@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn.bricks import ConvModule
 
-from ..builder import HEADS
+from mmdet.models import HEADS
 from .pointnet2_head import PointNet2Head
 
 
@@ -14,7 +14,7 @@ class PAConvHead(PointNet2Head):
 
     Args:
         fp_channels (tuple[tuple[int]]): Tuple of mlp channels in FP modules.
-        fp_norm_cfg (dict): Config of norm layers used in FP modules.
+        fp_norm_cfg (dict|None): Config of norm layers used in FP modules.
             Default: dict(type='BN2d').
     """
 

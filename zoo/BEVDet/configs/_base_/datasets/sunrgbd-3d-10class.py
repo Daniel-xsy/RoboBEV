@@ -2,29 +2,14 @@ dataset_type = 'SUNRGBDDataset'
 data_root = 'data/sunrgbd/'
 class_names = ('bed', 'table', 'sofa', 'chair', 'toilet', 'desk', 'dresser',
                'night_stand', 'bookshelf', 'bathtub')
-
-file_client_args = dict(backend='disk')
-# Uncomment the following if use ceph or other file clients.
-# See https://mmcv.readthedocs.io/en/latest/api.html#mmcv.fileio.FileClient
-# for more details.
-# file_client_args = dict(
-#     backend='petrel',
-#     path_mapping=dict({
-#         './data/sunrgbd/':
-#         's3://openmmlab/datasets/detection3d/sunrgbd_processed/',
-#         'data/sunrgbd/':
-#         's3://openmmlab/datasets/detection3d/sunrgbd_processed/'
-#     }))
-
 train_pipeline = [
     dict(
         type='LoadPointsFromFile',
         coord_type='DEPTH',
         shift_height=True,
         load_dim=6,
-        use_dim=[0, 1, 2],
-        file_client_args=file_client_args),
-    dict(type='LoadAnnotations3D', file_client_args=file_client_args),
+        use_dim=[0, 1, 2]),
+    dict(type='LoadAnnotations3D'),
     dict(
         type='RandomFlip3D',
         sync_2d=False,
@@ -45,8 +30,7 @@ test_pipeline = [
         coord_type='DEPTH',
         shift_height=True,
         load_dim=6,
-        use_dim=[0, 1, 2],
-        file_client_args=file_client_args),
+        use_dim=[0, 1, 2]),
     dict(
         type='MultiScaleFlipAug3D',
         img_scale=(1333, 800),
@@ -79,8 +63,7 @@ eval_pipeline = [
         coord_type='DEPTH',
         shift_height=False,
         load_dim=6,
-        use_dim=[0, 1, 2],
-        file_client_args=file_client_args),
+        use_dim=[0, 1, 2]),
     dict(
         type='DefaultFormatBundle3D',
         class_names=class_names,
@@ -103,8 +86,7 @@ data = dict(
             filter_empty_gt=False,
             # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
             # and box_type_3d='Depth' in sunrgbd and scannet dataset.
-            box_type_3d='Depth',
-            file_client_args=file_client_args)),
+            box_type_3d='Depth')),
     val=dict(
         type=dataset_type,
         data_root=data_root,
@@ -112,8 +94,7 @@ data = dict(
         pipeline=test_pipeline,
         classes=class_names,
         test_mode=True,
-        box_type_3d='Depth',
-        file_client_args=file_client_args),
+        box_type_3d='Depth'),
     test=dict(
         type=dataset_type,
         data_root=data_root,
@@ -121,7 +102,6 @@ data = dict(
         pipeline=test_pipeline,
         classes=class_names,
         test_mode=True,
-        box_type_3d='Depth',
-        file_client_args=file_client_args))
+        box_type_3d='Depth'))
 
 evaluation = dict(pipeline=eval_pipeline)

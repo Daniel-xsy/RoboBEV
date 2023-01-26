@@ -1,15 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import tempfile
-from os import path as osp
-
 import mmcv
+import torch
 import numpy as np
 import pyquaternion
+import tempfile
 from nuscenes.utils.data_classes import Box as NuScenesBox
+from os import path as osp
 
+from mmdet.datasets import DATASETS
 from ..core import show_result
 from ..core.bbox import Box3DMode, Coord3DMode, LiDARInstance3DBoxes
-from .builder import DATASETS
 from .custom_3d import Custom3DDataset
 from .pipelines import Compose
 
@@ -49,19 +49,8 @@ class NuScenesDataset(Custom3DDataset):
             Defaults to False.
         eval_version (bool, optional): Configuration version of evaluation.
             Defaults to  'detection_cvpr_2019'.
-        use_valid_flag (bool, optional): Whether to use `use_valid_flag` key
-            in the info file as mask to filter gt_boxes and gt_names.
-            Defaults to False.
-        img_info_prototype (str, optional): Type of img information.
-            Based on 'img_info_prototype', the dataset will prepare the image
-            data info in the type of 'mmcv' for official image infos,
-            'bevdet' for BEVDet, and 'bevdet4d' for BEVDet4D.
-            Defaults to 'mmcv'.
-        multi_adj_frame_id_cfg (tuple[int]): Define the selected index of
-            reference adjcacent frames.
-        ego_cam (str): Specify the ego coordinate relative to a specified
-            camera by its name defined in NuScenes.
-            Defaults to None, which use the mean of all cameras.
+        use_valid_flag (bool): Whether to use `use_valid_flag` key in the info
+            file as mask to filter gt_boxes and gt_names. Defaults to False.
     """
     NameMapping = {
         'movable_object.barrier': 'barrier',
@@ -137,8 +126,14 @@ class NuScenesDataset(Custom3DDataset):
                  eval_version='detection_cvpr_2019',
                  use_valid_flag=False,
                  img_info_prototype='mmcv',
-                 multi_adj_frame_id_cfg=None,
-                 ego_cam='CAM_FRONT'):
+                 speed_mode='abs_dis',
+                 max_interval=3,
+                 min_interval=0,
+                 prev_only=False,
+                 next_only=False,
+                 test_adj = 'prev',
+                 fix_direction=False,
+                 test_adj_ids=None):
         self.load_interval = load_interval
         self.use_valid_flag = use_valid_flag
         super().__init__(
@@ -165,8 +160,15 @@ class NuScenesDataset(Custom3DDataset):
             )
 
         self.img_info_prototype = img_info_prototype
-        self.multi_adj_frame_id_cfg = multi_adj_frame_id_cfg
-        self.ego_cam = ego_cam
+
+        self.speed_mode = speed_mode
+        self.max_interval = max_interval
+        self.min_interval = min_interval
+        self.prev_only = prev_only
+        self.next_only = next_only
+        self.test_adj = test_adj
+        self.fix_direction = fix_direction
+        self.test_adj_ids = test_adj_ids
 
     def get_cat_ids(self, idx):
         """Get category distribution of single scene.
@@ -201,7 +203,7 @@ class NuScenesDataset(Custom3DDataset):
         Returns:
             list[dict]: List of annotations sorted by timestamps.
         """
-        data = mmcv.load(ann_file, file_format='pkl')
+        data = mmcv.load(ann_file)
         data_infos = list(sorted(data['infos'], key=lambda e: e['timestamp']))
         data_infos = data_infos[::self.load_interval]
         self.metadata = data['metadata']
@@ -215,7 +217,7 @@ class NuScenesDataset(Custom3DDataset):
             index (int): Index of the sample data to get.
 
         Returns:
-            dict: Data information that will be passed to the data
+            dict: Data information that will be passed to the data \
                 preprocessing pipelines. It includes the following keys:
 
                 - sample_idx (str): Sample index.
@@ -223,20 +225,19 @@ class NuScenesDataset(Custom3DDataset):
                 - sweeps (list[dict]): Infos of sweeps.
                 - timestamp (float): Sample timestamp.
                 - img_filename (str, optional): Image filename.
-                - lidar2img (list[np.ndarray], optional): Transformations
+                - lidar2img (list[np.ndarray], optional): Transformations \
                     from lidar to different cameras.
                 - ann_info (dict): Annotation info.
         """
         info = self.data_infos[index]
-        # standard protocol modified from SECOND.Pytorch
+        # standard protocal modified from SECOND.Pytorch
         input_dict = dict(
             sample_idx=info['token'],
             pts_filename=info['lidar_path'],
             sweeps=info['sweeps'],
             timestamp=info['timestamp'] / 1e6,
         )
-        if 'ann_infos' in info:
-            input_dict['ann_infos'] = info['ann_infos']
+
         if self.modality['use_camera']:
             if self.img_info_prototype == 'mmcv':
                 image_paths = []
@@ -244,8 +245,7 @@ class NuScenesDataset(Custom3DDataset):
                 for cam_type, cam_info in info['cams'].items():
                     image_paths.append(cam_info['data_path'])
                     # obtain lidar to image transformation matrix
-                    lidar2cam_r = np.linalg.inv(
-                        cam_info['sensor2lidar_rotation'])
+                    lidar2cam_r = np.linalg.inv(cam_info['sensor2lidar_rotation'])
                     lidar2cam_t = cam_info[
                         'sensor2lidar_translation'] @ lidar2cam_r.T
                     lidar2cam_rt = np.eye(4)
@@ -253,8 +253,7 @@ class NuScenesDataset(Custom3DDataset):
                     lidar2cam_rt[3, :3] = -lidar2cam_t
                     intrinsic = cam_info['cam_intrinsic']
                     viewpad = np.eye(4)
-                    viewpad[:intrinsic.shape[0], :intrinsic.
-                            shape[1]] = intrinsic
+                    viewpad[:intrinsic.shape[0], :intrinsic.shape[1]] = intrinsic
                     lidar2img_rt = (viewpad @ lidar2cam_rt.T)
                     lidar2img_rts.append(lidar2img_rt)
 
@@ -263,28 +262,61 @@ class NuScenesDataset(Custom3DDataset):
                         img_filename=image_paths,
                         lidar2img=lidar2img_rts,
                     ))
+            elif self.img_info_prototype == 'bevdet':
+                input_dict.update(dict(img_info=info['cams']))
+            elif self.img_info_prototype == 'bevdet_sequential':
+                if info ['prev'] is None or info['next'] is None:
+                    adjacent= 'prev' if info['next'] is None else 'next'
+                else:
+                    if self.prev_only or self.next_only:
+                        adjacent = 'prev' if self.prev_only else 'next'
+                    elif self.test_mode:
+                        adjacent = self.test_adj
+                    else:
+                        adjacent = np.random.choice(['prev', 'next'])
+                if type(info[adjacent]) is list:
+                    if self.test_mode:
+                        if self.test_adj_ids is not None:
+                            info_adj=[]
+                            select_id = self.test_adj_ids
+                            for id_tmp in select_id:
+                                id_tmp = min(id_tmp, len(info[adjacent])-1)
+                                info_adj.append(info[adjacent][id_tmp])
+                        else:
+                            select_id = min((self.max_interval+self.min_interval)//2,
+                                            len(info[adjacent])-1)
+                            info_adj = info[adjacent][select_id]
+                    else:
+                        if len(info[adjacent])<= self.min_interval:
+                            select_id = len(info[adjacent])-1
+                        else:
+                            select_id = np.random.choice([adj_id for adj_id in range(
+                                min(self.min_interval,len(info[adjacent])),
+                                min(self.max_interval,len(info[adjacent])))])
+                        info_adj = info[adjacent][select_id]
+                else:
+                    info_adj = info[adjacent]
+                input_dict.update(dict(img_info=info['cams'],
+                                       curr=info,
+                                       adjacent=info_adj,
+                                       adjacent_type=adjacent))
 
-                if not self.test_mode:
-                    annos = self.get_ann_info(index)
-                    input_dict['ann_info'] = annos
-            else:
-                assert 'bevdet' in self.img_info_prototype
-                input_dict.update(dict(curr=info))
-                if '4d' in self.img_info_prototype:
-                    info_adj_list = self.get_adj_info(info, index)
-                    input_dict.update(dict(adjacent=info_adj_list))
+        if not self.test_mode:
+            annos = self.get_ann_info(index)
+            input_dict['ann_info'] = annos
+            if self.img_info_prototype == 'bevdet_sequential':
+                bbox = input_dict['ann_info']['gt_bboxes_3d'].tensor
+                if 'abs' in self.speed_mode:
+                    bbox[:, 7:9] = bbox[:, 7:9] + torch.from_numpy(info['velo']).view(1,2).to(bbox)
+                if input_dict['adjacent_type'] == 'next' and not self.fix_direction:
+                    bbox[:, 7:9] = -bbox[:, 7:9]
+                if 'dis' in self.speed_mode:
+                    time = abs(input_dict['timestamp'] - 1e-6 * input_dict['adjacent']['timestamp'])
+                    bbox[:, 7:9] = bbox[:, 7:9] * time
+                input_dict['ann_info']['gt_bboxes_3d'] = LiDARInstance3DBoxes(bbox,
+                                                                              box_dim=bbox.shape[-1],
+                                                                              origin=(0.5, 0.5, 0.0))
         return input_dict
-
-    def get_adj_info(self, info, index):
-        info_adj_list = []
-        for select_id in range(*self.multi_adj_frame_id_cfg):
-            select_id = max(index - select_id, 0)
-            if not self.data_infos[select_id]['scene_token'] == info[
-                    'scene_token']:
-                info_adj_list.append(info)
-            else:
-                info_adj_list.append(self.data_infos[select_id])
-        return info_adj_list
 
     def get_ann_info(self, index):
         """Get annotation info according to the given index.
@@ -295,7 +327,7 @@ class NuScenesDataset(Custom3DDataset):
         Returns:
             dict: Annotation information consists of the following keys:
 
-                - gt_bboxes_3d (:obj:`LiDARInstance3DBoxes`):
+                - gt_bboxes_3d (:obj:`LiDARInstance3DBoxes`): \
                     3D ground truth bboxes
                 - gt_labels_3d (np.ndarray): Labels of ground truths.
                 - gt_names (list[str]): Class names of ground truths.
@@ -352,30 +384,20 @@ class NuScenesDataset(Custom3DDataset):
 
         print('Start to convert detection format...')
         for sample_id, det in enumerate(mmcv.track_iter_progress(results)):
-            boxes = det['boxes_3d'].tensor.numpy()
-            scores = det['scores_3d'].numpy()
-            labels = det['labels_3d'].numpy()
+            annos = []
+            boxes = output_to_nusc_box(det, self.data_infos[sample_id],
+                                       self.speed_mode, self.img_info_prototype,
+                                       self.max_interval, self.test_adj,
+                                       self.fix_direction,
+                                       self.test_adj_ids)
             sample_token = self.data_infos[sample_id]['token']
-
-            trans = self.data_infos[sample_id]['cams'][
-                self.ego_cam]['ego2global_translation']
-            rot = self.data_infos[sample_id]['cams'][
-                self.ego_cam]['ego2global_rotation']
-            rot = pyquaternion.Quaternion(rot)
-            annos = list()
+            boxes = lidar_nusc_box_to_global(self.data_infos[sample_id], boxes,
+                                             mapped_class_names,
+                                             self.eval_detection_configs,
+                                             self.eval_version)
             for i, box in enumerate(boxes):
-                name = mapped_class_names[labels[i]]
-                center = box[:3]
-                wlh = box[[4, 3, 5]]
-                box_yaw = box[6]
-                box_vel = box[7:].tolist()
-                box_vel.append(0)
-                quat = pyquaternion.Quaternion(axis=[0, 0, 1], radians=box_yaw)
-                nusc_box = NuScenesBox(center, wlh, quat, velocity=box_vel)
-                nusc_box.rotate(rot)
-                nusc_box.translate(trans)
-                if np.sqrt(nusc_box.velocity[0]**2 +
-                           nusc_box.velocity[1]**2) > 0.2:
+                name = mapped_class_names[box.label]
+                if np.sqrt(box.velocity[0]**2 + box.velocity[1]**2) > 0.2:
                     if name in [
                             'car',
                             'construction_vehicle',
@@ -387,30 +409,26 @@ class NuScenesDataset(Custom3DDataset):
                     elif name in ['bicycle', 'motorcycle']:
                         attr = 'cycle.with_rider'
                     else:
-                        attr = self.DefaultAttribute[name]
+                        attr = NuScenesDataset.DefaultAttribute[name]
                 else:
                     if name in ['pedestrian']:
                         attr = 'pedestrian.standing'
                     elif name in ['bus']:
                         attr = 'vehicle.stopped'
                     else:
-                        attr = self.DefaultAttribute[name]
+                        attr = NuScenesDataset.DefaultAttribute[name]
+
                 nusc_anno = dict(
                     sample_token=sample_token,
-                    translation=nusc_box.center.tolist(),
-                    size=nusc_box.wlh.tolist(),
-                    rotation=nusc_box.orientation.elements.tolist(),
-                    velocity=nusc_box.velocity[:2],
+                    translation=box.center.tolist(),
+                    size=box.wlh.tolist(),
+                    rotation=box.orientation.elements.tolist(),
+                    velocity=box.velocity[:2].tolist(),
                     detection_name=name,
-                    detection_score=float(scores[i]),
-                    attribute_name=attr,
-                )
+                    detection_score=box.score,
+                    attribute_name=attr)
                 annos.append(nusc_anno)
-            # other views results of the same frame should be concatenated
-            if sample_token in nusc_annos:
-                nusc_annos[sample_token].extend(annos)
-            else:
-                nusc_annos[sample_token] = annos
+            nusc_annos[sample_token] = annos
         nusc_submissions = {
             'meta': self.modality,
             'results': nusc_annos,
@@ -431,11 +449,10 @@ class NuScenesDataset(Custom3DDataset):
 
         Args:
             result_path (str): Path of the result file.
-            logger (logging.Logger | str, optional): Logger used for printing
+            logger (logging.Logger | str | None): Logger used for printing
                 related information during evaluation. Default: None.
-            metric (str, optional): Metric name used for evaluation.
-                Default: 'bbox'.
-            result_name (str, optional): Result name in the metric prefix.
+            metric (str): Metric name used for evaluation. Default: 'bbox'.
+            result_name (str): Result name in the metric prefix.
                 Default: 'pts_bbox'.
 
         Returns:
@@ -485,14 +502,14 @@ class NuScenesDataset(Custom3DDataset):
 
         Args:
             results (list[dict]): Testing results of the dataset.
-            jsonfile_prefix (str): The prefix of json files. It includes
+            jsonfile_prefix (str | None): The prefix of json files. It includes
                 the file path and the prefix of filename, e.g., "a/b/prefix".
                 If not specified, a temp file will be created. Default: None.
 
         Returns:
-            tuple: Returns (result_files, tmp_dir), where `result_files` is a
-                dict containing the json filepaths, `tmp_dir` is the temporal
-                directory created for saving json files when
+            tuple: Returns (result_files, tmp_dir), where `result_files` is a \
+                dict containing the json filepaths, `tmp_dir` is the temporal \
+                directory created for saving json files when \
                 `jsonfile_prefix` is not specified.
         """
         assert isinstance(results, list), 'results must be a list'
@@ -538,16 +555,15 @@ class NuScenesDataset(Custom3DDataset):
 
         Args:
             results (list[dict]): Testing results of the dataset.
-            metric (str | list[str], optional): Metrics to be evaluated.
-                Default: 'bbox'.
-            logger (logging.Logger | str, optional): Logger used for printing
+            metric (str | list[str]): Metrics to be evaluated.
+            logger (logging.Logger | str | None): Logger used for printing
                 related information during evaluation. Default: None.
-            jsonfile_prefix (str, optional): The prefix of json files including
+            jsonfile_prefix (str | None): The prefix of json files. It includes
                 the file path and the prefix of filename, e.g., "a/b/prefix".
                 If not specified, a temp file will be created. Default: None.
-            show (bool, optional): Whether to visualize.
+            show (bool): Whether to visualize.
                 Default: False.
-            out_dir (str, optional): Path to save the visualization results.
+            out_dir (str): Path to save the visualization results.
                 Default: None.
             pipeline (list[dict], optional): raw data loading for showing.
                 Default: None.
@@ -569,8 +585,8 @@ class NuScenesDataset(Custom3DDataset):
         if tmp_dir is not None:
             tmp_dir.cleanup()
 
-        if show or out_dir:
-            self.show(results, out_dir, show=show, pipeline=pipeline)
+        if show:
+            self.show(results, out_dir, pipeline=pipeline)
         return results_dict
 
     def _build_default_pipeline(self):
@@ -594,14 +610,13 @@ class NuScenesDataset(Custom3DDataset):
         ]
         return Compose(pipeline)
 
-    def show(self, results, out_dir, show=False, pipeline=None):
+    def show(self, results, out_dir, show=True, pipeline=None):
         """Results visualization.
 
         Args:
             results (list[dict]): List of bounding boxes results.
             out_dir (str): Output directory of visualization result.
-            show (bool): Whether to visualize the results online.
-                Default: False.
+            show (bool): Visualize the results online.
             pipeline (list[dict], optional): raw data loading for showing.
                 Default: None.
         """
@@ -628,7 +643,9 @@ class NuScenesDataset(Custom3DDataset):
                         file_name, show)
 
 
-def output_to_nusc_box(detection, with_velocity=True):
+def output_to_nusc_box(detection, info, speed_mode,
+                       img_info_prototype, max_interval, test_adj, fix_direction,
+                       test_adj_ids):
     """Convert the output to the box class in the nuScenes.
 
     Args:
@@ -648,24 +665,39 @@ def output_to_nusc_box(detection, with_velocity=True):
     box_gravity_center = box3d.gravity_center.numpy()
     box_dims = box3d.dims.numpy()
     box_yaw = box3d.yaw.numpy()
+    # TODO: check whether this is necessary
+    # with dir_offset & dir_limit in the head
+    box_yaw = -box_yaw - np.pi / 2
 
-    # our LiDAR coordinate system -> nuScenes box coordinate system
-    nus_box_dims = box_dims[:, [1, 0, 2]]
+    velocity_all = box3d.tensor[:, 7:9]
+    if img_info_prototype =='bevdet_sequential':
+        if info['prev'] is None or info['next'] is None:
+            adjacent = 'prev' if info['next'] is None else 'next'
+        else:
+            adjacent = test_adj
+        if adjacent == 'next' and not fix_direction:
+            velocity_all = -velocity_all
+        if type(info[adjacent]) is list:
+            select_id = min(max_interval // 2, len(info[adjacent]) - 1)
+            # select_id = min(2, len(info[adjacent]) - 1)
+            info_adj = info[adjacent][select_id]
+        else:
+            info_adj = info[adjacent]
+        if 'dis' in speed_mode and test_adj_ids is None:
+            time = abs(1e-6 * info['timestamp'] - 1e-6 * info_adj['timestamp'])
+            velocity_all = velocity_all / time
 
     box_list = []
     for i in range(len(box3d)):
         quat = pyquaternion.Quaternion(axis=[0, 0, 1], radians=box_yaw[i])
-        if with_velocity:
-            velocity = (*box3d.tensor[i, 7:9], 0.0)
-        else:
-            velocity = (0, 0, 0)
+        velocity = (*velocity_all[i,:], 0.0)
         # velo_val = np.linalg.norm(box3d[i, 7:9])
         # velo_ori = box3d[i, 6]
         # velocity = (
         # velo_val * np.cos(velo_ori), velo_val * np.sin(velo_ori), 0.0)
         box = NuScenesBox(
             box_gravity_center[i],
-            nus_box_dims[i],
+            box_dims[i],
             quat,
             label=labels[i],
             score=scores[i],
@@ -687,7 +719,7 @@ def lidar_nusc_box_to_global(info,
         boxes (list[:obj:`NuScenesBox`]): List of predicted NuScenesBoxes.
         classes (list[str]): Mapped classes in the evaluation.
         eval_configs (object): Evaluation configuration object.
-        eval_version (str, optional): Evaluation version.
+        eval_version (str): Evaluation version.
             Default: 'detection_cvpr_2019'
 
     Returns:

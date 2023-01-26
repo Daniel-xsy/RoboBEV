@@ -8,7 +8,6 @@ from mmdet3d.datasets import SUNRGBDDataset
 
 def _generate_sunrgbd_dataset_config():
     root_path = './tests/data/sunrgbd'
-    # in coordinate system refactor, this test file is modified
     ann_file = './tests/data/sunrgbd/sunrgbd_infos.pkl'
     class_names = ('bed', 'table', 'sofa', 'chair', 'toilet', 'desk',
                    'dresser', 'night_stand', 'bookshelf', 'bathtub')
@@ -89,9 +88,6 @@ def _generate_sunrgbd_multi_modality_dataset_config():
 
 
 def test_getitem():
-
-    from os import path as osp
-
     np.random.seed(0)
     root_path, ann_file, class_names, pipelines, modality = \
         _generate_sunrgbd_dataset_config()
@@ -110,8 +106,7 @@ def test_getitem():
     pcd_rotation_expected = np.array([[0.99889565, 0.04698427, 0.],
                                       [-0.04698427, 0.99889565, 0.],
                                       [0., 0., 1.]])
-    expected_file_name = osp.join('./tests/data/sunrgbd', 'points/000001.bin')
-    assert file_name == expected_file_name
+    assert file_name == './tests/data/sunrgbd/points/000001.bin'
     assert pcd_horizontal_flip is False
     assert abs(pcd_scale_factor - 0.9770964398016714) < 1e-5
     assert np.allclose(pcd_rotation, pcd_rotation_expected, 1e-3)
@@ -125,8 +120,6 @@ def test_getitem():
         [[0.8308, 4.1168, -1.2035, 2.2493, 1.8444, 1.9245, 1.6486],
          [2.3002, 4.8149, -1.2442, 0.5718, 0.8629, 0.9510, 1.6030],
          [-1.1477, 1.8090, -1.1725, 0.6965, 1.5273, 2.0563, 0.0552]])
-    # coord sys refactor (rotation is correct but yaw has to be reversed)
-    expected_gt_bboxes_3d[:, 6:] = -expected_gt_bboxes_3d[:, 6:]
     expected_gt_labels = np.array([0, 7, 6])
     original_classes = sunrgbd_dataset.CLASSES
 
@@ -146,13 +139,12 @@ def test_getitem():
     assert SUNRGBD_dataset.CLASSES == ('bed', 'table')
 
     import tempfile
-    with tempfile.TemporaryDirectory() as tmpdir:
-        path = tmpdir + 'classes.txt'
-        with open(path, 'w') as f:
-            f.write('bed\ntable\n')
+    tmp_file = tempfile.NamedTemporaryFile()
+    with open(tmp_file.name, 'w') as f:
+        f.write('bed\ntable\n')
 
     SUNRGBD_dataset = SUNRGBDDataset(
-        root_path, ann_file, pipeline=None, classes=path)
+        root_path, ann_file, pipeline=None, classes=tmp_file.name)
     assert SUNRGBD_dataset.CLASSES != original_classes
     assert SUNRGBD_dataset.CLASSES == ['bed', 'table']
 
@@ -215,10 +207,9 @@ def test_evaluate():
 
 
 def test_show():
+    import mmcv
     import tempfile
     from os import path as osp
-
-    import mmcv
 
     from mmdet3d.core.bbox import DepthInstance3DBoxes
     tmp_dir = tempfile.TemporaryDirectory()

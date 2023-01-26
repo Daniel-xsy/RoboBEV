@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import mmcv
+import numpy as np
 import os
 from concurrent import futures as futures
 from os import path as osp
-
-import mmcv
-import numpy as np
 
 
 class ScanNetData(object):
@@ -14,7 +13,7 @@ class ScanNetData(object):
 
     Args:
         root_path (str): Root path of the raw data.
-        split (str, optional): Set split type of the data. Default: 'train'.
+        split (str): Set split type of the data. Default: 'train'.
     """
 
     def __init__(self, root_path, split='train'):
@@ -91,11 +90,9 @@ class ScanNetData(object):
         This method gets information from the raw data.
 
         Args:
-            num_workers (int, optional): Number of threads to be used.
-                Default: 4.
-            has_label (bool, optional): Whether the data has label.
-                Default: True.
-            sample_id_list (list[int], optional): Index list of the sample.
+            num_workers (int): Number of threads to be used. Default: 4.
+            has_label (bool): Whether the data has label. Default: True.
+            sample_id_list (list[int]): Index list of the sample.
                 Default: None.
 
         Returns:
@@ -138,9 +135,9 @@ class ScanNetData(object):
                     f'{sample_idx}_sem_label.npy')
 
                 pts_instance_mask = np.load(pts_instance_mask_path).astype(
-                    np.int64)
+                    np.long)
                 pts_semantic_mask = np.load(pts_semantic_mask_path).astype(
-                    np.int64)
+                    np.long)
 
                 mmcv.mkdir_or_exist(osp.join(self.root_dir, 'instance_mask'))
                 mmcv.mkdir_or_exist(osp.join(self.root_dir, 'semantic_mask'))
@@ -204,11 +201,10 @@ class ScanNetSegData(object):
     Args:
         data_root (str): Root path of the raw data.
         ann_file (str): The generated scannet infos.
-        split (str, optional): Set split type of the data. Default: 'train'.
-        num_points (int, optional): Number of points in each data input.
-            Default: 8192.
-        label_weight_func (function, optional): Function to compute the
-            label weight. Default: None.
+        split (str): Set split type of the data. Default: 'train'.
+        num_points (int): Number of points in each data input. Default: 8192.
+        label_weight_func (function): Function to compute the label weight.
+            Default: None.
     """
 
     def __init__(self,
@@ -260,12 +256,12 @@ class ScanNetSegData(object):
             if mask.endswith('npy'):
                 mask = np.load(mask)
             else:
-                mask = np.fromfile(mask, dtype=np.int64)
+                mask = np.fromfile(mask, dtype=np.long)
         label = self.cat_id2class[mask]
         return label
 
     def get_scene_idxs_and_label_weight(self):
-        """Compute scene_idxs for data sampling and label weight for loss
+        """Compute scene_idxs for data sampling and label weight for loss \
         calculation.
 
         We sample more times for scenes with more points. Label_weight is

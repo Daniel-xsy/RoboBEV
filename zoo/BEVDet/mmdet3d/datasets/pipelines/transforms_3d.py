@@ -1,18 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import random
-import warnings
-
-import cv2
+import torch
 import numpy as np
+import warnings
 from mmcv import is_tuple_of
 from mmcv.utils import build_from_cfg
 
 from mmdet3d.core import VoxelGenerator
 from mmdet3d.core.bbox import (CameraInstance3DBoxes, DepthInstance3DBoxes,
                                LiDARInstance3DBoxes, box_np_ops)
-from mmdet3d.datasets.pipelines.compose import Compose
-from mmdet.datasets.pipelines import RandomCrop, RandomFlip, Rotate
-from ..builder import OBJECTSAMPLERS, PIPELINES
+from mmdet.datasets.builder import PIPELINES
+from mmdet.datasets.pipelines import RandomFlip
+from ..builder import OBJECTSAMPLERS
 from .data_augment_utils import noise_per_object_v3_
 
 
@@ -25,7 +23,7 @@ class RandomDropPointsColor(object):
     util/transform.py#L223>`_ for more details.
 
     Args:
-        drop_ratio (float, optional): The probability of dropping point colors.
+        drop_ratio (float): The probability of dropping point colors.
             Defaults to 0.2.
     """
 
@@ -41,7 +39,7 @@ class RandomDropPointsColor(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after color dropping,
+            dict: Results after color dropping, \
                 'points' key is updated in the result dict.
         """
         points = input_dict['points']
@@ -89,6 +87,7 @@ class RandomFlip3D(RandomFlip):
                  sync_2d=True,
                  flip_ratio_bev_horizontal=0.0,
                  flip_ratio_bev_vertical=0.0,
+                 update_img2lidar=False,
                  **kwargs):
         super(RandomFlip3D, self).__init__(
             flip_ratio=flip_ratio_bev_horizontal, **kwargs)
@@ -102,24 +101,20 @@ class RandomFlip3D(RandomFlip):
             assert isinstance(
                 flip_ratio_bev_vertical,
                 (int, float)) and 0 <= flip_ratio_bev_vertical <= 1
+        self.update_img2lidar = update_img2lidar
 
     def random_flip_data_3d(self, input_dict, direction='horizontal'):
         """Flip 3D data randomly.
 
         Args:
             input_dict (dict): Result dict from loading pipeline.
-            direction (str, optional): Flip direction.
-                Default: 'horizontal'.
+            direction (str): Flip direction. Default: horizontal.
 
         Returns:
-            dict: Flipped results, 'points', 'bbox3d_fields' keys are
+            dict: Flipped results, 'points', 'bbox3d_fields' keys are \
                 updated in the result dict.
         """
         assert direction in ['horizontal', 'vertical']
-        # for semantic segmentation task, only points will be flipped.
-        if 'bbox3d_fields' not in input_dict:
-            input_dict['points'].flip(direction)
-            return
         if len(input_dict['bbox3d_fields']) == 0:  # test mode
             input_dict['bbox3d_fields'].append('empty_box3d')
             input_dict['empty_box3d'] = input_dict['box_type_3d'](
@@ -144,19 +139,36 @@ class RandomFlip3D(RandomFlip):
             # https://github.com/open-mmlab/mmdetection3d/pull/744
             input_dict['cam2img'][0][2] = w - input_dict['cam2img'][0][2]
 
+    def update_transform(self, input_dict):
+        transform = torch.zeros((input_dict['img_inputs'][1].shape[0],4,4)).float()
+        transform[:,:3,:3] = input_dict['img_inputs'][1]
+        transform[:,:3,-1] = input_dict['img_inputs'][2]
+        transform[:, -1, -1] = 1.0
+
+        aug_transform = torch.eye(4).float()
+        if input_dict['pcd_horizontal_flip']:
+            aug_transform[1,1] = -1
+        if input_dict['pcd_vertical_flip']:
+            aug_transform[0,0] = -1
+        aug_transform = aug_transform.view(1,4,4)
+        new_transform = aug_transform.matmul(transform)
+        input_dict['img_inputs'][1][...] = new_transform[:,:3,:3]
+        input_dict['img_inputs'][2][...] = new_transform[:,:3,-1]
+
+
     def __call__(self, input_dict):
-        """Call function to flip points, values in the ``bbox3d_fields`` and
+        """Call function to flip points, values in the ``bbox3d_fields`` and \
         also flip 2D image and its annotations.
 
         Args:
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Flipped results, 'flip', 'flip_direction',
-                'pcd_horizontal_flip' and 'pcd_vertical_flip' keys are added
+            dict: Flipped results, 'flip', 'flip_direction', \
+                'pcd_horizontal_flip' and 'pcd_vertical_flip' keys are added \
                 into result dict.
         """
-        # flip 2D image and its annotations
+        # filp 2D image and its annotations
         super(RandomFlip3D, self).__call__(input_dict)
 
         if self.sync_2d:
@@ -181,6 +193,10 @@ class RandomFlip3D(RandomFlip):
         if input_dict['pcd_vertical_flip']:
             self.random_flip_data_3d(input_dict, 'vertical')
             input_dict['transformation_3d_flow'].extend(['VF'])
+
+        if 'img_inputs' in input_dict:
+            assert self.update_img2lidar
+            self.update_transform(input_dict)
         return input_dict
 
     def __repr__(self):
@@ -192,185 +208,23 @@ class RandomFlip3D(RandomFlip):
 
 
 @PIPELINES.register_module()
-class MultiViewWrapper(object):
-    """Wrap transformation from single-view into multi-view.
-
-    The wrapper processes the images from multi-view one by one. For each
-    image, it constructs a pseudo dict according to the keys specified by the
-    'process_fields' parameter. After the transformation is finished, desired
-    information can be collected by specifying the keys in the 'collected_keys'
-    parameter. Multi-view images share the same transformation parameters
-    but do not share the same magnitude when a random transformation is
-    conducted.
-
-    Args:
-        transforms (list[dict]): A list of dict specifying the transformations
-            for the monocular situation.
-        process_fields (dict): Desired keys that the transformations should
-            be conducted on. Default to dict(img_fields=['img']).
-        collected_keys (list[str]): Collect information in transformation
-            like rotate angles, crop roi, and flip state.
-    """
-
-    def __init__(self,
-                 transforms,
-                 process_fields=dict(img_fields=['img']),
-                 collected_keys=[]):
-        self.transform = Compose(transforms)
-        self.collected_keys = collected_keys
-        self.process_fields = process_fields
-
-    def __call__(self, input_dict):
-        for key in self.collected_keys:
-            input_dict[key] = []
-        for img_id in range(len(input_dict['img'])):
-            process_dict = self.process_fields.copy()
-            for field in self.process_fields:
-                for key in self.process_fields[field]:
-                    process_dict[key] = input_dict[key][img_id]
-            process_dict = self.transform(process_dict)
-            for field in self.process_fields:
-                for key in self.process_fields[field]:
-                    input_dict[key][img_id] = process_dict[key]
-            for key in self.collected_keys:
-                input_dict[key].append(process_dict[key])
-        return input_dict
-
-
-@PIPELINES.register_module()
-class RangeLimitedRandomCrop(RandomCrop):
-    """Randomly crop image-view objects under a limitation of range.
-
-    Args:
-        relative_x_offset_range (tuple[float]): Relative range of random crop
-            in x direction. (x_min, x_max) in [0, 1.0]. Default to (0.0, 1.0).
-        relative_y_offset_range (tuple[float]): Relative range of random crop
-            in y direction. (y_min, y_max) in [0, 1.0]. Default to (0.0, 1.0).
-    """
-
-    def __init__(self,
-                 relative_x_offset_range=(0.0, 1.0),
-                 relative_y_offset_range=(0.0, 1.0),
-                 **kwargs):
-        super(RangeLimitedRandomCrop, self).__init__(**kwargs)
-        for range in [relative_x_offset_range, relative_y_offset_range]:
-            assert 0 <= range[0] <= range[1] <= 1
-        self.relative_x_offset_range = relative_x_offset_range
-        self.relative_y_offset_range = relative_y_offset_range
-
-    def _crop_data(self, results, crop_size, allow_negative_crop):
-        """Function to randomly crop images.
-
-        Modified from RandomCrop in mmdet==2.25.0
-
-        Args:
-            results (dict): Result dict from loading pipeline.
-            crop_size (tuple): Expected absolute size after cropping, (h, w).
-
-        Returns:
-            dict: Randomly cropped results, 'img_shape' key in result dict is
-                updated according to crop size.
-        """
-        assert crop_size[0] > 0 and crop_size[1] > 0
-        for key in results.get('img_fields', ['img']):
-            img = results[key]
-            margin_h = max(img.shape[0] - crop_size[0], 0)
-            margin_w = max(img.shape[1] - crop_size[1], 0)
-            offset_range_h = (margin_h * self.relative_y_offset_range[0],
-                              margin_h * self.relative_y_offset_range[1] + 1)
-            offset_h = np.random.randint(*offset_range_h)
-            offset_range_w = (margin_w * self.relative_x_offset_range[0],
-                              margin_w * self.relative_x_offset_range[1] + 1)
-            offset_w = np.random.randint(*offset_range_w)
-            crop_y1, crop_y2 = offset_h, offset_h + crop_size[0]
-            crop_x1, crop_x2 = offset_w, offset_w + crop_size[1]
-
-            # crop the image
-            img = img[crop_y1:crop_y2, crop_x1:crop_x2, ...]
-            img_shape = img.shape
-            results[key] = img
-            results['crop'] = (crop_x1, crop_y1, crop_x2, crop_y2)
-        results['img_shape'] = img_shape
-
-        # crop bboxes accordingly and clip to the image boundary
-        for key in results.get('bbox_fields', []):
-            # e.g. gt_bboxes and gt_bboxes_ignore
-            bbox_offset = np.array([offset_w, offset_h, offset_w, offset_h],
-                                   dtype=np.float32)
-            bboxes = results[key] - bbox_offset
-            if self.bbox_clip_border:
-                bboxes[:, 0::2] = np.clip(bboxes[:, 0::2], 0, img_shape[1])
-                bboxes[:, 1::2] = np.clip(bboxes[:, 1::2], 0, img_shape[0])
-            valid_inds = (bboxes[:, 2] > bboxes[:, 0]) & (
-                bboxes[:, 3] > bboxes[:, 1])
-            # If the crop does not contain any gt-bbox area and
-            # allow_negative_crop is False, skip this image.
-            if (key == 'gt_bboxes' and not valid_inds.any()
-                    and not allow_negative_crop):
-                return None
-            results[key] = bboxes[valid_inds, :]
-            # label fields. e.g. gt_labels and gt_labels_ignore
-            label_key = self.bbox2label.get(key)
-            if label_key in results:
-                results[label_key] = results[label_key][valid_inds]
-
-            # mask fields, e.g. gt_masks and gt_masks_ignore
-            mask_key = self.bbox2mask.get(key)
-            if mask_key in results:
-                results[mask_key] = results[mask_key][
-                    valid_inds.nonzero()[0]].crop(
-                        np.asarray([crop_x1, crop_y1, crop_x2, crop_y2]))
-                if self.recompute_bbox:
-                    results[key] = results[mask_key].get_bboxes()
-
-        # crop semantic seg
-        for key in results.get('seg_fields', []):
-            results[key] = results[key][crop_y1:crop_y2, crop_x1:crop_x2]
-
-        return results
-
-
-@PIPELINES.register_module()
-class RandomRotate(Rotate):
-    """Randomly rotate images.
-
-    The ratation angle is selected uniformly within the interval specified by
-    the 'range'  parameter.
-
-    Args:
-        range (tuple[float]): Define the range of random rotation.
-            (angle_min, angle_max) in angle.
-    """
-
-    def __init__(self, range, **kwargs):
-        super(RandomRotate, self).__init__(**kwargs)
-        self.range = range
-
-    def __call__(self, results):
-        self.angle = np.random.uniform(self.range[0], self.range[1])
-        super(RandomRotate, self).__call__(results)
-        results['rotate'] = self.angle
-        return results
-
-
-@PIPELINES.register_module()
 class RandomJitterPoints(object):
     """Randomly jitter point coordinates.
 
-    Different from the global translation in ``GlobalRotScaleTrans``, here we
+    Different from the global translation in ``GlobalRotScaleTrans``, here we \
         apply different noises to each point in a scene.
 
     Args:
         jitter_std (list[float]): The standard deviation of jittering noise.
-            This applies random noise to all points in a 3D scene, which is
-            sampled from a gaussian distribution whose standard deviation is
+            This applies random noise to all points in a 3D scene, which is \
+            sampled from a gaussian distribution whose standard deviation is \
             set by ``jitter_std``. Defaults to [0.01, 0.01, 0.01]
-        clip_range (list[float]): Clip the randomly generated jitter
+        clip_range (list[float] | None): Clip the randomly generated jitter \
             noise into this range. If None is given, don't perform clipping.
             Defaults to [-0.05, 0.05]
 
     Note:
-        This transform should only be used in point cloud segmentation tasks
+        This transform should only be used in point cloud segmentation tasks \
             because we don't transform ground-truth bboxes accordingly.
         For similar transform in detection task, please refer to `ObjectNoise`.
     """
@@ -399,7 +253,7 @@ class RandomJitterPoints(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after adding noise to each point,
+            dict: Results after adding noise to each point, \
                 'points' key is updated in the result dict.
         """
         points = input_dict['points']
@@ -430,17 +284,14 @@ class ObjectSample(object):
         sample_2d (bool): Whether to also paste 2D image patch to the images
             This should be true when applying multi-modality cut-and-paste.
             Defaults to False.
-        use_ground_plane (bool): Whether to use gound plane to adjust the
-            3D labels.
     """
 
-    def __init__(self, db_sampler, sample_2d=False, use_ground_plane=False):
+    def __init__(self, db_sampler, sample_2d=False):
         self.sampler_cfg = db_sampler
         self.sample_2d = sample_2d
         if 'type' not in db_sampler.keys():
             db_sampler['type'] = 'DataBaseSampler'
         self.db_sampler = build_from_cfg(db_sampler, OBJECTSAMPLERS)
-        self.use_ground_plane = use_ground_plane
 
     @staticmethod
     def remove_points_in_boxes(points, boxes):
@@ -464,18 +315,13 @@ class ObjectSample(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after object sampling augmentation,
-                'points', 'gt_bboxes_3d', 'gt_labels_3d' keys are updated
+            dict: Results after object sampling augmentation, \
+                'points', 'gt_bboxes_3d', 'gt_labels_3d' keys are updated \
                 in the result dict.
         """
         gt_bboxes_3d = input_dict['gt_bboxes_3d']
         gt_labels_3d = input_dict['gt_labels_3d']
 
-        if self.use_ground_plane and 'plane' in input_dict['ann_info']:
-            ground_plane = input_dict['ann_info']['plane']
-            input_dict['plane'] = ground_plane
-        else:
-            ground_plane = None
         # change to float for blending operation
         points = input_dict['points']
         if self.sample_2d:
@@ -489,10 +335,7 @@ class ObjectSample(object):
                 img=img)
         else:
             sampled_dict = self.db_sampler.sample_all(
-                gt_bboxes_3d.tensor.numpy(),
-                gt_labels_3d,
-                img=None,
-                ground_plane=ground_plane)
+                gt_bboxes_3d.tensor.numpy(), gt_labels_3d, img=None)
 
         if sampled_dict is not None:
             sampled_gt_bboxes_3d = sampled_dict['gt_bboxes_3d']
@@ -518,7 +361,7 @@ class ObjectSample(object):
                 input_dict['img'] = sampled_dict['img']
 
         input_dict['gt_bboxes_3d'] = gt_bboxes_3d
-        input_dict['gt_labels_3d'] = gt_labels_3d.astype(np.int64)
+        input_dict['gt_labels_3d'] = gt_labels_3d.astype(np.long)
         input_dict['points'] = points
 
         return input_dict
@@ -569,13 +412,13 @@ class ObjectNoise(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after adding noise to each object,
+            dict: Results after adding noise to each object, \
                 'points', 'gt_bboxes_3d' keys are updated in the result dict.
         """
         gt_bboxes_3d = input_dict['gt_bboxes_3d']
         points = input_dict['points']
 
-        # TODO: this is inplace operation
+        # TODO: check this inplace function
         numpy_box = gt_bboxes_3d.tensor.numpy()
         numpy_points = points.tensor.numpy()
 
@@ -609,10 +452,10 @@ class GlobalAlignment(object):
         rotation_axis (int): Rotation axis for points and bboxes rotation.
 
     Note:
-        We do not record the applied rotation and translation as in
-            GlobalRotScaleTrans. Because usually, we do not need to reverse
+        We do not record the applied rotation and translation as in \
+            GlobalRotScaleTrans. Because usually, we do not need to reverse \
             the alignment step.
-        For example, ScanNet 3D detection task uses aligned ground-truth
+        For example, ScanNet 3D detection task uses aligned ground-truth \
             bounding boxes for evaluation.
     """
 
@@ -664,7 +507,7 @@ class GlobalAlignment(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after global alignment, 'points' and keys in
+            dict: Results after global alignment, 'points' and keys in \
                 input_dict['bbox3d_fields'] are updated in the result dict.
         """
         assert 'axis_align_matrix' in input_dict['ann_info'].keys(), \
@@ -693,15 +536,15 @@ class GlobalRotScaleTrans(object):
     """Apply global rotation, scaling and translation to a 3D scene.
 
     Args:
-        rot_range (list[float], optional): Range of rotation angle.
+        rot_range (list[float]): Range of rotation angle.
             Defaults to [-0.78539816, 0.78539816] (close to [-pi/4, pi/4]).
-        scale_ratio_range (list[float], optional): Range of scale ratio.
+        scale_ratio_range (list[float]): Range of scale ratio.
             Defaults to [0.95, 1.05].
-        translation_std (list[float], optional): The standard deviation of
-            translation noise applied to a scene, which
+        translation_std (list[float]): The standard deviation of translation
+            noise. This applies random translation to a scene by a noise, which
             is sampled from a gaussian distribution whose standard deviation
             is set by ``translation_std``. Defaults to [0, 0, 0]
-        shift_height (bool, optional): Whether to shift height.
+        shift_height (bool): Whether to shift height.
             (the fourth dimension of indoor points) when scaling.
             Defaults to False.
     """
@@ -710,7 +553,8 @@ class GlobalRotScaleTrans(object):
                  rot_range=[-0.78539816, 0.78539816],
                  scale_ratio_range=[0.95, 1.05],
                  translation_std=[0, 0, 0],
-                 shift_height=False):
+                 shift_height=False,
+                 update_img2lidar=False):
         seq_types = (list, tuple, np.ndarray)
         if not isinstance(rot_range, seq_types):
             assert isinstance(rot_range, (int, float)), \
@@ -732,6 +576,7 @@ class GlobalRotScaleTrans(object):
             'translation_std should be positive'
         self.translation_std = translation_std
         self.shift_height = shift_height
+        self.update_img2lidar = update_img2lidar
 
     def _trans_bbox_points(self, input_dict):
         """Private function to translate bounding boxes and points.
@@ -740,8 +585,8 @@ class GlobalRotScaleTrans(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after translation, 'points', 'pcd_trans'
-                and keys in input_dict['bbox3d_fields'] are updated
+            dict: Results after translation, 'points', 'pcd_trans' \
+                and keys in input_dict['bbox3d_fields'] are updated \
                 in the result dict.
         """
         translation_std = np.array(self.translation_std, dtype=np.float32)
@@ -759,8 +604,8 @@ class GlobalRotScaleTrans(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after rotation, 'points', 'pcd_rotation'
-                and keys in input_dict['bbox3d_fields'] are updated
+            dict: Results after rotation, 'points', 'pcd_rotation' \
+                and keys in input_dict['bbox3d_fields'] are updated \
                 in the result dict.
         """
         rotation = self.rot_range
@@ -770,7 +615,6 @@ class GlobalRotScaleTrans(object):
         if len(input_dict['bbox3d_fields']) == 0:
             rot_mat_T = input_dict['points'].rotate(noise_rotation)
             input_dict['pcd_rotation'] = rot_mat_T
-            input_dict['pcd_rotation_angle'] = noise_rotation
             return
 
         # rotate points with bboxes
@@ -780,7 +624,6 @@ class GlobalRotScaleTrans(object):
                     noise_rotation, input_dict['points'])
                 input_dict['points'] = points
                 input_dict['pcd_rotation'] = rot_mat_T
-                input_dict['pcd_rotation_angle'] = noise_rotation
 
     def _scale_bbox_points(self, input_dict):
         """Private function to scale bounding boxes and points.
@@ -789,7 +632,7 @@ class GlobalRotScaleTrans(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after scaling, 'points'and keys in
+            dict: Results after scaling, 'points'and keys in \
                 input_dict['bbox3d_fields'] are updated in the result dict.
         """
         scale = input_dict['pcd_scale_factor']
@@ -811,15 +654,34 @@ class GlobalRotScaleTrans(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after scaling, 'pcd_scale_factor' are updated
+            dict: Results after scaling, 'pcd_scale_factor' are updated \
                 in the result dict.
         """
         scale_factor = np.random.uniform(self.scale_ratio_range[0],
                                          self.scale_ratio_range[1])
         input_dict['pcd_scale_factor'] = scale_factor
 
+    def update_transform(self, input_dict):
+        transform = torch.zeros((input_dict['img_inputs'][1].shape[0],4,4)).float()
+        transform[:,:3,:3] = input_dict['img_inputs'][1]
+        transform[:,:3,-1] = input_dict['img_inputs'][2]
+        transform[:, -1, -1] = 1.0
+
+        aug_transform = torch.zeros((input_dict['img_inputs'][1].shape[0],4,4)).float()
+        if 'pcd_rotation' in input_dict:
+            aug_transform[:,:3,:3] = input_dict['pcd_rotation'].T * input_dict['pcd_scale_factor']
+        else:
+            aug_transform[:, :3, :3] = torch.eye(3).view(1,3,3) * input_dict['pcd_scale_factor']
+        aug_transform[:,:3,-1] = torch.from_numpy(input_dict['pcd_trans']).reshape(1,3)
+        aug_transform[:, -1, -1] = 1.0
+
+        new_transform = aug_transform.matmul(transform)
+        input_dict['img_inputs'][1][...] = new_transform[:,:3,:3]
+        input_dict['img_inputs'][2][...] = new_transform[:,:3,-1]
+
+
     def __call__(self, input_dict):
-        """Private function to rotate, scale and translate bounding boxes and
+        """Private function to rotate, scale and translate bounding boxes and \
         points.
 
         Args:
@@ -827,7 +689,7 @@ class GlobalRotScaleTrans(object):
 
         Returns:
             dict: Results after scaling, 'points', 'pcd_rotation',
-                'pcd_scale_factor', 'pcd_trans' and keys in
+                'pcd_scale_factor', 'pcd_trans' and keys in \
                 input_dict['bbox3d_fields'] are updated in the result dict.
         """
         if 'transformation_3d_flow' not in input_dict:
@@ -842,6 +704,9 @@ class GlobalRotScaleTrans(object):
         self._trans_bbox_points(input_dict)
 
         input_dict['transformation_3d_flow'].extend(['R', 'S', 'T'])
+        if 'img_inputs' in input_dict:
+            assert self.update_img2lidar
+            self.update_transform(input_dict)
         return input_dict
 
     def __repr__(self):
@@ -865,7 +730,7 @@ class PointShuffle(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after filtering, 'points', 'pts_instance_mask'
+            dict: Results after filtering, 'points', 'pts_instance_mask' \
                 and 'pts_semantic_mask' keys are updated in the result dict.
         """
         idx = input_dict['points'].shuffle()
@@ -904,7 +769,7 @@ class ObjectRangeFilter(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after filtering, 'gt_bboxes_3d', 'gt_labels_3d'
+            dict: Results after filtering, 'gt_bboxes_3d', 'gt_labels_3d' \
                 keys are updated in the result dict.
         """
         # Check points instance type and initialise bev_range
@@ -956,7 +821,7 @@ class PointsRangeFilter(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after filtering, 'points', 'pts_instance_mask'
+            dict: Results after filtering, 'points', 'pts_instance_mask' \
                 and 'pts_semantic_mask' keys are updated in the result dict.
         """
         points = input_dict['points']
@@ -1002,7 +867,7 @@ class ObjectNameFilter(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after filtering, 'gt_bboxes_3d', 'gt_labels_3d'
+            dict: Results after filtering, 'gt_bboxes_3d', 'gt_labels_3d' \
                 keys are updated in the result dict.
         """
         gt_labels_3d = input_dict['gt_labels_3d']
@@ -1069,9 +934,9 @@ class PointSample(object):
         point_range = range(len(points))
         if sample_range is not None and not replace:
             # Only sampling the near points when len(points) >= num_samples
-            dist = np.linalg.norm(points.tensor, axis=1)
-            far_inds = np.where(dist >= sample_range)[0]
-            near_inds = np.where(dist < sample_range)[0]
+            depth = np.linalg.norm(points.tensor, axis=1)
+            far_inds = np.where(depth > sample_range)[0]
+            near_inds = np.where(depth <= sample_range)[0]
             # in case there are too many far points
             if len(far_inds) > num_samples:
                 far_inds = np.random.choice(
@@ -1094,10 +959,16 @@ class PointSample(object):
         Args:
             input_dict (dict): Result dict from loading pipeline.
         Returns:
-            dict: Results after sampling, 'points', 'pts_instance_mask'
+            dict: Results after sampling, 'points', 'pts_instance_mask' \
                 and 'pts_semantic_mask' keys are updated in the result dict.
         """
         points = results['points']
+        # Points in Camera coord can provide the depth information.
+        # TODO: Need to suport distance-based sampling for other coord system.
+        if self.sample_range is not None:
+            from mmdet3d.core.points import CameraPoints
+            assert isinstance(points, CameraPoints), \
+                'Sampling based on distance is only appliable for CAMERA coord'
         points, choices = self._points_random_sampling(
             points,
             self.num_points,
@@ -1169,10 +1040,10 @@ class IndoorPatchPointSample(object):
             additional features. Defaults to False.
         num_try (int, optional): Number of times to try if the patch selected
             is invalid. Defaults to 10.
-        enlarge_size (float, optional): Enlarge the sampled patch to
+        enlarge_size (float | None, optional): Enlarge the sampled patch to
             [-block_size / 2 - enlarge_size, block_size / 2 + enlarge_size] as
             an augmentation. If None, set it as 0. Defaults to 0.2.
-        min_unique_num (int, optional): Minimum number of unique points
+        min_unique_num (int | None, optional): Minimum number of unique points
             the sampled patch should contain. If None, use PointNet++'s method
             to judge uniqueness. Defaults to None.
         eps (float, optional): A value added to patch boundary to guarantee
@@ -1213,7 +1084,7 @@ class IndoorPatchPointSample(object):
                           attribute_dims, point_type):
         """Generating model input.
 
-        Generate input by subtracting patch center and adding additional
+        Generate input by subtracting patch center and adding additional \
             features. Currently support colors and normalized xyz as features.
 
         Args:
@@ -1357,7 +1228,7 @@ class IndoorPatchPointSample(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after sampling, 'points', 'pts_instance_mask'
+            dict: Results after sampling, 'points', 'pts_instance_mask' \
                 and 'pts_semantic_mask' keys are updated in the result dict.
         """
         points = results['points']
@@ -1417,7 +1288,7 @@ class BackgroundPointsFilter(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after filtering, 'points', 'pts_instance_mask'
+            dict: Results after filtering, 'points', 'pts_instance_mask' \
                 and 'pts_semantic_mask' keys are updated in the result dict.
         """
         points = input_dict['points']
@@ -1465,7 +1336,7 @@ class VoxelBasedPointSampler(object):
     Args:
         cur_sweep_cfg (dict): Config for sampling current points.
         prev_sweep_cfg (dict): Config for sampling previous points.
-        time_dim (int): Index that indicate the time dimension
+        time_dim (int): Index that indicate the time dimention
             for input points.
     """
 
@@ -1489,7 +1360,7 @@ class VoxelBasedPointSampler(object):
             points (np.ndarray): Points subset to be sampled.
             sampler (VoxelGenerator): Voxel based sampler for
                 each points subset.
-            point_dim (int): The dimension of each points
+            point_dim (int): The dimention of each points
 
         Returns:
             np.ndarray: Sampled points.
@@ -1515,7 +1386,7 @@ class VoxelBasedPointSampler(object):
             input_dict (dict): Result dict from loading pipeline.
 
         Returns:
-            dict: Results after sampling, 'points', 'pts_instance_mask'
+            dict: Results after sampling, 'points', 'pts_instance_mask' \
                 and 'pts_semantic_mask' keys are updated in the result dict.
         """
         points = results['points']
@@ -1570,7 +1441,7 @@ class VoxelBasedPointSampler(object):
             points_numpy = points_numpy.squeeze(1)
         results['points'] = points.new_point(points_numpy[..., :original_dim])
 
-        # Restore the corresponding seg and mask fields
+        # Restore the correspoinding seg and mask fields
         for key, dim_index in map_fields2dim:
             results[key] = points_numpy[..., dim_index]
 
@@ -1595,259 +1466,4 @@ class VoxelBasedPointSampler(object):
         repr_str += f'{_auto_indent(repr(self.cur_voxel_generator), 8)},\n'
         repr_str += ' ' * indent + 'prev_voxel_generator=\n'
         repr_str += f'{_auto_indent(repr(self.prev_voxel_generator), 8)})'
-        return repr_str
-
-
-@PIPELINES.register_module()
-class AffineResize(object):
-    """Get the affine transform matrices to the target size.
-
-    Different from :class:`RandomAffine` in MMDetection, this class can
-    calculate the affine transform matrices while resizing the input image
-    to a fixed size. The affine transform matrices include: 1) matrix
-    transforming original image to the network input image size. 2) matrix
-    transforming original image to the network output feature map size.
-
-    Args:
-        img_scale (tuple): Images scales for resizing.
-        down_ratio (int): The down ratio of feature map.
-            Actually the arg should be >= 1.
-        bbox_clip_border (bool, optional): Whether clip the objects
-            outside the border of the image. Defaults to True.
-    """
-
-    def __init__(self, img_scale, down_ratio, bbox_clip_border=True):
-
-        self.img_scale = img_scale
-        self.down_ratio = down_ratio
-        self.bbox_clip_border = bbox_clip_border
-
-    def __call__(self, results):
-        """Call function to do affine transform to input image and labels.
-
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: Results after affine resize, 'affine_aug', 'trans_mat'
-                keys are added in the result dict.
-        """
-        # The results have gone through RandomShiftScale before AffineResize
-        if 'center' not in results:
-            img = results['img']
-            height, width = img.shape[:2]
-            center = np.array([width / 2, height / 2], dtype=np.float32)
-            size = np.array([width, height], dtype=np.float32)
-            results['affine_aug'] = False
-        else:
-            # The results did not go through RandomShiftScale before
-            # AffineResize
-            img = results['img']
-            center = results['center']
-            size = results['size']
-
-        trans_affine = self._get_transform_matrix(center, size, self.img_scale)
-
-        img = cv2.warpAffine(img, trans_affine[:2, :], self.img_scale)
-
-        if isinstance(self.down_ratio, tuple):
-            trans_mat = [
-                self._get_transform_matrix(
-                    center, size,
-                    (self.img_scale[0] // ratio, self.img_scale[1] // ratio))
-                for ratio in self.down_ratio
-            ]  # (3, 3)
-        else:
-            trans_mat = self._get_transform_matrix(
-                center, size, (self.img_scale[0] // self.down_ratio,
-                               self.img_scale[1] // self.down_ratio))
-
-        results['img'] = img
-        results['img_shape'] = img.shape
-        results['pad_shape'] = img.shape
-        results['trans_mat'] = trans_mat
-
-        self._affine_bboxes(results, trans_affine)
-
-        if 'centers2d' in results:
-            centers2d = self._affine_transform(results['centers2d'],
-                                               trans_affine)
-            valid_index = (centers2d[:, 0] >
-                           0) & (centers2d[:, 0] <
-                                 self.img_scale[0]) & (centers2d[:, 1] > 0) & (
-                                     centers2d[:, 1] < self.img_scale[1])
-            results['centers2d'] = centers2d[valid_index]
-
-            for key in results.get('bbox_fields', []):
-                if key in ['gt_bboxes']:
-                    results[key] = results[key][valid_index]
-                    if 'gt_labels' in results:
-                        results['gt_labels'] = results['gt_labels'][
-                            valid_index]
-                    if 'gt_masks' in results:
-                        raise NotImplementedError(
-                            'AffineResize only supports bbox.')
-
-            for key in results.get('bbox3d_fields', []):
-                if key in ['gt_bboxes_3d']:
-                    results[key].tensor = results[key].tensor[valid_index]
-                    if 'gt_labels_3d' in results:
-                        results['gt_labels_3d'] = results['gt_labels_3d'][
-                            valid_index]
-
-            results['depths'] = results['depths'][valid_index]
-
-        return results
-
-    def _affine_bboxes(self, results, matrix):
-        """Affine transform bboxes to input image.
-
-        Args:
-            results (dict): Result dict from loading pipeline.
-            matrix (np.ndarray): Matrix transforming original
-                image to the network input image size.
-                shape: (3, 3)
-        """
-
-        for key in results.get('bbox_fields', []):
-            bboxes = results[key]
-            bboxes[:, :2] = self._affine_transform(bboxes[:, :2], matrix)
-            bboxes[:, 2:] = self._affine_transform(bboxes[:, 2:], matrix)
-            if self.bbox_clip_border:
-                bboxes[:,
-                       [0, 2]] = bboxes[:,
-                                        [0, 2]].clip(0, self.img_scale[0] - 1)
-                bboxes[:,
-                       [1, 3]] = bboxes[:,
-                                        [1, 3]].clip(0, self.img_scale[1] - 1)
-            results[key] = bboxes
-
-    def _affine_transform(self, points, matrix):
-        """Affine transform bbox points to input image.
-
-        Args:
-            points (np.ndarray): Points to be transformed.
-                shape: (N, 2)
-            matrix (np.ndarray): Affine transform matrix.
-                shape: (3, 3)
-
-        Returns:
-            np.ndarray: Transformed points.
-        """
-        num_points = points.shape[0]
-        hom_points_2d = np.concatenate((points, np.ones((num_points, 1))),
-                                       axis=1)
-        hom_points_2d = hom_points_2d.T
-        affined_points = np.matmul(matrix, hom_points_2d).T
-        return affined_points[:, :2]
-
-    def _get_transform_matrix(self, center, scale, output_scale):
-        """Get affine transform matrix.
-
-        Args:
-            center (tuple): Center of current image.
-            scale (tuple): Scale of current image.
-            output_scale (tuple[float]): The transform target image scales.
-
-        Returns:
-            np.ndarray: Affine transform matrix.
-        """
-        # TODO: further add rot and shift here.
-        src_w = scale[0]
-        dst_w = output_scale[0]
-        dst_h = output_scale[1]
-
-        src_dir = np.array([0, src_w * -0.5])
-        dst_dir = np.array([0, dst_w * -0.5])
-
-        src = np.zeros((3, 2), dtype=np.float32)
-        dst = np.zeros((3, 2), dtype=np.float32)
-        src[0, :] = center
-        src[1, :] = center + src_dir
-        dst[0, :] = np.array([dst_w * 0.5, dst_h * 0.5])
-        dst[1, :] = np.array([dst_w * 0.5, dst_h * 0.5]) + dst_dir
-
-        src[2, :] = self._get_ref_point(src[0, :], src[1, :])
-        dst[2, :] = self._get_ref_point(dst[0, :], dst[1, :])
-
-        get_matrix = cv2.getAffineTransform(src, dst)
-
-        matrix = np.concatenate((get_matrix, [[0., 0., 1.]]))
-
-        return matrix.astype(np.float32)
-
-    def _get_ref_point(self, ref_point1, ref_point2):
-        """Get reference point to calculate affine transform matrix.
-
-        While using opencv to calculate the affine matrix, we need at least
-        three corresponding points separately on original image and target
-        image. Here we use two points to get the the third reference point.
-        """
-        d = ref_point1 - ref_point2
-        ref_point3 = ref_point2 + np.array([-d[1], d[0]])
-        return ref_point3
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += f'(img_scale={self.img_scale}, '
-        repr_str += f'down_ratio={self.down_ratio}) '
-        return repr_str
-
-
-@PIPELINES.register_module()
-class RandomShiftScale(object):
-    """Random shift scale.
-
-    Different from the normal shift and scale function, it doesn't
-    directly shift or scale image. It can record the shift and scale
-    infos into loading pipelines. It's designed to be used with
-    AffineResize together.
-
-    Args:
-        shift_scale (tuple[float]): Shift and scale range.
-        aug_prob (float): The shifting and scaling probability.
-    """
-
-    def __init__(self, shift_scale, aug_prob):
-
-        self.shift_scale = shift_scale
-        self.aug_prob = aug_prob
-
-    def __call__(self, results):
-        """Call function to record random shift and scale infos.
-
-        Args:
-            results (dict): Result dict from loading pipeline.
-
-        Returns:
-            dict: Results after random shift and scale, 'center', 'size'
-                and 'affine_aug' keys are added in the result dict.
-        """
-        img = results['img']
-
-        height, width = img.shape[:2]
-
-        center = np.array([width / 2, height / 2], dtype=np.float32)
-        size = np.array([width, height], dtype=np.float32)
-
-        if random.random() < self.aug_prob:
-            shift, scale = self.shift_scale[0], self.shift_scale[1]
-            shift_ranges = np.arange(-shift, shift + 0.1, 0.1)
-            center[0] += size[0] * random.choice(shift_ranges)
-            center[1] += size[1] * random.choice(shift_ranges)
-            scale_ranges = np.arange(1 - scale, 1 + scale + 0.1, 0.1)
-            size *= random.choice(scale_ranges)
-            results['affine_aug'] = True
-        else:
-            results['affine_aug'] = False
-
-        results['center'] = center
-        results['size'] = size
-
-        return results
-
-    def __repr__(self):
-        repr_str = self.__class__.__name__
-        repr_str += f'(shift_scale={self.shift_scale}, '
-        repr_str += f'aug_prob={self.aug_prob}) '
         return repr_str

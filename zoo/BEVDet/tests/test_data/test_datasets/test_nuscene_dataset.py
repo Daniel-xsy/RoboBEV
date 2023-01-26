@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import tempfile
-
 import numpy as np
+import tempfile
 import torch
 
 from mmdet3d.datasets import NuScenesDataset
@@ -66,9 +65,8 @@ def test_getitem():
 
 
 def test_show():
-    from os import path as osp
-
     import mmcv
+    from os import path as osp
 
     from mmdet3d.core.bbox import LiDARInstance3DBoxes
     tmp_dir = tempfile.TemporaryDirectory()

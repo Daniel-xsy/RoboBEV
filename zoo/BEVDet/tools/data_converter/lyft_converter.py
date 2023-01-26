@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os
-from logging import warning
-from os import path as osp
-
 import mmcv
 import numpy as np
+import os
+from logging import warning
 from lyft_dataset_sdk.lyftdataset import LyftDataset as Lyft
+from os import path as osp
 from pyquaternion import Quaternion
 
 from mmdet3d.datasets import LyftDataset
@@ -27,10 +26,10 @@ def create_lyft_infos(root_path,
     Args:
         root_path (str): Path of the data root.
         info_prefix (str): Prefix of the info file to be generated.
-        version (str, optional): Version of the data.
-            Default: 'v1.01-train'.
-        max_sweeps (int, optional): Max number of sweeps.
-            Default: 10.
+        version (str): Version of the data.
+            Default: 'v1.01-train'
+        max_sweeps (int): Max number of sweeps.
+            Default: 10
     """
     lyft = Lyft(
         data_path=osp.join(root_path, version),
@@ -102,9 +101,9 @@ def _fill_trainval_infos(lyft,
         lyft (:obj:`LyftDataset`): Dataset class in the Lyft dataset.
         train_scenes (list[str]): Basic information of training scenes.
         val_scenes (list[str]): Basic information of validation scenes.
-        test (bool, optional): Whether use the test mode. In the test mode, no
+        test (bool): Whether use the test mode. In the test mode, no
             annotations can be accessed. Default: False.
-        max_sweeps (int, optional): Max number of sweeps. Default: 10.
+        max_sweeps (int): Max number of sweeps. Default: 10.
 
     Returns:
         tuple[list[dict]]: Information of training set and
@@ -193,10 +192,8 @@ def _fill_trainval_infos(lyft,
                     names[i] = LyftDataset.NameMapping[names[i]]
             names = np.array(names)
 
-            # we need to convert box size to
-            # the format of our lidar coordinate system
-            # which is x_size, y_size, z_size (corresponding to l, w, h)
-            gt_boxes = np.concatenate([locs, dims[:, [1, 0, 2]], rots], axis=1)
+            # we need to convert rot to SECOND format.
+            gt_boxes = np.concatenate([locs, dims, -rots - np.pi / 2], axis=1)
             assert len(gt_boxes) == len(
                 annotations), f'{len(gt_boxes)}, {len(annotations)}'
             info['gt_boxes'] = gt_boxes

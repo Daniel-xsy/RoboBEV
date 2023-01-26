@@ -1,33 +1,25 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from __future__ import division
+
 import argparse
 import copy
+import mmcv
 import os
 import time
-import warnings
-from os import path as osp
-
-import mmcv
 import torch
-import torch.distributed as dist
+import warnings
 from mmcv import Config, DictAction
 from mmcv.runner import get_dist_info, init_dist
+from os import path as osp
 
 from mmdet import __version__ as mmdet_version
 from mmdet3d import __version__ as mmdet3d_version
-from mmdet3d.apis import init_random_seed, train_model
+from mmdet3d.apis import train_model
 from mmdet3d.datasets import build_dataset
 from mmdet3d.models import build_model
 from mmdet3d.utils import collect_env, get_root_logger
 from mmdet.apis import set_random_seed
 from mmseg import __version__ as mmseg_version
-
-try:
-    # If mmdet version > 2.20.0, setup_multi_processes would be imported and
-    # used from mmdet instead of mmdet3d.
-    from mmdet.utils import setup_multi_processes
-except ImportError:
-    from mmdet3d.utils import setup_multi_processes
 
 
 def parse_args():
@@ -37,10 +29,6 @@ def parse_args():
     parser.add_argument(
         '--resume-from', help='the checkpoint file to resume from')
     parser.add_argument(
-        '--auto-resume',
-        action='store_true',
-        help='resume from the latest checkpoint automatically')
-    parser.add_argument(
         '--no-validate',
         action='store_true',
         help='whether not to evaluate the checkpoint during training')
@@ -48,25 +36,15 @@ def parse_args():
     group_gpus.add_argument(
         '--gpus',
         type=int,
-        help='(Deprecated, please use --gpu-id) number of gpus to use '
+        help='number of gpus to use '
         '(only applicable to non-distributed training)')
     group_gpus.add_argument(
         '--gpu-ids',
         type=int,
         nargs='+',
-        help='(Deprecated, please use --gpu-id) ids of gpus to use '
-        '(only applicable to non-distributed training)')
-    group_gpus.add_argument(
-        '--gpu-id',
-        type=int,
-        default=0,
-        help='number of gpus to use '
+        help='ids of gpus to use '
         '(only applicable to non-distributed training)')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
-    parser.add_argument(
-        '--diff-seed',
-        action='store_true',
-        help='Whether or not set different seeds for different ranks')
     parser.add_argument(
         '--deterministic',
         action='store_true',
@@ -119,9 +97,10 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
-
-    # set multi-process settings
-    setup_multi_processes(cfg)
+    # import modules from string list.
+    if cfg.get('custom_imports', None):
+        from mmcv.utils import import_modules_from_strings
+        import_modules_from_strings(**cfg['custom_imports'])
 
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
@@ -137,27 +116,10 @@ def main():
                                 osp.splitext(osp.basename(args.config))[0])
     if args.resume_from is not None:
         cfg.resume_from = args.resume_from
-
-    if args.auto_resume:
-        cfg.auto_resume = args.auto_resume
-        warnings.warn('`--auto-resume` is only supported when mmdet'
-                      'version >= 2.20.0 for 3D detection model or'
-                      'mmsegmentation verision >= 0.21.0 for 3D'
-                      'segmentation model')
-
-    if args.gpus is not None:
-        cfg.gpu_ids = range(1)
-        warnings.warn('`--gpus` is deprecated because we only support '
-                      'single GPU mode in non-distributed training. '
-                      'Use `gpus=1` now.')
     if args.gpu_ids is not None:
-        cfg.gpu_ids = args.gpu_ids[0:1]
-        warnings.warn('`--gpu-ids` is deprecated, please use `--gpu-id`. '
-                      'Because we only support single GPU mode in '
-                      'non-distributed training. Use the first GPU '
-                      'in `gpu_ids` now.')
-    if args.gpus is None and args.gpu_ids is None:
-        cfg.gpu_ids = [args.gpu_id]
+        cfg.gpu_ids = args.gpu_ids
+    else:
+        cfg.gpu_ids = range(1) if args.gpus is None else range(args.gpus)
 
     if args.autoscale_lr:
         # apply the linear scaling rule (https://arxiv.org/abs/1706.02677)
@@ -207,13 +169,12 @@ def main():
     logger.info(f'Config:\n{cfg.pretty_text}')
 
     # set random seeds
-    seed = init_random_seed(args.seed)
-    seed = seed + dist.get_rank() if args.diff_seed else seed
-    logger.info(f'Set random seed to {seed}, '
-                f'deterministic: {args.deterministic}')
-    set_random_seed(seed, deterministic=args.deterministic)
-    cfg.seed = seed
-    meta['seed'] = seed
+    if args.seed is not None:
+        logger.info(f'Set random seed to {args.seed}, '
+                    f'deterministic: {args.deterministic}')
+        set_random_seed(args.seed, deterministic=args.deterministic)
+    cfg.seed = args.seed
+    meta['seed'] = args.seed
     meta['exp_name'] = osp.basename(args.config)
 
     model = build_model(

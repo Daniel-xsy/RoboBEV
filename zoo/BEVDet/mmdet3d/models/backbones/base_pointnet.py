@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
 from abc import ABCMeta
-
 from mmcv.runner import BaseModule
 
 

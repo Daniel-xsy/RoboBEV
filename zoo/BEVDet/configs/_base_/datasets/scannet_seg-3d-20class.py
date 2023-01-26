@@ -6,20 +6,6 @@ class_names = ('wall', 'floor', 'cabinet', 'bed', 'chair', 'sofa', 'table',
                'curtain', 'refrigerator', 'showercurtrain', 'toilet', 'sink',
                'bathtub', 'otherfurniture')
 num_points = 8192
-
-file_client_args = dict(backend='disk')
-# Uncomment the following if use ceph or other file clients.
-# See https://mmcv.readthedocs.io/en/latest/api.html#mmcv.fileio.FileClient
-# for more details.
-# file_client_args = dict(
-#     backend='petrel',
-#     path_mapping=dict({
-#         './data/scannet/':
-#         's3://openmmlab/datasets/detection3d/scannet_processed/',
-#         'data/scannet/':
-#         's3://openmmlab/datasets/detection3d/scannet_processed/'
-#     }))
-
 train_pipeline = [
     dict(
         type='LoadPointsFromFile',
@@ -27,15 +13,13 @@ train_pipeline = [
         shift_height=False,
         use_color=True,
         load_dim=6,
-        use_dim=[0, 1, 2, 3, 4, 5],
-        file_client_args=file_client_args),
+        use_dim=[0, 1, 2, 3, 4, 5]),
     dict(
         type='LoadAnnotations3D',
         with_bbox_3d=False,
         with_label_3d=False,
         with_mask_3d=False,
-        with_seg_3d=True,
-        file_client_args=file_client_args),
+        with_seg_3d=True),
     dict(
         type='PointSegClassMapping',
         valid_cat_ids=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 24, 28,
@@ -60,8 +44,7 @@ test_pipeline = [
         shift_height=False,
         use_color=True,
         load_dim=6,
-        use_dim=[0, 1, 2, 3, 4, 5],
-        file_client_args=file_client_args),
+        use_dim=[0, 1, 2, 3, 4, 5]),
     dict(type='NormalizePointsColor', color_mean=None),
     dict(
         # a wrapper in order to successfully call test function
@@ -98,15 +81,13 @@ eval_pipeline = [
         shift_height=False,
         use_color=True,
         load_dim=6,
-        use_dim=[0, 1, 2, 3, 4, 5],
-        file_client_args=file_client_args),
+        use_dim=[0, 1, 2, 3, 4, 5]),
     dict(
         type='LoadAnnotations3D',
         with_bbox_3d=False,
         with_label_3d=False,
         with_mask_3d=False,
-        with_seg_3d=True,
-        file_client_args=file_client_args),
+        with_seg_3d=True),
     dict(
         type='PointSegClassMapping',
         valid_cat_ids=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 24, 28,
@@ -130,8 +111,7 @@ data = dict(
         classes=class_names,
         test_mode=False,
         ignore_index=len(class_names),
-        scene_idxs=data_root + 'seg_info/train_resampled_scene_idxs.npy',
-        file_client_args=file_client_args),
+        scene_idxs=data_root + 'seg_info/train_resampled_scene_idxs.npy'),
     val=dict(
         type=dataset_type,
         data_root=data_root,
@@ -139,8 +119,7 @@ data = dict(
         pipeline=test_pipeline,
         classes=class_names,
         test_mode=True,
-        ignore_index=len(class_names),
-        file_client_args=file_client_args),
+        ignore_index=len(class_names)),
     test=dict(
         type=dataset_type,
         data_root=data_root,
@@ -148,7 +127,6 @@ data = dict(
         pipeline=test_pipeline,
         classes=class_names,
         test_mode=True,
-        ignore_index=len(class_names),
-        file_client_args=file_client_args))
+        ignore_index=len(class_names)))
 
 evaluation = dict(pipeline=eval_pipeline)

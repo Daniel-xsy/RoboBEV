@@ -4,7 +4,7 @@ from mmcv.runner import force_fp32
 from torch.nn import functional as F
 
 from mmdet3d.core.bbox import bbox_overlaps_nearest_3d
-from ..builder import HEADS
+from mmdet.models import HEADS
 from .anchor3d_head import Anchor3DHead
 from .train_mixins import get_direction_target
 
@@ -195,7 +195,6 @@ class FreeAnchor3DHead(Anchor3DHead):
                     matched_anchors,
                     matched_object_targets,
                     self.dir_offset,
-                    self.dir_limit_offset,
                     one_hot=False)
                 loss_dir = self.loss_dir(
                     dir_cls_preds_[matched].transpose(-2, -1),

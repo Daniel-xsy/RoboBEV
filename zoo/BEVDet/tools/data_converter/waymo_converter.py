@@ -10,12 +10,11 @@ except ImportError:
         'Please run "pip install waymo-open-dataset-tf-2-1-0==1.2.0" '
         'to install the official devkit first.')
 
-from glob import glob
-from os.path import join
-
 import mmcv
 import numpy as np
 import tensorflow as tf
+from glob import glob
+from os.path import join
 from waymo_open_dataset.utils import range_image_utils, transform_utils
 from waymo_open_dataset.utils.frame_utils import \
     parse_range_image_and_camera_projection
@@ -32,8 +31,8 @@ class Waymo2KITTI(object):
         save_dir (str): Directory to save data in KITTI format.
         prefix (str): Prefix of filename. In general, 0 for training, 1 for
             validation and 2 for testing.
-        workers (int, optional): Number of workers for the parallel process.
-        test_mode (bool, optional): Whether in the test_mode. Default: False.
+        workers (str): Number of workers for the parallel process.
+        test_mode (bool): Whether in the test_mode. Default: False.
     """
 
     def __init__(self,
@@ -87,7 +86,6 @@ class Waymo2KITTI(object):
         self.calib_save_dir = f'{self.save_dir}/calib'
         self.point_cloud_save_dir = f'{self.save_dir}/velodyne'
         self.pose_save_dir = f'{self.save_dir}/pose'
-        self.timestamp_save_dir = f'{self.save_dir}/timestamp'
 
         self.create_folder()
 
@@ -120,7 +118,6 @@ class Waymo2KITTI(object):
             self.save_calib(frame, file_idx, frame_idx)
             self.save_lidar(frame, file_idx, frame_idx)
             self.save_pose(frame, file_idx, frame_idx)
-            self.save_timestamp(frame, file_idx, frame_idx)
 
             if not self.test_mode:
                 self.save_label(frame, file_idx, frame_idx)
@@ -212,7 +209,7 @@ class Waymo2KITTI(object):
             parse_range_image_and_camera_projection(frame)
 
         # First return
-        points_0, cp_points_0, intensity_0, elongation_0, mask_indices_0 = \
+        points_0, cp_points_0, intensity_0, elongation_0 = \
             self.convert_range_image_to_point_cloud(
                 frame,
                 range_images,
@@ -223,10 +220,9 @@ class Waymo2KITTI(object):
         points_0 = np.concatenate(points_0, axis=0)
         intensity_0 = np.concatenate(intensity_0, axis=0)
         elongation_0 = np.concatenate(elongation_0, axis=0)
-        mask_indices_0 = np.concatenate(mask_indices_0, axis=0)
 
         # Second return
-        points_1, cp_points_1, intensity_1, elongation_1, mask_indices_1 = \
+        points_1, cp_points_1, intensity_1, elongation_1 = \
             self.convert_range_image_to_point_cloud(
                 frame,
                 range_images,
@@ -237,18 +233,15 @@ class Waymo2KITTI(object):
         points_1 = np.concatenate(points_1, axis=0)
         intensity_1 = np.concatenate(intensity_1, axis=0)
         elongation_1 = np.concatenate(elongation_1, axis=0)
-        mask_indices_1 = np.concatenate(mask_indices_1, axis=0)
 
         points = np.concatenate([points_0, points_1], axis=0)
         intensity = np.concatenate([intensity_0, intensity_1], axis=0)
         elongation = np.concatenate([elongation_0, elongation_1], axis=0)
-        mask_indices = np.concatenate([mask_indices_0, mask_indices_1], axis=0)
-
-        # timestamp = frame.timestamp_micros * np.ones_like(intensity)
+        timestamp = frame.timestamp_micros * np.ones_like(intensity)
 
         # concatenate x,y,z, intensity, elongation, timestamp (6-dim)
         point_cloud = np.column_stack(
-            (points, intensity, elongation, mask_indices))
+            (points, intensity, elongation, timestamp))
 
         pc_path = f'{self.point_cloud_save_dir}/{self.prefix}' + \
             f'{str(file_idx).zfill(3)}{str(frame_idx).zfill(3)}.bin'
@@ -373,39 +366,18 @@ class Waymo2KITTI(object):
                  f'{str(file_idx).zfill(3)}{str(frame_idx).zfill(3)}.txt'),
             pose)
 
-    def save_timestamp(self, frame, file_idx, frame_idx):
-        """Save the timestamp data in a separate file instead of the
-        pointcloud.
-
-        Note that SDC's own pose is not included in the regular training
-        of KITTI dataset. KITTI raw dataset contains ego motion files
-        but are not often used. Pose is important for algorithms that
-        take advantage of the temporal information.
-
-        Args:
-            frame (:obj:`Frame`): Open dataset frame proto.
-            file_idx (int): Current file index.
-            frame_idx (int): Current frame index.
-        """
-        with open(
-                join(f'{self.timestamp_save_dir}/{self.prefix}' +
-                     f'{str(file_idx).zfill(3)}{str(frame_idx).zfill(3)}.txt'),
-                'w') as f:
-            f.write(str(frame.timestamp_micros))
-
     def create_folder(self):
         """Create folder for data preprocessing."""
         if not self.test_mode:
             dir_list1 = [
                 self.label_all_save_dir, self.calib_save_dir,
-                self.point_cloud_save_dir, self.pose_save_dir,
-                self.timestamp_save_dir
+                self.point_cloud_save_dir, self.pose_save_dir
             ]
             dir_list2 = [self.label_save_dir, self.image_save_dir]
         else:
             dir_list1 = [
                 self.calib_save_dir, self.point_cloud_save_dir,
-                self.pose_save_dir, self.timestamp_save_dir
+                self.pose_save_dir
             ]
             dir_list2 = [self.image_save_dir]
         for d in dir_list1:
@@ -430,15 +402,13 @@ class Waymo2KITTI(object):
                 camera projections corresponding with two returns.
             range_image_top_pose (:obj:`Transform`): Range image pixel pose for
                 top lidar.
-            ri_index (int, optional): 0 for the first return,
-                1 for the second return. Default: 0.
+            ri_index (int): 0 for the first return, 1 for the second return.
+                Default: 0.
 
         Returns:
             tuple[list[np.ndarray]]: (List of points with shape [N, 3],
                 camera projections of points with shape [N, 6], intensity
-                with shape [N, 1], elongation with shape [N, 1], points'
-                position in the depth map (element offset if points come from
-                the main lidar otherwise -1) with shape[N, 1]). All the
+                with shape [N, 1], elongation with shape [N, 1]). All the
                 lists have the length of lidar numbers (5).
         """
         calibrations = sorted(
@@ -447,7 +417,6 @@ class Waymo2KITTI(object):
         cp_points = []
         intensity = []
         elongation = []
-        mask_indices = []
 
         frame_pose = tf.convert_to_tensor(
             value=np.reshape(np.array(frame.pose.transform), [4, 4]))
@@ -503,36 +472,27 @@ class Waymo2KITTI(object):
                     pixel_pose=pixel_pose_local,
                     frame_pose=frame_pose_local)
 
-            mask_index = tf.where(range_image_mask)
-
             range_image_cartesian = tf.squeeze(range_image_cartesian, axis=0)
-            points_tensor = tf.gather_nd(range_image_cartesian, mask_index)
+            points_tensor = tf.gather_nd(range_image_cartesian,
+                                         tf.compat.v1.where(range_image_mask))
 
             cp = camera_projections[c.name][ri_index]
             cp_tensor = tf.reshape(
                 tf.convert_to_tensor(value=cp.data), cp.shape.dims)
-            cp_points_tensor = tf.gather_nd(cp_tensor, mask_index)
+            cp_points_tensor = tf.gather_nd(
+                cp_tensor, tf.compat.v1.where(range_image_mask))
             points.append(points_tensor.numpy())
             cp_points.append(cp_points_tensor.numpy())
 
             intensity_tensor = tf.gather_nd(range_image_tensor[..., 1],
-                                            mask_index)
+                                            tf.where(range_image_mask))
             intensity.append(intensity_tensor.numpy())
 
             elongation_tensor = tf.gather_nd(range_image_tensor[..., 2],
-                                             mask_index)
+                                             tf.where(range_image_mask))
             elongation.append(elongation_tensor.numpy())
-            if c.name == 1:
-                mask_index = (ri_index * range_image_mask.shape[0] +
-                              mask_index[:, 0]
-                              ) * range_image_mask.shape[1] + mask_index[:, 1]
-                mask_index = mask_index.numpy().astype(elongation[-1].dtype)
-            else:
-                mask_index = np.full_like(elongation[-1], -1)
 
-            mask_indices.append(mask_index)
-
-        return points, cp_points, intensity, elongation, mask_indices
+        return points, cp_points, intensity, elongation
 
     def cart_to_homo(self, mat):
         """Convert transformation matrix in Cartesian coordinates to

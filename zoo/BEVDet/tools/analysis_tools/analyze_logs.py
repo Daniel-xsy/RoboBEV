@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import json
-from collections import defaultdict
-
 import numpy as np
 import seaborn as sns
+from collections import defaultdict
 from matplotlib import pyplot as plt
 
 

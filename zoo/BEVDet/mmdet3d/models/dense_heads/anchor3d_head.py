@@ -8,7 +8,8 @@ from mmdet3d.core import (PseudoSampler, box3d_multiclass_nms, limit_period,
                           xywhr2xyxyr)
 from mmdet.core import (build_assigner, build_bbox_coder,
                         build_prior_generator, build_sampler, multi_apply)
-from ..builder import HEADS, build_loss
+from mmdet.models import HEADS
+from ..builder import build_loss
 from .train_mixins import AnchorTrainMixin
 
 
@@ -50,15 +51,15 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
                      type='Anchor3DRangeGenerator',
                      range=[0, -39.68, -1.78, 69.12, 39.68, -1.78],
                      strides=[2],
-                     sizes=[[3.9, 1.6, 1.56]],
+                     sizes=[[1.6, 3.9, 1.56]],
                      rotations=[0, 1.57],
                      custom_values=[],
                      reshape_out=False),
                  assigner_per_size=False,
                  assign_per_class=False,
                  diff_rad_by_sin=True,
-                 dir_offset=-np.pi / 2,
-                 dir_limit_offset=0,
+                 dir_offset=0,
+                 dir_limit_offset=1,
                  bbox_coder=dict(type='DeltaXYZWLHRBBoxCoder'),
                  loss_cls=dict(
                      type='CrossEntropyLoss',
@@ -80,10 +81,6 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
         self.assign_per_class = assign_per_class
         self.dir_offset = dir_offset
         self.dir_limit_offset = dir_limit_offset
-        import warnings
-        warnings.warn(
-            'dir_offset and dir_limit_offset will be depressed and be '
-            'incorporated into box coder in the future')
         self.fp16_enabled = False
 
         # build anchor generator
@@ -148,7 +145,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
             x (torch.Tensor): Input features.
 
         Returns:
-            tuple[torch.Tensor]: Contain score of each class, bbox
+            tuple[torch.Tensor]: Contain score of each class, bbox \
                 regression and direction classification predictions.
         """
         cls_score = self.conv_cls(x)
@@ -166,7 +163,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
                 features produced by FPN.
 
         Returns:
-            tuple[list[torch.Tensor]]: Multi-level class score, bbox
+            tuple[list[torch.Tensor]]: Multi-level class score, bbox \
                 and direction predictions.
         """
         return multi_apply(self.forward_single, feats)
@@ -180,7 +177,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
             device (str): device of current module.
 
         Returns:
-            list[list[torch.Tensor]]: Anchors of each image, valid flags
+            list[list[torch.Tensor]]: Anchors of each image, valid flags \
                 of each image.
         """
         num_imgs = len(input_metas)
@@ -210,7 +207,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
             num_total_samples (int): The number of valid samples.
 
         Returns:
-            tuple[torch.Tensor]: Losses of class, bbox
+            tuple[torch.Tensor]: Losses of class, bbox \
                 and direction, respectively.
         """
         # classification loss
@@ -288,7 +285,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
                 the 7th dimension is rotation dimension.
 
         Returns:
-            tuple[torch.Tensor]: ``boxes1`` and ``boxes2`` whose 7th
+            tuple[torch.Tensor]: ``boxes1`` and ``boxes2`` whose 7th \
                 dimensions are changed.
         """
         rad_pred_encoding = torch.sin(boxes1[..., 6:7]) * torch.cos(
@@ -321,16 +318,16 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
                 of each sample.
             gt_labels (list[torch.Tensor]): Gt labels of each sample.
             input_metas (list[dict]): Contain pcd and img's meta info.
-            gt_bboxes_ignore (list[torch.Tensor]): Specify
-                which bounding boxes to ignore.
+            gt_bboxes_ignore (None | list[torch.Tensor]): Specify
+                which bounding.
 
         Returns:
-            dict[str, list[torch.Tensor]]: Classification, bbox, and
+            dict[str, list[torch.Tensor]]: Classification, bbox, and \
                 direction losses of each level.
 
                 - loss_cls (list[torch.Tensor]): Classification losses.
                 - loss_bbox (list[torch.Tensor]): Box regression losses.
-                - loss_dir (list[torch.Tensor]): Direction classification
+                - loss_dir (list[torch.Tensor]): Direction classification \
                     losses.
         """
         featmap_sizes = [featmap.size()[-2:] for featmap in cls_scores]
@@ -388,7 +385,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
             dir_cls_preds (list[torch.Tensor]): Multi-level direction
                 class predictions.
             input_metas (list[dict]): Contain pcd and img's meta info.
-            cfg (:obj:`ConfigDict`): Training or testing config.
+            cfg (None | :obj:`ConfigDict`): Training or testing config.
             rescale (list[torch.Tensor]): Whether th rescale bbox.
 
         Returns:
@@ -442,7 +439,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
             mlvl_anchors (List[torch.Tensor]): Multi-level anchors
                 in single batch.
             input_meta (list[dict]): Contain pcd and img's meta info.
-            cfg (:obj:`ConfigDict`): Training or testing config.
+            cfg (None | :obj:`ConfigDict`): Training or testing config.
             rescale (list[torch.Tensor]): whether th rescale bbox.
 
         Returns:

@@ -1,16 +1,14 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import warnings
-from os import path as osp
-
 import mmcv
 import numpy as np
 import torch
 from mmcv.parallel import DataContainer as DC
+from os import path as osp
 
 from mmdet3d.core import (CameraInstance3DBoxes, bbox3d2result,
                           show_multi_modality_result)
-from mmdet.models.detectors import SingleStageDetector
-from ..builder import DETECTORS, build_backbone, build_head, build_neck
+from mmdet.models.builder import DETECTORS
+from mmdet.models.detectors.single_stage import SingleStageDetector
 
 
 @DETECTORS.register_module()
@@ -20,28 +18,6 @@ class SingleStageMono3DDetector(SingleStageDetector):
     Single-stage detectors directly and densely predict bounding boxes on the
     output features of the backbone+neck.
     """
-
-    def __init__(self,
-                 backbone,
-                 neck=None,
-                 bbox_head=None,
-                 train_cfg=None,
-                 test_cfg=None,
-                 pretrained=None,
-                 init_cfg=None):
-        super(SingleStageDetector, self).__init__(init_cfg)
-        if pretrained:
-            warnings.warn('DeprecationWarning: pretrained is deprecated, '
-                          'please use "init_cfg" instead')
-            backbone.pretrained = pretrained
-        self.backbone = build_backbone(backbone)
-        if neck is not None:
-            self.neck = build_neck(neck)
-        bbox_head.update(train_cfg=train_cfg)
-        bbox_head.update(test_cfg=test_cfg)
-        self.bbox_head = build_head(bbox_head)
-        self.train_cfg = train_cfg
-        self.test_cfg = test_cfg
 
     def extract_feats(self, imgs):
         """Directly extract features from the backbone+neck."""
@@ -72,15 +48,14 @@ class SingleStageMono3DDetector(SingleStageDetector):
                 image in [tl_x, tl_y, br_x, br_y] format.
             gt_labels (list[Tensor]): Class indices corresponding to each box
             gt_bboxes_3d (list[Tensor]): Each item are the 3D truth boxes for
-                each image in [x, y, z, x_size, y_size, z_size, yaw, vx, vy]
-                format.
+                each image in [x, y, z, w, l, h, theta, vx, vy] format.
             gt_labels_3d (list[Tensor]): 3D class indices corresponding to
                 each box.
             centers2d (list[Tensor]): Projected 3D centers onto 2D images.
             depths (list[Tensor]): Depth of projected centers on 2D images.
             attr_labels (list[Tensor], optional): Attribute indices
                 corresponding to each box
-            gt_bboxes_ignore (list[Tensor]): Specify which bounding
+            gt_bboxes_ignore (None | list[Tensor]): Specify which bounding
                 boxes can be ignored when computing the loss.
 
         Returns:
@@ -203,20 +178,13 @@ class SingleStageMono3DDetector(SingleStageDetector):
 
         return [bbox_list]
 
-    def show_results(self, data, result, out_dir, show=False, score_thr=None):
+    def show_results(self, data, result, out_dir):
         """Results visualization.
 
         Args:
             data (list[dict]): Input images and the information of the sample.
             result (list[dict]): Prediction results.
             out_dir (str): Output directory of visualization result.
-            show (bool, optional): Determines whether you are
-                going to show result by open3d.
-                Defaults to False.
-            TODO: implement score_thr of single_stage_mono3d.
-            score_thr (float, optional): Score threshold of bounding boxes.
-                Default to None.
-                Not implemented yet, but it is here for unification.
         """
         for batch_id in range(len(result)):
             if isinstance(data['img_metas'][0], DC):
@@ -247,4 +215,4 @@ class SingleStageMono3DDetector(SingleStageDetector):
                 out_dir,
                 file_name,
                 'camera',
-                show=show)
+                show=True)

@@ -1,22 +1,20 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import re
-from copy import deepcopy
-from os import path as osp
-
 import mmcv
 import numpy as np
+import re
 import torch
+from copy import deepcopy
 from mmcv.parallel import collate, scatter
 from mmcv.runner import load_checkpoint
+from os import path as osp
 
-from mmdet3d.core import (Box3DMode, CameraInstance3DBoxes, Coord3DMode,
+from mmdet3d.core import (Box3DMode, CameraInstance3DBoxes,
                           DepthInstance3DBoxes, LiDARInstance3DBoxes,
                           show_multi_modality_result, show_result,
                           show_seg_result)
 from mmdet3d.core.bbox import get_box_type
 from mmdet3d.datasets.pipelines import Compose
 from mmdet3d.models import build_model
-from mmdet3d.utils import get_root_logger
 
 
 def convert_SyncBN(config):
@@ -59,7 +57,7 @@ def init_model(config, checkpoint=None, device='cuda:0'):
     config.model.train_cfg = None
     model = build_model(config.model, test_cfg=config.get('test_cfg'))
     if checkpoint is not None:
-        checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
+        checkpoint = load_checkpoint(model, checkpoint)
         if 'CLASSES' in checkpoint['meta']:
             model.CLASSES = checkpoint['meta']['CLASSES']
         else:
@@ -67,12 +65,6 @@ def init_model(config, checkpoint=None, device='cuda:0'):
         if 'PALETTE' in checkpoint['meta']:  # 3D Segmentor
             model.PALETTE = checkpoint['meta']['PALETTE']
     model.cfg = config  # save the config in the model for convenience
-    if device != 'cpu':
-        torch.cuda.set_device(device)
-    else:
-        logger = get_root_logger()
-        logger.warning('Don\'t suggest using CPU device. '
-                       'Some functions are not supported for now.')
     model.to(device)
     model.eval()
     return model
@@ -90,53 +82,26 @@ def inference_detector(model, pcd):
     """
     cfg = model.cfg
     device = next(model.parameters()).device  # model device
-
-    if not isinstance(pcd, str):
-        cfg = cfg.copy()
-        # set loading pipeline type
-        cfg.data.test.pipeline[0].type = 'LoadPointsFromDict'
-
     # build the data pipeline
     test_pipeline = deepcopy(cfg.data.test.pipeline)
     test_pipeline = Compose(test_pipeline)
     box_type_3d, box_mode_3d = get_box_type(cfg.data.test.box_type_3d)
-
-    if isinstance(pcd, str):
-        # load from point clouds file
-        data = dict(
-            pts_filename=pcd,
-            box_type_3d=box_type_3d,
-            box_mode_3d=box_mode_3d,
-            # for ScanNet demo we need axis_align_matrix
-            ann_info=dict(axis_align_matrix=np.eye(4)),
-            sweeps=[],
-            # set timestamp = 0
-            timestamp=[0],
-            img_fields=[],
-            bbox3d_fields=[],
-            pts_mask_fields=[],
-            pts_seg_fields=[],
-            bbox_fields=[],
-            mask_fields=[],
-            seg_fields=[])
-    else:
-        # load from http
-        data = dict(
-            points=pcd,
-            box_type_3d=box_type_3d,
-            box_mode_3d=box_mode_3d,
-            # for ScanNet demo we need axis_align_matrix
-            ann_info=dict(axis_align_matrix=np.eye(4)),
-            sweeps=[],
-            # set timestamp = 0
-            timestamp=[0],
-            img_fields=[],
-            bbox3d_fields=[],
-            pts_mask_fields=[],
-            pts_seg_fields=[],
-            bbox_fields=[],
-            mask_fields=[],
-            seg_fields=[])
+    data = dict(
+        pts_filename=pcd,
+        box_type_3d=box_type_3d,
+        box_mode_3d=box_mode_3d,
+        # for ScanNet demo we need axis_align_matrix
+        ann_info=dict(axis_align_matrix=np.eye(4)),
+        sweeps=[],
+        # set timestamp = 0
+        timestamp=[0],
+        img_fields=[],
+        bbox3d_fields=[],
+        pts_mask_fields=[],
+        pts_seg_fields=[],
+        bbox_fields=[],
+        mask_fields=[],
+        seg_fields=[])
     data = test_pipeline(data)
     data = collate([data], samples_per_gpu=1)
     if next(model.parameters()).is_cuda:
@@ -351,7 +316,8 @@ def show_det_result_meshlab(data,
     # for now we convert points into depth mode
     box_mode = data['img_metas'][0][0]['box_mode_3d']
     if box_mode != Box3DMode.DEPTH:
-        points = Coord3DMode.convert(points, box_mode, Coord3DMode.DEPTH)
+        points = points[..., [1, 0, 2]]
+        points[..., 0] *= -1
         show_bboxes = Box3DMode.convert(pred_bboxes, box_mode, Box3DMode.DEPTH)
     else:
         show_bboxes = deepcopy(pred_bboxes)
@@ -495,17 +461,15 @@ def show_result_meshlab(data,
         data (dict): Contain data from pipeline.
         result (dict): Predicted result from model.
         out_dir (str): Directory to save visualized result.
-        score_thr (float, optional): Minimum score of bboxes to be shown.
-            Default: 0.0
-        show (bool, optional): Visualize the results online. Defaults to False.
-        snapshot (bool, optional): Whether to save the online results.
-            Defaults to False.
-        task (str, optional): Distinguish which task result to visualize.
-            Currently we support 3D detection, multi-modality detection and
-            3D segmentation. Defaults to 'det'.
-        palette (list[list[int]]] | np.ndarray, optional): The palette
-            of segmentation map. If None is given, random palette will be
-            generated. Defaults to None.
+        score_thr (float): Minimum score of bboxes to be shown. Default: 0.0
+        show (bool): Visualize the results online. Defaults to False.
+        snapshot (bool): Whether to save the online results. Defaults to False.
+        task (str): Distinguish which task result to visualize. Currently we
+            support 3D detection, multi-modality detection and 3D segmentation.
+            Defaults to 'det'.
+        palette (list[list[int]]] | np.ndarray | None): The palette of
+                segmentation map. If None is given, random palette will be
+                generated. Defaults to None.
     """
     assert task in ['det', 'multi_modality-det', 'seg', 'mono-det'], \
         f'unsupported visualization task {task}'

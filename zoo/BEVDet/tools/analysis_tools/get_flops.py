@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-
 import torch
 from mmcv import Config, DictAction
 
@@ -40,19 +39,19 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-
 def construct_input(input_shape):
-    rot = torch.eye(3).float().cuda().view(1, 3, 3)
-    rot = torch.cat([rot for _ in range(6)], axis=0).view(1, 6, 3, 3)
+    rot = torch.eye(3).float().cuda().view(1,3,3)
+    rot = torch.cat([rot for _ in range(6)],axis=0).view(1,6,3,3)
 
-    input = dict(img_inputs=[
-        torch.ones(()).new_empty((1, 6, 3, *input_shape)).cuda(), rot,
-        torch.ones((1, 6, 3)).cuda(), rot, rot,
+    input =dict(img_inputs=[
+        torch.ones(()).new_empty(
+                (1, 6, 3, *input_shape)).cuda(),
+        rot,
         torch.ones((1, 6, 3)).cuda(),
-        torch.eye(3).float().cuda().view(1, 3, 3)
-    ])
+        rot,
+        rot,
+        torch.ones((1, 6, 3)).cuda()])
     return input
-
 
 def main():
 
@@ -76,6 +75,10 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
+    # import modules from string list.
+    if cfg.get('custom_imports', None):
+        from mmcv.utils import import_modules_from_strings
+        import_modules_from_strings(**cfg['custom_imports'])
 
     model = build_model(
         cfg.model,
@@ -92,8 +95,7 @@ def main():
             'FLOPs counter is currently not supported for {}'.format(
                 model.__class__.__name__))
 
-    flops, params = get_model_complexity_info(
-        model, input_shape, input_constructor=construct_input)
+    flops, params = get_model_complexity_info(model, input_shape, input_constructor=construct_input)
     split_line = '=' * 30
     print(f'{split_line}\nInput shape: {input_shape}\n'
           f'Flops: {flops}\nParams: {params}\n{split_line}')

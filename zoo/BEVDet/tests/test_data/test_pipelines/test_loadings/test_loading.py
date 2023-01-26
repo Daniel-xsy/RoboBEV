@@ -1,9 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from os import path as osp
-
 import mmcv
 import numpy as np
 import pytest
+from os import path as osp
 
 from mmdet3d.core.bbox import DepthInstance3DBoxes
 from mmdet3d.core.points import DepthPoints, LiDARPoints
@@ -310,8 +309,7 @@ def test_load_image_from_file_mono_3d():
 
     repr_str = repr(load_image_from_file_mono_3d)
     expected_repr_str = 'LoadImageFromFileMono3D(to_float32=False, ' \
-        "color_type='color', channel_order='bgr', " \
-        "file_client_args={'backend': 'disk'})"
+        "color_type='color', file_client_args={'backend': 'disk'})"
     assert repr_str == expected_repr_str
 
 

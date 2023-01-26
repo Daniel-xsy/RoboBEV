@@ -1,13 +1,11 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import copy
-
 import torch
 from mmcv.cnn import (ConvModule, build_activation_layer, build_norm_layer,
                       constant_init)
-from mmcv.ops import assign_score_withk as assign_score_cuda
 from torch import nn as nn
 from torch.nn import functional as F
 
+from .assign_score import assign_score_withk as assign_score_cuda
 from .utils import assign_kernel_withoutk, assign_score, calc_euclidian_dist
 
 
@@ -85,7 +83,7 @@ class ScoreNet(nn.Module):
         Args:
             xyz_features (torch.Tensor): (B, C, N, K), features constructed
                 from xyz coordinates of point pairs. May contain relative
-                positions, Euclidean distance, etc.
+                positions, Euclidian distance, etc.
 
         Returns:
             torch.Tensor: (B, N, K, M), predicted scores for `M` kernels.
@@ -176,7 +174,7 @@ class PAConv(nn.Module):
             # (grouped_xyz - center_xyz, grouped_xyz)
             self.scorenet_in_channels = 6
         elif scorenet_input == 'w_neighbor_dist':
-            # (center_xyz, grouped_xyz - center_xyz, Euclidean distance)
+            # (center_xyz, grouped_xyz - center_xyz, Euclidian distance)
             self.scorenet_in_channels = 7
         else:
             raise NotImplementedError(

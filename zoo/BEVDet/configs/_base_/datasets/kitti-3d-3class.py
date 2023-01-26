@@ -4,20 +4,6 @@ data_root = 'data/kitti/'
 class_names = ['Pedestrian', 'Cyclist', 'Car']
 point_cloud_range = [0, -40, -3, 70.4, 40, 1]
 input_modality = dict(use_lidar=True, use_camera=False)
-
-file_client_args = dict(backend='disk')
-# Uncomment the following if use ceph or other file clients.
-# See https://mmcv.readthedocs.io/en/latest/api.html#mmcv.fileio.FileClient
-# for more details.
-# file_client_args = dict(
-#     backend='petrel',
-#     path_mapping=dict({
-#         './data/kitti/':
-#         's3://openmmlab/datasets/detection3d/kitti/',
-#         'data/kitti/':
-#         's3://openmmlab/datasets/detection3d/kitti/'
-#     }))
-
 db_sampler = dict(
     data_root=data_root,
     info_path=data_root + 'kitti_dbinfos_train.pkl',
@@ -26,14 +12,14 @@ db_sampler = dict(
         filter_by_difficulty=[-1],
         filter_by_min_points=dict(Car=5, Pedestrian=10, Cyclist=10)),
     classes=class_names,
-    sample_groups=dict(Car=12, Pedestrian=6, Cyclist=6),
-    points_loader=dict(
-        type='LoadPointsFromFile',
-        coord_type='LIDAR',
-        load_dim=4,
-        use_dim=4,
-        file_client_args=file_client_args),
-    file_client_args=file_client_args)
+    sample_groups=dict(Car=12, Pedestrian=6, Cyclist=6))
+
+file_client_args = dict(backend='disk')
+# Uncomment the following if use ceph or other file clients.
+# See https://mmcv.readthedocs.io/en/latest/api.html#mmcv.fileio.FileClient
+# for more details.
+# file_client_args = dict(
+#     backend='petrel', path_mapping=dict(data='s3://kitti_data/'))
 
 train_pipeline = [
     dict(
@@ -127,8 +113,7 @@ data = dict(
             test_mode=False,
             # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
             # and box_type_3d='Depth' in sunrgbd and scannet dataset.
-            box_type_3d='LiDAR',
-            file_client_args=file_client_args)),
+            box_type_3d='LiDAR')),
     val=dict(
         type=dataset_type,
         data_root=data_root,
@@ -139,8 +124,7 @@ data = dict(
         modality=input_modality,
         classes=class_names,
         test_mode=True,
-        box_type_3d='LiDAR',
-        file_client_args=file_client_args),
+        box_type_3d='LiDAR'),
     test=dict(
         type=dataset_type,
         data_root=data_root,
@@ -151,7 +135,6 @@ data = dict(
         modality=input_modality,
         classes=class_names,
         test_mode=True,
-        box_type_3d='LiDAR',
-        file_client_args=file_client_args))
+        box_type_3d='LiDAR'))
 
 evaluation = dict(interval=1, pipeline=eval_pipeline)

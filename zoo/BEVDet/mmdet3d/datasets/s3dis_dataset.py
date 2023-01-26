@@ -1,12 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from os import path as osp
-
 import numpy as np
+from os import path as osp
 
 from mmdet3d.core import show_seg_result
 from mmdet3d.core.bbox import DepthInstance3DBoxes
+from mmdet.datasets import DATASETS
 from mmseg.datasets import DATASETS as SEG_DATASETS
-from .builder import DATASETS
 from .custom_3d import Custom3DDataset
 from .custom_3d_seg import Custom3DSegDataset
 from .pipelines import Compose
@@ -54,8 +53,7 @@ class S3DISDataset(Custom3DDataset):
                  modality=None,
                  box_type_3d='Depth',
                  filter_empty_gt=True,
-                 test_mode=False,
-                 *kwargs):
+                 test_mode=False):
         super().__init__(
             data_root=data_root,
             ann_file=ann_file,
@@ -64,8 +62,7 @@ class S3DISDataset(Custom3DDataset):
             modality=modality,
             box_type_3d=box_type_3d,
             filter_empty_gt=filter_empty_gt,
-            test_mode=test_mode,
-            *kwargs)
+            test_mode=test_mode)
 
     def get_ann_info(self, index):
         """Get annotation info according to the given index.
@@ -87,10 +84,10 @@ class S3DISDataset(Custom3DDataset):
         if info['annos']['gt_num'] != 0:
             gt_bboxes_3d = info['annos']['gt_boxes_upright_depth'].astype(
                 np.float32)  # k, 6
-            gt_labels_3d = info['annos']['class'].astype(np.int64)
+            gt_labels_3d = info['annos']['class'].astype(np.long)
         else:
             gt_bboxes_3d = np.zeros((0, 6), dtype=np.float32)
-            gt_labels_3d = np.zeros((0, ), dtype=np.int64)
+            gt_labels_3d = np.zeros((0, ), dtype=np.long)
 
         # to target box structure
         gt_bboxes_3d = DepthInstance3DBoxes(
@@ -207,8 +204,7 @@ class _S3DISSegDataset(Custom3DSegDataset):
                  modality=None,
                  test_mode=False,
                  ignore_index=None,
-                 scene_idxs=None,
-                 **kwargs):
+                 scene_idxs=None):
 
         super().__init__(
             data_root=data_root,
@@ -219,8 +215,7 @@ class _S3DISSegDataset(Custom3DSegDataset):
             modality=modality,
             test_mode=test_mode,
             ignore_index=ignore_index,
-            scene_idxs=scene_idxs,
-            **kwargs)
+            scene_idxs=scene_idxs)
 
     def get_ann_info(self, index):
         """Get annotation info according to the given index.
@@ -351,8 +346,7 @@ class S3DISSegDataset(_S3DISSegDataset):
                  modality=None,
                  test_mode=False,
                  ignore_index=None,
-                 scene_idxs=None,
-                 **kwargs):
+                 scene_idxs=None):
 
         # make sure that ann_files and scene_idxs have same length
         ann_files = self._check_ann_files(ann_files)
@@ -368,8 +362,7 @@ class S3DISSegDataset(_S3DISSegDataset):
             modality=modality,
             test_mode=test_mode,
             ignore_index=ignore_index,
-            scene_idxs=scene_idxs[0],
-            **kwargs)
+            scene_idxs=scene_idxs[0])
 
         datasets = [
             _S3DISSegDataset(
@@ -381,8 +374,7 @@ class S3DISSegDataset(_S3DISSegDataset):
                 modality=modality,
                 test_mode=test_mode,
                 ignore_index=ignore_index,
-                scene_idxs=scene_idxs[i],
-                **kwargs) for i in range(len(ann_files))
+                scene_idxs=scene_idxs[i]) for i in range(len(ann_files))
         ]
 
         # data_infos and scene_idxs need to be concat

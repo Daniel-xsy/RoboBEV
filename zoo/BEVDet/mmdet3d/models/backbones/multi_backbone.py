@@ -1,13 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
-import warnings
-
 import torch
+import warnings
 from mmcv.cnn import ConvModule
 from mmcv.runner import BaseModule, auto_fp16
 from torch import nn as nn
 
-from ..builder import BACKBONES, build_backbone
+from mmdet.models import BACKBONES, build_backbone
 
 
 @BACKBONES.register_module()

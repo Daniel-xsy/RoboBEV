@@ -2,24 +2,17 @@
 import numpy as np
 import torch
 from mmcv.cnn import ConvModule, normal_init
-
-from mmdet3d.ops.spconv import IS_SPCONV2_AVAILABLE
-
-if IS_SPCONV2_AVAILABLE:
-    from spconv.pytorch import (SparseConvTensor, SparseMaxPool3d,
-                                SparseSequential)
-else:
-    from mmcv.ops import SparseConvTensor, SparseMaxPool3d, SparseSequential
-
 from mmcv.runner import BaseModule
 from torch import nn as nn
 
 from mmdet3d.core.bbox.structures import (LiDARInstance3DBoxes,
                                           rotation_3d_in_axis, xywhr2xyxyr)
-from mmdet3d.core.post_processing import nms_bev, nms_normal_bev
-from mmdet3d.models.builder import HEADS, build_loss
+from mmdet3d.models.builder import build_loss
 from mmdet3d.ops import make_sparse_convmodule
+from mmdet3d.ops import spconv as spconv
+from mmdet3d.ops.iou3d.iou3d_utils import nms_gpu, nms_normal_gpu
 from mmdet.core import build_bbox_coder, multi_apply
+from mmdet.models import HEADS
 
 
 @HEADS.register_module()
@@ -102,7 +95,7 @@ class PartA2BboxHead(BaseModule):
                     indice_key=f'rcnn_part{i}',
                     conv_type='SubMConv3d'))
             part_channel_last = channel
-        self.part_conv = SparseSequential(*part_conv)
+        self.part_conv = spconv.SparseSequential(*part_conv)
 
         seg_channel_last = seg_in_channels
         seg_conv = []
@@ -117,9 +110,9 @@ class PartA2BboxHead(BaseModule):
                     indice_key=f'rcnn_seg{i}',
                     conv_type='SubMConv3d'))
             seg_channel_last = channel
-        self.seg_conv = SparseSequential(*seg_conv)
+        self.seg_conv = spconv.SparseSequential(*seg_conv)
 
-        self.conv_down = SparseSequential()
+        self.conv_down = spconv.SparseSequential()
 
         merge_conv_channel_last = part_channel_last + seg_channel_last
         merge_conv = []
@@ -147,10 +140,12 @@ class PartA2BboxHead(BaseModule):
                     indice_key='rcnn_down1'))
             down_conv_channel_last = channel
 
-        self.conv_down.add_module('merge_conv', SparseSequential(*merge_conv))
-        self.conv_down.add_module('max_pool3d',
-                                  SparseMaxPool3d(kernel_size=2, stride=2))
-        self.conv_down.add_module('down_conv', SparseSequential(*conv_down))
+        self.conv_down.add_module('merge_conv',
+                                  spconv.SparseSequential(*merge_conv))
+        self.conv_down.add_module(
+            'max_pool3d', spconv.SparseMaxPool3d(kernel_size=2, stride=2))
+        self.conv_down.add_module('down_conv',
+                                  spconv.SparseSequential(*conv_down))
 
         shared_fc_list = []
         pool_size = roi_feat_size // 2
@@ -260,11 +255,11 @@ class PartA2BboxHead(BaseModule):
                                    sparse_idx[:, 2], sparse_idx[:, 3]]
         seg_features = seg_feats[sparse_idx[:, 0], sparse_idx[:, 1],
                                  sparse_idx[:, 2], sparse_idx[:, 3]]
-        coords = sparse_idx.int().contiguous()
-        part_features = SparseConvTensor(part_features, coords, sparse_shape,
-                                         rcnn_batch_size)
-        seg_features = SparseConvTensor(seg_features, coords, sparse_shape,
-                                        rcnn_batch_size)
+        coords = sparse_idx.int()
+        part_features = spconv.SparseConvTensor(part_features, coords,
+                                                sparse_shape, rcnn_batch_size)
+        seg_features = spconv.SparseConvTensor(seg_features, coords,
+                                               sparse_shape, rcnn_batch_size)
 
         # forward rcnn network
         x_part = self.part_conv(part_features)
@@ -272,8 +267,8 @@ class PartA2BboxHead(BaseModule):
 
         merged_feature = torch.cat((x_rpn.features, x_part.features),
                                    dim=1)  # (N, C)
-        shared_feature = SparseConvTensor(merged_feature, coords, sparse_shape,
-                                          rcnn_batch_size)
+        shared_feature = spconv.SparseConvTensor(merged_feature, coords,
+                                                 sparse_shape, rcnn_batch_size)
 
         x = self.conv_down(shared_feature)
 
@@ -290,7 +285,7 @@ class PartA2BboxHead(BaseModule):
 
     def loss(self, cls_score, bbox_pred, rois, labels, bbox_targets,
              pos_gt_bboxes, reg_mask, label_weights, bbox_weights):
-        """Computing losses.
+        """Coumputing losses.
 
         Args:
             cls_score (torch.Tensor): Scores of each roi.
@@ -349,7 +344,7 @@ class PartA2BboxHead(BaseModule):
 
                 pred_boxes3d[..., 0:3] = rotation_3d_in_axis(
                     pred_boxes3d[..., 0:3].unsqueeze(1),
-                    pos_rois_rotation,
+                    (pos_rois_rotation + np.pi / 2),
                     axis=2).squeeze(1)
 
                 pred_boxes3d[:, 0:3] += roi_xyz
@@ -441,7 +436,8 @@ class PartA2BboxHead(BaseModule):
             pos_gt_bboxes_ct[..., 0:3] -= roi_center
             pos_gt_bboxes_ct[..., 6] -= roi_ry
             pos_gt_bboxes_ct[..., 0:3] = rotation_3d_in_axis(
-                pos_gt_bboxes_ct[..., 0:3].unsqueeze(1), -roi_ry,
+                pos_gt_bboxes_ct[..., 0:3].unsqueeze(1),
+                -(roi_ry + np.pi / 2),
                 axis=2).squeeze(1)
 
             # flip orientation if rois have opposite orientation
@@ -466,13 +462,12 @@ class PartA2BboxHead(BaseModule):
         return (label, bbox_targets, pos_gt_bboxes, reg_mask, label_weights,
                 bbox_weights)
 
-    def get_corner_loss_lidar(self, pred_bbox3d, gt_bbox3d, delta=1.0):
+    def get_corner_loss_lidar(self, pred_bbox3d, gt_bbox3d, delta=1):
         """Calculate corner loss of given boxes.
 
         Args:
             pred_bbox3d (torch.FloatTensor): Predicted boxes in shape (N, 7).
             gt_bbox3d (torch.FloatTensor): Ground truth boxes in shape (N, 7).
-            delta (float, optional): huber loss threshold. Defaults to 1.0
 
         Returns:
             torch.FloatTensor: Calculated corner loss in shape (N).
@@ -495,8 +490,8 @@ class PartA2BboxHead(BaseModule):
             torch.norm(pred_box_corners - gt_box_corners_flip,
                        dim=2))  # (N, 8)
         # huber loss
-        abs_error = corner_dist.abs()
-        quadratic = abs_error.clamp(max=delta)
+        abs_error = torch.abs(corner_dist)
+        quadratic = torch.clamp(abs_error, max=delta)
         linear = (abs_error - quadratic)
         corner_loss = 0.5 * quadratic**2 + delta * linear
 
@@ -535,7 +530,8 @@ class PartA2BboxHead(BaseModule):
         local_roi_boxes[..., 0:3] = 0
         rcnn_boxes3d = self.bbox_coder.decode(local_roi_boxes, bbox_pred)
         rcnn_boxes3d[..., 0:3] = rotation_3d_in_axis(
-            rcnn_boxes3d[..., 0:3].unsqueeze(1), roi_ry, axis=2).squeeze(1)
+            rcnn_boxes3d[..., 0:3].unsqueeze(1), (roi_ry + np.pi / 2),
+            axis=2).squeeze(1)
         rcnn_boxes3d[:, 0:3] += roi_xyz
 
         # post processing
@@ -546,13 +542,13 @@ class PartA2BboxHead(BaseModule):
 
             cur_box_prob = class_pred[batch_id]
             cur_rcnn_boxes3d = rcnn_boxes3d[roi_batch_id == batch_id]
-            keep = self.multi_class_nms(cur_box_prob, cur_rcnn_boxes3d,
-                                        cfg.score_thr, cfg.nms_thr,
-                                        img_metas[batch_id],
-                                        cfg.use_rotate_nms)
-            selected_bboxes = cur_rcnn_boxes3d[keep]
-            selected_label_preds = cur_class_labels[keep]
-            selected_scores = cur_cls_score[keep]
+            selected = self.multi_class_nms(cur_box_prob, cur_rcnn_boxes3d,
+                                            cfg.score_thr, cfg.nms_thr,
+                                            img_metas[batch_id],
+                                            cfg.use_rotate_nms)
+            selected_bboxes = cur_rcnn_boxes3d[selected]
+            selected_label_preds = cur_class_labels[selected]
+            selected_scores = cur_cls_score[selected]
 
             result_list.append(
                 (img_metas[batch_id]['box_type_3d'](selected_bboxes,
@@ -580,7 +576,7 @@ class PartA2BboxHead(BaseModule):
             box_preds (torch.Tensor): Predicted boxes in shape (N, 7+C).
             score_thr (float): Threshold of scores.
             nms_thr (float): Threshold for NMS.
-            input_meta (dict): Meta information of the current sample.
+            input_meta (dict): Meta informations of the current sample.
             use_rotate_nms (bool, optional): Whether to use rotated nms.
                 Defaults to True.
 
@@ -588,9 +584,9 @@ class PartA2BboxHead(BaseModule):
             torch.Tensor: Selected indices.
         """
         if use_rotate_nms:
-            nms_func = nms_bev
+            nms_func = nms_gpu
         else:
-            nms_func = nms_normal_bev
+            nms_func = nms_normal_gpu
 
         assert box_probs.shape[
             1] == self.num_classes, f'box_probs shape: {str(box_probs.shape)}'
@@ -624,6 +620,6 @@ class PartA2BboxHead(BaseModule):
                                dtype=torch.int64,
                                device=box_preds.device))
 
-        keep = torch.cat(
+        selected = torch.cat(
             selected_list, dim=0) if len(selected_list) > 0 else []
-        return keep
+        return selected

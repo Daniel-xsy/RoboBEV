@@ -1,16 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import numpy as np
 import torch
-from mmcv.ops import furthest_point_sample
 from mmcv.runner import BaseModule, force_fp32
 from torch.nn import functional as F
 
 from mmdet3d.core.post_processing import aligned_3d_nms
+from mmdet3d.models.builder import build_loss
 from mmdet3d.models.losses import chamfer_distance
 from mmdet3d.models.model_utils import VoteModule
-from mmdet3d.ops import build_sa_module
+from mmdet3d.ops import build_sa_module, furthest_point_sample
 from mmdet.core import build_bbox_coder, multi_apply
-from ..builder import HEADS, build_loss
+from mmdet.models import HEADS
 from .base_conv_bbox_head import BaseConvBboxHead
 
 
@@ -136,7 +136,7 @@ class VoteHead(BaseModule):
         """Forward pass.
 
         Note:
-            The forward of VoteHead is divided into 4 steps:
+            The forward of VoteHead is devided into 4 steps:
 
                 1. Generate vote_points from seed_points.
                 2. Aggregate vote_points.
@@ -234,15 +234,15 @@ class VoteHead(BaseModule):
         Args:
             bbox_preds (dict): Predictions from forward of vote head.
             points (list[torch.Tensor]): Input points.
-            gt_bboxes_3d (list[:obj:`BaseInstance3DBoxes`]): Ground truth
+            gt_bboxes_3d (list[:obj:`BaseInstance3DBoxes`]): Ground truth \
                 bboxes of each sample.
             gt_labels_3d (list[torch.Tensor]): Labels of each sample.
-            pts_semantic_mask (list[torch.Tensor]): Point-wise
+            pts_semantic_mask (None | list[torch.Tensor]): Point-wise
                 semantic mask.
-            pts_instance_mask (list[torch.Tensor]): Point-wise
+            pts_instance_mask (None | list[torch.Tensor]): Point-wise
                 instance mask.
             img_metas (list[dict]): Contain pcd and img's meta info.
-            gt_bboxes_ignore (list[torch.Tensor]): Specify
+            gt_bboxes_ignore (None | list[torch.Tensor]): Specify
                 which bounding.
             ret_target (Bool): Return targets or not.
 
@@ -358,12 +358,12 @@ class VoteHead(BaseModule):
 
         Args:
             points (list[torch.Tensor]): Points of each batch.
-            gt_bboxes_3d (list[:obj:`BaseInstance3DBoxes`]): Ground truth
+            gt_bboxes_3d (list[:obj:`BaseInstance3DBoxes`]): Ground truth \
                 bboxes of each batch.
             gt_labels_3d (list[torch.Tensor]): Labels of each batch.
-            pts_semantic_mask (list[torch.Tensor]): Point-wise semantic
+            pts_semantic_mask (None | list[torch.Tensor]): Point-wise semantic
                 label of each batch.
-            pts_instance_mask (list[torch.Tensor]): Point-wise instance
+            pts_instance_mask (None | list[torch.Tensor]): Point-wise instance
                 label of each batch.
             bbox_preds (torch.Tensor): Bounding box predictions of vote head.
 
@@ -447,12 +447,12 @@ class VoteHead(BaseModule):
 
         Args:
             points (torch.Tensor): Points of each batch.
-            gt_bboxes_3d (:obj:`BaseInstance3DBoxes`): Ground truth
+            gt_bboxes_3d (:obj:`BaseInstance3DBoxes`): Ground truth \
                 boxes of each batch.
             gt_labels_3d (torch.Tensor): Labels of each batch.
-            pts_semantic_mask (torch.Tensor): Point-wise semantic
+            pts_semantic_mask (None | torch.Tensor): Point-wise semantic
                 label of each batch.
-            pts_instance_mask (torch.Tensor): Point-wise instance
+            pts_instance_mask (None | torch.Tensor): Point-wise instance
                 label of each batch.
             aggregated_points (torch.Tensor): Aggregated points from
                 vote aggregation layer.
@@ -471,7 +471,7 @@ class VoteHead(BaseModule):
             vote_target_masks = points.new_zeros([num_points],
                                                  dtype=torch.long)
             vote_target_idx = points.new_zeros([num_points], dtype=torch.long)
-            box_indices_all = gt_bboxes_3d.points_in_boxes_all(points)
+            box_indices_all = gt_bboxes_3d.points_in_boxes(points)
             for i in range(gt_labels_3d.shape[0]):
                 box_indices = box_indices_all[:, i]
                 indices = torch.nonzero(
@@ -621,7 +621,7 @@ class VoteHead(BaseModule):
             box_dim=bbox.shape[-1],
             with_yaw=self.bbox_coder.with_rot,
             origin=(0.5, 0.5, 0.5))
-        box_indices = bbox.points_in_boxes_all(points)
+        box_indices = bbox.points_in_boxes(points)
 
         corner3d = bbox.corners
         minmax_box3d = corner3d.new(torch.Size((corner3d.shape[0], 6)))

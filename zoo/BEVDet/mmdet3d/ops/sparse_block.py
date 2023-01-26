@@ -2,25 +2,11 @@
 from mmcv.cnn import build_conv_layer, build_norm_layer
 from torch import nn
 
+from mmdet3d.ops import spconv
 from mmdet.models.backbones.resnet import BasicBlock, Bottleneck
-from .spconv import IS_SPCONV2_AVAILABLE
-
-if IS_SPCONV2_AVAILABLE:
-    from spconv.pytorch import SparseModule, SparseSequential
-else:
-    from mmcv.ops import SparseModule, SparseSequential
 
 
-def replace_feature(out, new_features):
-    if 'replace_feature' in out.__dir__():
-        # spconv 2.x behaviour
-        return out.replace_feature(new_features)
-    else:
-        out.features = new_features
-        return out
-
-
-class SparseBottleneck(Bottleneck, SparseModule):
+class SparseBottleneck(Bottleneck, spconv.SparseModule):
     """Sparse bottleneck block for PartA^2.
 
     Bottleneck block implemented with submanifold sparse convolution.
@@ -28,12 +14,12 @@ class SparseBottleneck(Bottleneck, SparseModule):
     Args:
         inplanes (int): inplanes of block.
         planes (int): planes of block.
-        stride (int, optional): stride of the first block. Default: 1.
-        downsample (Module, optional): down sample module for block.
-        conv_cfg (dict, optional): dictionary to construct and config conv
-            layer. Default: None.
-        norm_cfg (dict, optional): dictionary to construct and config norm
-            layer. Default: dict(type='BN').
+        stride (int): stride of the first block. Default: 1
+        downsample (None | Module): down sample module for block.
+        conv_cfg (dict): dictionary to construct and config conv layer.
+            Default: None
+        norm_cfg (dict): dictionary to construct and config norm layer.
+            Default: dict(type='BN')
     """
 
     expansion = 4
@@ -46,7 +32,7 @@ class SparseBottleneck(Bottleneck, SparseModule):
                  conv_cfg=None,
                  norm_cfg=None):
 
-        SparseModule.__init__(self)
+        spconv.SparseModule.__init__(self)
         Bottleneck.__init__(
             self,
             inplanes,
@@ -60,26 +46,26 @@ class SparseBottleneck(Bottleneck, SparseModule):
         identity = x.features
 
         out = self.conv1(x)
-        out = replace_feature(out, self.bn1(out.features))
-        out = replace_feature(out, self.relu(out.features))
+        out.features = self.bn1(out.features)
+        out.features = self.relu(out.features)
 
         out = self.conv2(out)
-        out = replace_feature(out, self.bn2(out.features))
-        out = replace_feature(out, self.relu(out.features))
+        out.features = self.bn2(out.features)
+        out.features = self.relu(out.features)
 
         out = self.conv3(out)
-        out = replace_feature(out, self.bn3(out.features))
+        out.features = self.bn3(out.features)
 
         if self.downsample is not None:
             identity = self.downsample(x)
 
-        out = replace_feature(out, out.features + identity)
-        out = replace_feature(out, self.relu(out.features))
+        out.features += identity
+        out.features = self.relu(out.features)
 
         return out
 
 
-class SparseBasicBlock(BasicBlock, SparseModule):
+class SparseBasicBlock(BasicBlock, spconv.SparseModule):
     """Sparse basic block for PartA^2.
 
     Sparse basic block implemented with submanifold sparse convolution.
@@ -87,12 +73,12 @@ class SparseBasicBlock(BasicBlock, SparseModule):
     Args:
         inplanes (int): inplanes of block.
         planes (int): planes of block.
-        stride (int, optional): stride of the first block. Default: 1.
-        downsample (Module, optional): down sample module for block.
-        conv_cfg (dict, optional): dictionary to construct and config conv
-            layer. Default: None.
-        norm_cfg (dict, optional): dictionary to construct and config norm
-            layer. Default: dict(type='BN').
+        stride (int): stride of the first block. Default: 1
+        downsample (None | Module): down sample module for block.
+        conv_cfg (dict): dictionary to construct and config conv layer.
+            Default: None
+        norm_cfg (dict): dictionary to construct and config norm layer.
+            Default: dict(type='BN')
     """
 
     expansion = 1
@@ -104,7 +90,7 @@ class SparseBasicBlock(BasicBlock, SparseModule):
                  downsample=None,
                  conv_cfg=None,
                  norm_cfg=None):
-        SparseModule.__init__(self)
+        spconv.SparseModule.__init__(self)
         BasicBlock.__init__(
             self,
             inplanes,
@@ -118,18 +104,19 @@ class SparseBasicBlock(BasicBlock, SparseModule):
         identity = x.features
 
         assert x.features.dim() == 2, f'x.features.dim()={x.features.dim()}'
+
         out = self.conv1(x)
-        out = replace_feature(out, self.norm1(out.features))
-        out = replace_feature(out, self.relu(out.features))
+        out.features = self.norm1(out.features)
+        out.features = self.relu(out.features)
 
         out = self.conv2(out)
-        out = replace_feature(out, self.norm2(out.features))
+        out.features = self.norm2(out.features)
 
         if self.downsample is not None:
             identity = self.downsample(x)
 
-        out = replace_feature(out, out.features + identity)
-        out = replace_feature(out, self.relu(out.features))
+        out.features += identity
+        out.features = self.relu(out.features)
 
         return out
 
@@ -195,5 +182,5 @@ def make_sparse_convmodule(in_channels,
         elif layer == 'act':
             layers.append(nn.ReLU(inplace=True))
 
-    layers = SparseSequential(*layers)
+    layers = spconv.SparseSequential(*layers)
     return layers

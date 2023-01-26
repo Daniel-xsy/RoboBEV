@@ -1,14 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import numpy as np
 import tempfile
 import warnings
 from os import path as osp
 
-import numpy as np
-
-from mmdet3d.core import instance_seg_eval, show_result, show_seg_result
+from mmdet3d.core import show_result, show_seg_result
 from mmdet3d.core.bbox import DepthInstance3DBoxes
+from mmdet.datasets import DATASETS
 from mmseg.datasets import DATASETS as SEG_DATASETS
-from .builder import DATASETS
 from .custom_3d import Custom3DDataset
 from .custom_3d_seg import Custom3DSegDataset
 from .pipelines import Compose
@@ -58,8 +57,7 @@ class ScanNetDataset(Custom3DDataset):
                  modality=dict(use_camera=False, use_depth=True),
                  box_type_3d='Depth',
                  filter_empty_gt=True,
-                 test_mode=False,
-                 **kwargs):
+                 test_mode=False):
         super().__init__(
             data_root=data_root,
             ann_file=ann_file,
@@ -68,8 +66,7 @@ class ScanNetDataset(Custom3DDataset):
             modality=modality,
             box_type_3d=box_type_3d,
             filter_empty_gt=filter_empty_gt,
-            test_mode=test_mode,
-            **kwargs)
+            test_mode=test_mode)
         assert 'use_camera' in self.modality and \
                'use_depth' in self.modality
         assert self.modality['use_camera'] or self.modality['use_depth']
@@ -81,13 +78,13 @@ class ScanNetDataset(Custom3DDataset):
             index (int): Index of the sample data to get.
 
         Returns:
-            dict: Data information that will be passed to the data
+            dict: Data information that will be passed to the data \
                 preprocessing pipelines. It includes the following keys:
 
                 - sample_idx (str): Sample index.
                 - pts_filename (str): Filename of point clouds.
                 - file_name (str): Filename of point clouds.
-                - img_prefix (str, optional): Prefix of image files.
+                - img_prefix (str | None, optional): Prefix of image files.
                 - img_info (dict, optional): Image info.
                 - ann_info (dict): Annotation info.
         """
@@ -132,12 +129,12 @@ class ScanNetDataset(Custom3DDataset):
         Returns:
             dict: annotation information consists of the following keys:
 
-                - gt_bboxes_3d (:obj:`DepthInstance3DBoxes`):
+                - gt_bboxes_3d (:obj:`DepthInstance3DBoxes`): \
                     3D ground truth bboxes
                 - gt_labels_3d (np.ndarray): Labels of ground truths.
                 - pts_instance_mask_path (str): Path of instance masks.
                 - pts_semantic_mask_path (str): Path of semantic masks.
-                - axis_align_matrix (np.ndarray): Transformation matrix for
+                - axis_align_matrix (np.ndarray): Transformation matrix for \
                     global scene alignment.
         """
         # Use index to get the annos, thus the evalhook could also use this api
@@ -145,10 +142,10 @@ class ScanNetDataset(Custom3DDataset):
         if info['annos']['gt_num'] != 0:
             gt_bboxes_3d = info['annos']['gt_boxes_upright_depth'].astype(
                 np.float32)  # k, 6
-            gt_labels_3d = info['annos']['class'].astype(np.int64)
+            gt_labels_3d = info['annos']['class'].astype(np.long)
         else:
             gt_bboxes_3d = np.zeros((0, 6), dtype=np.float32)
-            gt_labels_3d = np.zeros((0, ), dtype=np.int64)
+            gt_labels_3d = np.zeros((0, ), dtype=np.long)
 
         # to target box structure
         gt_bboxes_3d = DepthInstance3DBoxes(
@@ -175,7 +172,7 @@ class ScanNetDataset(Custom3DDataset):
     def prepare_test_data(self, index):
         """Prepare data for testing.
 
-        We should take axis_align_matrix from self.data_infos since we need
+        We should take axis_align_matrix from self.data_infos since we need \
             to align point clouds.
 
         Args:
@@ -275,7 +272,7 @@ class ScanNetSegDataset(Custom3DSegDataset):
             as input. Defaults to None.
         test_mode (bool, optional): Whether the dataset is in test mode.
             Defaults to False.
-        ignore_index (int, optional): The label index to be ignored, e.g.
+        ignore_index (int, optional): The label index to be ignored, e.g. \
             unannotated points. If None is given, set to len(self.CLASSES).
             Defaults to None.
         scene_idxs (np.ndarray | str, optional): Precomputed index to load
@@ -324,8 +321,7 @@ class ScanNetSegDataset(Custom3DSegDataset):
                  modality=None,
                  test_mode=False,
                  ignore_index=None,
-                 scene_idxs=None,
-                 **kwargs):
+                 scene_idxs=None):
 
         super().__init__(
             data_root=data_root,
@@ -336,8 +332,7 @@ class ScanNetSegDataset(Custom3DSegDataset):
             modality=modality,
             test_mode=test_mode,
             ignore_index=ignore_index,
-            scene_idxs=scene_idxs,
-            **kwargs)
+            scene_idxs=scene_idxs)
 
     def get_ann_info(self, index):
         """Get annotation info according to the given index.
@@ -429,7 +424,7 @@ class ScanNetSegDataset(Custom3DSegDataset):
 
         Args:
             outputs (list[dict]): Testing results of the dataset.
-            txtfile_prefix (str): The prefix of saved files. It includes
+            txtfile_prefix (str | None): The prefix of saved files. It includes
                 the file path and the prefix of filename, e.g., "a/b/prefix".
                 If not specified, a temp file will be created. Default: None.
 
@@ -464,151 +459,3 @@ class ScanNetSegDataset(Custom3DSegDataset):
             outputs.append(dict(seg_mask=pred_label))
 
         return outputs, tmp_dir
-
-
-@DATASETS.register_module()
-@SEG_DATASETS.register_module()
-class ScanNetInstanceSegDataset(Custom3DSegDataset):
-    CLASSES = ('cabinet', 'bed', 'chair', 'sofa', 'table', 'door', 'window',
-               'bookshelf', 'picture', 'counter', 'desk', 'curtain',
-               'refrigerator', 'showercurtrain', 'toilet', 'sink', 'bathtub',
-               'garbagebin')
-
-    VALID_CLASS_IDS = (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 24, 28, 33, 34,
-                       36, 39)
-
-    ALL_CLASS_IDS = tuple(range(41))
-
-    def get_ann_info(self, index):
-        """Get annotation info according to the given index.
-
-        Args:
-            index (int): Index of the annotation data to get.
-
-        Returns:
-            dict: annotation information consists of the following keys:
-                - pts_semantic_mask_path (str): Path of semantic masks.
-                - pts_instance_mask_path (str): Path of instance masks.
-        """
-        # Use index to get the annos, thus the evalhook could also use this api
-        info = self.data_infos[index]
-
-        pts_instance_mask_path = osp.join(self.data_root,
-                                          info['pts_instance_mask_path'])
-        pts_semantic_mask_path = osp.join(self.data_root,
-                                          info['pts_semantic_mask_path'])
-
-        anns_results = dict(
-            pts_instance_mask_path=pts_instance_mask_path,
-            pts_semantic_mask_path=pts_semantic_mask_path)
-        return anns_results
-
-    def get_classes_and_palette(self, classes=None, palette=None):
-        """Get class names of current dataset. Palette is simply ignored for
-        instance segmentation.
-
-        Args:
-            classes (Sequence[str] | str | None): If classes is None, use
-                default CLASSES defined by builtin dataset. If classes is a
-                string, take it as a file name. The file contains the name of
-                classes where each line contains one class name. If classes is
-                a tuple or list, override the CLASSES defined by the dataset.
-                Defaults to None.
-            palette (Sequence[Sequence[int]]] | np.ndarray | None):
-                The palette of segmentation map. If None is given, random
-                palette will be generated. Defaults to None.
-        """
-        if classes is not None:
-            return classes, None
-        return self.CLASSES, None
-
-    def _build_default_pipeline(self):
-        """Build the default pipeline for this dataset."""
-        pipeline = [
-            dict(
-                type='LoadPointsFromFile',
-                coord_type='DEPTH',
-                shift_height=False,
-                use_color=True,
-                load_dim=6,
-                use_dim=[0, 1, 2, 3, 4, 5]),
-            dict(
-                type='LoadAnnotations3D',
-                with_bbox_3d=False,
-                with_label_3d=False,
-                with_mask_3d=True,
-                with_seg_3d=True),
-            dict(
-                type='PointSegClassMapping',
-                valid_cat_ids=self.VALID_CLASS_IDS,
-                max_cat_id=40),
-            dict(
-                type='DefaultFormatBundle3D',
-                with_label=False,
-                class_names=self.CLASSES),
-            dict(
-                type='Collect3D',
-                keys=['points', 'pts_semantic_mask', 'pts_instance_mask'])
-        ]
-        return Compose(pipeline)
-
-    def evaluate(self,
-                 results,
-                 metric=None,
-                 options=None,
-                 logger=None,
-                 show=False,
-                 out_dir=None,
-                 pipeline=None):
-        """Evaluation in instance segmentation protocol.
-
-        Args:
-            results (list[dict]): List of results.
-            metric (str | list[str]): Metrics to be evaluated.
-            options (dict, optional): options for instance_seg_eval.
-            logger (logging.Logger | None | str): Logger used for printing
-                related information during evaluation. Defaults to None.
-            show (bool, optional): Whether to visualize.
-                Defaults to False.
-            out_dir (str, optional): Path to save the visualization results.
-                Defaults to None.
-            pipeline (list[dict], optional): raw data loading for showing.
-                Default: None.
-
-        Returns:
-            dict: Evaluation results.
-        """
-        assert isinstance(
-            results, list), f'Expect results to be list, got {type(results)}.'
-        assert len(results) > 0, 'Expect length of results > 0.'
-        assert len(results) == len(self.data_infos)
-        assert isinstance(
-            results[0], dict
-        ), f'Expect elements in results to be dict, got {type(results[0])}.'
-
-        load_pipeline = self._get_pipeline(pipeline)
-        pred_instance_masks = [result['instance_mask'] for result in results]
-        pred_instance_labels = [result['instance_label'] for result in results]
-        pred_instance_scores = [result['instance_score'] for result in results]
-        gt_semantic_masks, gt_instance_masks = zip(*[
-            self._extract_data(
-                index=i,
-                pipeline=load_pipeline,
-                key=['pts_semantic_mask', 'pts_instance_mask'],
-                load_annos=True) for i in range(len(self.data_infos))
-        ])
-        ret_dict = instance_seg_eval(
-            gt_semantic_masks,
-            gt_instance_masks,
-            pred_instance_masks,
-            pred_instance_labels,
-            pred_instance_scores,
-            valid_class_ids=self.VALID_CLASS_IDS,
-            class_labels=self.CLASSES,
-            options=options,
-            logger=logger)
-
-        if show:
-            raise NotImplementedError('show is not implemented for now')
-
-        return ret_dict

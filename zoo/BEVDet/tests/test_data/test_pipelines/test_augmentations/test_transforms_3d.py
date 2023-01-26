@@ -8,16 +8,12 @@ from mmdet3d.core import (Box3DMode, CameraInstance3DBoxes,
                           DepthInstance3DBoxes, LiDARInstance3DBoxes)
 from mmdet3d.core.bbox import Coord3DMode
 from mmdet3d.core.points import DepthPoints, LiDARPoints
-# yapf: disable
-from mmdet3d.datasets import (AffineResize, BackgroundPointsFilter,
-                              GlobalAlignment, GlobalRotScaleTrans,
-                              MultiViewWrapper, ObjectNameFilter, ObjectNoise,
-                              ObjectRangeFilter, ObjectSample, PointSample,
-                              PointShuffle, PointsRangeFilter,
+from mmdet3d.datasets import (BackgroundPointsFilter, GlobalAlignment,
+                              GlobalRotScaleTrans, ObjectNameFilter,
+                              ObjectNoise, ObjectRangeFilter, ObjectSample,
+                              PointSample, PointShuffle, PointsRangeFilter,
                               RandomDropPointsColor, RandomFlip3D,
-                              RandomJitterPoints, RandomRotate,
-                              RandomShiftScale, RangeLimitedRandomCrop,
-                              VoxelBasedPointSampler)
+                              RandomJitterPoints, VoxelBasedPointSampler)
 
 
 def test_remove_points_in_boxes():
@@ -90,7 +86,7 @@ def test_object_sample():
             gt_labels.append(CLASSES.index(cat))
         else:
             gt_labels.append(-1)
-    gt_labels = np.array(gt_labels, dtype=np.int64)
+    gt_labels = np.array(gt_labels, dtype=np.long)
     points = LiDARPoints(points, points_dim=4)
     input_dict = dict(
         points=points, gt_bboxes_3d=gt_bboxes_3d, gt_labels_3d=gt_labels)
@@ -136,12 +132,8 @@ def test_object_noise():
     input_dict = object_noise(input_dict)
     points = input_dict['points']
     gt_bboxes_3d = input_dict['gt_bboxes_3d'].tensor
-
-    # coord sys refactor (lidar2cam)
-    expected_gt_bboxes_3d = torch.tensor([[
-        9.1724, -1.7559, -1.3550, 1.2000, 0.4800, 1.8900,
-        0.0505 - float(rots) * 2 - np.pi / 2
-    ]])
+    expected_gt_bboxes_3d = torch.tensor(
+        [[9.1724, -1.7559, -1.3550, 0.4800, 1.2000, 1.8900, 0.0505]])
     repr_str = repr(object_noise)
     expected_repr_str = 'ObjectNoise(num_try=100, ' \
                         'translation_std=[0.25, 0.25, 0.25], ' \
@@ -178,7 +170,7 @@ def test_object_name_filter():
             gt_labels.append(CLASSES.index(cat))
         else:
             gt_labels.append(-1)
-    gt_labels = np.array(gt_labels, dtype=np.int64)
+    gt_labels = np.array(gt_labels, dtype=np.long)
     input_dict = dict(
         gt_bboxes_3d=gt_bboxes_3d.clone(), gt_labels_3d=gt_labels.copy())
 
@@ -202,9 +194,9 @@ def test_point_shuffle():
     points = np.fromfile('tests/data/scannet/points/scene0000_00.bin',
                          np.float32).reshape(-1, 6)
     ins_mask = np.fromfile('tests/data/scannet/instance_mask/scene0000_00.bin',
-                           np.int64)
+                           np.long)
     sem_mask = np.fromfile('tests/data/scannet/semantic_mask/scene0000_00.bin',
-                           np.int64)
+                           np.long)
 
     points = DepthPoints(
         points.copy(), points_dim=6, attribute_dims=dict(color=[3, 4, 5]))
@@ -246,9 +238,9 @@ def test_points_range_filter():
     points = np.fromfile('tests/data/scannet/points/scene0000_00.bin',
                          np.float32).reshape(-1, 6)
     ins_mask = np.fromfile('tests/data/scannet/instance_mask/scene0000_00.bin',
-                           np.int64)
+                           np.long)
     sem_mask = np.fromfile('tests/data/scannet/semantic_mask/scene0000_00.bin',
-                           np.int64)
+                           np.long)
 
     points = DepthPoints(
         points.copy(), points_dim=6, attribute_dims=dict(color=[3, 4, 5]))
@@ -288,7 +280,7 @@ def test_object_range_filter():
          [18.7314, -18.559, 20.6547, 6.4800, 8.6000, 3.9200, -1.0100],
          [3.7314, 42.559, -0.6547, 6.4800, 8.6000, 2.9200, 3.0100]])
     gt_bboxes_3d = LiDARInstance3DBoxes(bbox, origin=(0.5, 0.5, 0.5))
-    gt_labels_3d = np.array([0, 2, 1, 1, 2, 0], dtype=np.int64)
+    gt_labels_3d = np.array([0, 2, 1, 1, 2, 0], dtype=np.long)
 
     input_dict = dict(
         gt_bboxes_3d=gt_bboxes_3d.clone(), gt_labels_3d=gt_labels_3d.copy())
@@ -530,11 +522,11 @@ def test_random_flip_3d():
                                 [21.2334, -9.3607, -0.2588, 0.0000],
                                 [21.2179, -9.4372, -0.2598, 0.0000]])
     expected_gt_bboxes_3d = torch.tensor(
-        [[38.9229, -18.4417, -1.1459, 0.7100, 1.7600, 1.8600, 2.2652],
-         [12.7768, -0.5795, -2.2682, 0.5700, 0.9900, 1.7200, 2.5029],
-         [12.7557, -2.2996, -1.4869, 0.6100, 1.1100, 1.9000, 1.9390],
-         [10.6677, -0.8064, -1.5435, 0.7900, 0.9600, 1.7900, -1.0856],
-         [5.0903, -5.1004, -1.2694, 0.7100, 1.7000, 1.8300, 1.9136]])
+        [[38.9229, -18.4417, -1.1459, 0.7100, 1.7600, 1.8600, 5.4068],
+         [12.7768, -0.5795, -2.2682, 0.5700, 0.9900, 1.7200, 5.6445],
+         [12.7557, -2.2996, -1.4869, 0.6100, 1.1100, 1.9000, 5.0806],
+         [10.6677, -0.8064, -1.5435, 0.7900, 0.9600, 1.7900, 2.0560],
+         [5.0903, -5.1004, -1.2694, 0.7100, 1.7000, 1.8300, 5.0552]])
     repr_str = repr(random_flip_3d)
     expected_repr_str = 'RandomFlip3D(sync_2d=True,' \
                         ' flip_ratio_bev_vertical=1.0)'
@@ -759,153 +751,3 @@ def test_points_sample():
     select_idx = np.array([449, 444])
     expected_pts = points.tensor.numpy()[select_idx]
     assert np.allclose(sampled_pts.tensor.numpy(), expected_pts)
-
-
-def test_affine_resize():
-
-    def create_random_bboxes(num_bboxes, img_w, img_h):
-        bboxes_left_top = np.random.uniform(0, 0.5, size=(num_bboxes, 2))
-        bboxes_right_bottom = np.random.uniform(0.5, 1, size=(num_bboxes, 2))
-        bboxes = np.concatenate((bboxes_left_top, bboxes_right_bottom), 1)
-        bboxes = (bboxes * np.array([img_w, img_h, img_w, img_h])).astype(
-            np.float32)
-        return bboxes
-
-    affine_reszie = AffineResize(img_scale=(1290, 384), down_ratio=4)
-
-    # test the situation: not use Random_Scale_Shift before AffineResize
-    results = dict()
-    img = mmcv.imread('./tests/data/kitti/training/image_2/000000.png',
-                      'color')
-    results['img'] = img
-    results['bbox_fields'] = ['gt_bboxes']
-    results['bbox3d_fields'] = ['gt_bboxes_3d']
-
-    h, w, _ = img.shape
-    gt_bboxes = create_random_bboxes(8, w, h)
-    gt_bboxes_3d = CameraInstance3DBoxes(torch.randn((8, 7)))
-    results['gt_labels'] = np.ones(gt_bboxes.shape[0], dtype=np.int64)
-    results['gt_labels3d'] = results['gt_labels']
-    results['gt_bboxes'] = gt_bboxes
-    results['gt_bboxes_3d'] = gt_bboxes_3d
-    results['depths'] = np.random.randn(gt_bboxes.shape[0])
-    centers2d_x = (gt_bboxes[:, [0]] + gt_bboxes[:, [2]]) / 2
-    centers2d_y = (gt_bboxes[:, [1]] + gt_bboxes[:, [3]]) / 2
-    centers2d = np.concatenate((centers2d_x, centers2d_y), axis=1)
-    results['centers2d'] = centers2d
-
-    results = affine_reszie(results)
-
-    assert results['gt_labels'].shape[0] == results['centers2d'].shape[0]
-    assert results['gt_labels3d'].shape[0] == results['centers2d'].shape[0]
-    assert results['gt_bboxes'].shape[0] == results['centers2d'].shape[0]
-    assert results['gt_bboxes_3d'].tensor.shape[0] == \
-           results['centers2d'].shape[0]
-    assert results['affine_aug'] is False
-
-    # test the situation: not use Random_Scale_Shift before AffineResize
-    results = dict()
-    img = mmcv.imread('./tests/data/kitti/training/image_2/000000.png',
-                      'color')
-    results['img'] = img
-    results['bbox_fields'] = ['gt_bboxes']
-    results['bbox3d_fields'] = ['gt_bboxes_3d']
-    h, w, _ = img.shape
-    center = np.array([w / 2, h / 2], dtype=np.float32)
-    size = np.array([w, h], dtype=np.float32)
-
-    results['center'] = center
-    results['size'] = size
-    results['affine_aug'] = False
-
-    gt_bboxes = create_random_bboxes(8, w, h)
-    gt_bboxes_3d = CameraInstance3DBoxes(torch.randn((8, 7)))
-    results['gt_labels'] = np.ones(gt_bboxes.shape[0], dtype=np.int64)
-    results['gt_labels3d'] = results['gt_labels']
-    results['gt_bboxes'] = gt_bboxes
-    results['gt_bboxes_3d'] = gt_bboxes_3d
-    results['depths'] = np.random.randn(gt_bboxes.shape[0])
-    centers2d_x = (gt_bboxes[:, [0]] + gt_bboxes[:, [2]]) / 2
-    centers2d_y = (gt_bboxes[:, [1]] + gt_bboxes[:, [3]]) / 2
-    centers2d = np.concatenate((centers2d_x, centers2d_y), axis=1)
-    results['centers2d'] = centers2d
-
-    results = affine_reszie(results)
-
-    assert results['gt_labels'].shape[0] == results['centers2d'].shape[0]
-    assert results['gt_labels3d'].shape[0] == results['centers2d'].shape[0]
-    assert results['gt_bboxes'].shape[0] == results['centers2d'].shape[0]
-    assert results['gt_bboxes_3d'].tensor.shape[0] == results[
-        'centers2d'].shape[0]
-    assert 'center' in results
-    assert 'size' in results
-    assert 'affine_aug' in results
-
-
-def test_random_shift_scale():
-    random_shift_scale = RandomShiftScale(shift_scale=(0.2, 0.4), aug_prob=0.3)
-    results = dict()
-    img = mmcv.imread('./tests/data/kitti/training/image_2/000000.png',
-                      'color')
-    results['img'] = img
-    results = random_shift_scale(results)
-    assert results['center'].dtype == np.float32
-    assert results['size'].dtype == np.float32
-    assert 'affine_aug' in results
-
-
-def test_range_limited_random_crop():
-    random_crop = RangeLimitedRandomCrop(relative_y_offset_range=(0.3, 1.0),
-                                         relative_x_offset_range=(0.5, 0.7),
-                                         crop_size=(256, 704))
-    results = dict()
-    img = mmcv.imread('./tests/data/kitti/training/image_2/000000.png',
-                      'color')
-    results['img'] = img
-    results = random_crop(results)
-    assert results['img'].shape == (256, 704, 3)
-    assert 'crop' in results
-
-
-def test_random_rotate():
-    random_rotate = RandomRotate(range=(-5.4, 5.4),
-                                 img_fill_val=0, level=1, prob=1.0)
-    results = dict()
-    img = mmcv.imread('./tests/data/kitti/training/image_2/000000.png',
-                      'color')
-    results['img'] = img
-    angle_origin = random_rotate.angle
-    results = random_rotate(results)
-    assert random_rotate.angle != angle_origin
-    assert 'rotate' in results
-
-
-def test_multiview_wrapper():
-    img_norm_cfg = dict(mean=[123.675, 116.28, 103.53],
-                        std=[58.395, 57.12, 57.375], to_rgb=True)
-    collected_keys = ['scale_factor', 'crop', 'pad_shape', 'flip', 'rotate']
-    multiview_transform_pipeline = \
-        MultiViewWrapper(transforms=[dict(type='Resize',
-                                          ratio_range=(0.94, 1.11),
-                                          img_scale=(396, 704)),
-                                     dict(type='RangeLimitedRandomCrop',
-                                          relative_x_offset_range=(0.0, 1.0),
-                                          relative_y_offset_range=(1.0, 1.0),
-                                          crop_size=(256, 704)),
-                                     dict(type='Pad', size=(256, 704)),
-                                     dict(type='RandomFlip', flip_ratio=0.5),
-                                     dict(type='RandomRotate',
-                                          range=(-5.4, 5.4), img_fill_val=0,
-                                          level=1, prob=1.0),
-                                     dict(type='Normalize', **img_norm_cfg)],
-                         collected_keys=collected_keys)
-    results = dict()
-    img = mmcv.imread('./tests/data/kitti/training/image_2/000000.png',
-                      'color')
-    results['img'] = [img, img]
-    num_imgs = len(results['img'])
-    results = multiview_transform_pipeline(results)
-    assert len(results['img']) == num_imgs
-    for key in collected_keys:
-        assert key in results
-        assert len(results[key]) == num_imgs

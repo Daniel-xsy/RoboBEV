@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmdet3d.core.bbox import bbox3d2result
-from ..builder import HEADS, build_head
+from mmdet.models import HEADS
+from ..builder import build_head
 from .base_3droi_head import Base3DRoIHead
 
 
@@ -64,15 +65,15 @@ class H3DRoIHead(Base3DRoIHead):
             feats_dict (dict): Contains features from the first stage.
             img_metas (list[dict]): Contain pcd and img's meta info.
             points (list[torch.Tensor]): Input points.
-            gt_bboxes_3d (list[:obj:`BaseInstance3DBoxes`]): Ground truth
+            gt_bboxes_3d (list[:obj:`BaseInstance3DBoxes`]): Ground truth \
                 bboxes of each sample.
             gt_labels_3d (list[torch.Tensor]): Labels of each sample.
-            pts_semantic_mask (list[torch.Tensor]): Point-wise
+            pts_semantic_mask (None | list[torch.Tensor]): Point-wise
                 semantic mask.
-            pts_instance_mask (list[torch.Tensor]): Point-wise
+            pts_instance_mask (None | list[torch.Tensor]): Point-wise
                 instance mask.
-            gt_bboxes_ignore (list[torch.Tensor]): Specify
-                which bounding boxes to ignore.
+            gt_bboxes_ignore (None | list[torch.Tensor]): Specify
+                which bounding.
 
         Returns:
             dict: losses from each head.

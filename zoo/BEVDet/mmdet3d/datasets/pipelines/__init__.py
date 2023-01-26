@@ -1,24 +1,20 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from .compose import Compose
+from mmdet.datasets.pipelines import Compose
 from .dbsampler import DataBaseSampler
 from .formating import Collect3D, DefaultFormatBundle, DefaultFormatBundle3D
-from .loading import (LoadAnnotations3D, LoadAnnotationsBEVDepth,
-                      LoadImageFromFileMono3D, LoadMultiViewImageFromFiles,
-                      LoadPointsFromDict, LoadPointsFromFile,
+from .loading import (LoadAnnotations3D, LoadImageFromFileMono3D,
+                      LoadMultiViewImageFromFiles, LoadPointsFromFile,
                       LoadPointsFromMultiSweeps, NormalizePointsColor,
-                      PointSegClassMapping, PointToMultiViewDepth,
-                      PrepareImageInputs)
+                      PointSegClassMapping, LoadMultiViewImageFromFiles_BEVDet,
+                      PointToMultiViewDepth)
 from .test_time_aug import MultiScaleFlipAug3D
-# yapf: disable
-from .transforms_3d import (AffineResize, BackgroundPointsFilter,
-                            GlobalAlignment, GlobalRotScaleTrans,
-                            IndoorPatchPointSample, IndoorPointSample,
-                            MultiViewWrapper, ObjectNameFilter, ObjectNoise,
+from .transforms_3d import (BackgroundPointsFilter, GlobalAlignment,
+                            GlobalRotScaleTrans, IndoorPatchPointSample,
+                            IndoorPointSample, ObjectNameFilter, ObjectNoise,
                             ObjectRangeFilter, ObjectSample, PointSample,
                             PointShuffle, PointsRangeFilter,
                             RandomDropPointsColor, RandomFlip3D,
-                            RandomJitterPoints, RandomRotate, RandomShiftScale,
-                            RangeLimitedRandomCrop, VoxelBasedPointSampler)
+                            RandomJitterPoints, VoxelBasedPointSampler)
 
 __all__ = [
     'ObjectSample', 'RandomFlip3D', 'ObjectNoise', 'GlobalRotScaleTrans',
@@ -30,8 +26,6 @@ __all__ = [
     'LoadPointsFromMultiSweeps', 'BackgroundPointsFilter',
     'VoxelBasedPointSampler', 'GlobalAlignment', 'IndoorPatchPointSample',
     'LoadImageFromFileMono3D', 'ObjectNameFilter', 'RandomDropPointsColor',
-    'RandomJitterPoints', 'AffineResize', 'RandomShiftScale',
-    'LoadPointsFromDict', 'MultiViewWrapper', 'RandomRotate',
-    'RangeLimitedRandomCrop', 'PrepareImageInputs',
-    'LoadAnnotationsBEVDepth', 'PointToMultiViewDepth'
+    'RandomJitterPoints', 'LoadMultiViewImageFromFiles_BEVDet',
+    'PointToMultiViewDepth'
 ]

@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import time
-
 import torch
 from mmcv import Config
 from mmcv.parallel import MMDataParallel
@@ -24,10 +23,6 @@ def parse_args():
         action='store_true',
         help='Whether to fuse conv and bn, this will slightly increase'
         'the inference speed')
-    parser.add_argument(
-        '--no-acceleration',
-        action='store_true',
-        help='Omit the pre-computation acceleration')
     args = parser.parse_args()
     return args
 
@@ -53,8 +48,6 @@ def main():
         shuffle=False)
 
     # build the model and load checkpoint
-    if not args.no_acceleration:
-        cfg.model.img_view_transformer.accelerate=True
     cfg.model.train_cfg = None
     model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
     fp16_cfg = cfg.get('fp16', None)

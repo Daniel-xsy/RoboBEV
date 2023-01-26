@@ -1,14 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import mmcv
+import numpy as np
 import tempfile
 import warnings
 from os import path as osp
-
-import mmcv
-import numpy as np
 from torch.utils.data import Dataset
 
+from mmdet.datasets import DATASETS
 from ..core.bbox import get_box_type
-from .builder import DATASETS
 from .pipelines import Compose
 from .utils import extract_result_dict, get_loading_pipeline
 
@@ -19,23 +18,6 @@ class Custom3DDataset(Dataset):
 
     This is the base dataset of SUNRGB-D, ScanNet, nuScenes, and KITTI
     dataset.
-
-    .. code-block:: none
-
-    [
-        {'sample_idx':
-         'lidar_points': {'lidar_path': velodyne_path,
-                           ....
-                         },
-         'annos': {'box_type_3d':  (str)  'LiDAR/Camera/Depth'
-                   'gt_bboxes_3d':  <np.ndarray> (n, 7)
-                   'gt_names':  [list]
-                   ....
-               }
-         'calib': { .....}
-         'images': { .....}
-        }
-    ]
 
     Args:
         data_root (str): Path of dataset root.
@@ -68,8 +50,7 @@ class Custom3DDataset(Dataset):
                  modality=None,
                  box_type_3d='LiDAR',
                  filter_empty_gt=True,
-                 test_mode=False,
-                 file_client_args=dict(backend='disk')):
+                 test_mode=False):
         super().__init__()
         self.data_root = data_root
         self.ann_file = ann_file
@@ -79,26 +60,13 @@ class Custom3DDataset(Dataset):
         self.box_type_3d, self.box_mode_3d = get_box_type(box_type_3d)
 
         self.CLASSES = self.get_classes(classes)
-        self.file_client = mmcv.FileClient(**file_client_args)
         self.cat2id = {name: i for i, name in enumerate(self.CLASSES)}
+        self.data_infos = self.load_annotations(self.ann_file)
 
-        # load annotations
-        if hasattr(self.file_client, 'get_local_path'):
-            with self.file_client.get_local_path(self.ann_file) as local_path:
-                self.data_infos = self.load_annotations(open(local_path, 'rb'))
-        else:
-            warnings.warn(
-                'The used MMCV version does not have get_local_path. '
-                f'We treat the {self.ann_file} as local paths and it '
-                'might cause errors if the path is not a local path. '
-                'Please use MMCV>= 1.3.16 if you meet errors.')
-            self.data_infos = self.load_annotations(self.ann_file)
-
-        # process pipeline
         if pipeline is not None:
             self.pipeline = Compose(pipeline)
 
-        # set group flag for the samplers
+        # set group flag for the sampler
         if not self.test_mode:
             self._set_group_flag()
 
@@ -111,8 +79,7 @@ class Custom3DDataset(Dataset):
         Returns:
             list[dict]: List of annotations.
         """
-        # loading data from a file-like object needs file format
-        return mmcv.load(ann_file, file_format='pkl')
+        return mmcv.load(ann_file)
 
     def get_data_info(self, index):
         """Get data info according to the given index.
@@ -121,7 +88,7 @@ class Custom3DDataset(Dataset):
             index (int): Index of the sample data to get.
 
         Returns:
-            dict: Data information that will be passed to the data
+            dict: Data information that will be passed to the data \
                 preprocessing pipelines. It includes the following keys:
 
                 - sample_idx (str): Sample index.
@@ -130,9 +97,8 @@ class Custom3DDataset(Dataset):
                 - ann_info (dict): Annotation info.
         """
         info = self.data_infos[index]
-        sample_idx = info['sample_idx']
-        pts_filename = osp.join(self.data_root,
-                                info['lidar_points']['lidar_path'])
+        sample_idx = info['point_cloud']['lidar_idx']
+        pts_filename = osp.join(self.data_root, info['pts_path'])
 
         input_dict = dict(
             pts_filename=pts_filename,
@@ -145,47 +111,6 @@ class Custom3DDataset(Dataset):
             if self.filter_empty_gt and ~(annos['gt_labels_3d'] != -1).any():
                 return None
         return input_dict
-
-    def get_ann_info(self, index):
-        """Get annotation info according to the given index.
-
-        Args:
-            index (int): Index of the annotation data to get.
-
-        Returns:
-            dict: Annotation information consists of the following keys:
-
-                - gt_bboxes_3d (:obj:`LiDARInstance3DBoxes`):
-                    3D ground truth bboxes
-                - gt_labels_3d (np.ndarray): Labels of ground truths.
-                - gt_names (list[str]): Class names of ground truths.
-        """
-        info = self.data_infos[index]
-        gt_bboxes_3d = info['annos']['gt_bboxes_3d']
-        gt_names_3d = info['annos']['gt_names']
-        gt_labels_3d = []
-        for cat in gt_names_3d:
-            if cat in self.CLASSES:
-                gt_labels_3d.append(self.CLASSES.index(cat))
-            else:
-                gt_labels_3d.append(-1)
-        gt_labels_3d = np.array(gt_labels_3d)
-
-        # Obtain original box 3d type in info file
-        ori_box_type_3d = info['annos']['box_type_3d']
-        ori_box_type_3d, _ = get_box_type(ori_box_type_3d)
-
-        # turn original box type to target box type
-        gt_bboxes_3d = ori_box_type_3d(
-            gt_bboxes_3d,
-            box_dim=gt_bboxes_3d.shape[-1],
-            origin=(0.5, 0.5, 0.5)).convert_to(self.box_mode_3d)
-
-        anns_results = dict(
-            gt_bboxes_3d=gt_bboxes_3d,
-            gt_labels_3d=gt_labels_3d,
-            gt_names=gt_names_3d)
-        return anns_results
 
     def pre_pipeline(self, results):
         """Initialization before data preparation.
@@ -252,7 +177,7 @@ class Custom3DDataset(Dataset):
         """Get class names of current dataset.
 
         Args:
-            classes (Sequence[str] | str): If classes is None, use
+            classes (Sequence[str] | str | None): If classes is None, use
                 default CLASSES defined by builtin dataset. If classes is a
                 string, take it as a file name. The file contains the name of
                 classes where each line contains one class name. If classes is
@@ -282,13 +207,13 @@ class Custom3DDataset(Dataset):
 
         Args:
             outputs (list[dict]): Testing results of the dataset.
-            pklfile_prefix (str): The prefix of pkl files. It includes
+            pklfile_prefix (str | None): The prefix of pkl files. It includes
                 the file path and the prefix of filename, e.g., "a/b/prefix".
                 If not specified, a temp file will be created. Default: None.
 
         Returns:
-            tuple: (outputs, tmp_dir), outputs is the detection results,
-                tmp_dir is the temporal directory created for saving json
+            tuple: (outputs, tmp_dir), outputs is the detection results, \
+                tmp_dir is the temporal directory created for saving json \
                 files when ``jsonfile_prefix`` is not specified.
         """
         if pklfile_prefix is None:
@@ -312,14 +237,11 @@ class Custom3DDataset(Dataset):
 
         Args:
             results (list[dict]): List of results.
-            metric (str | list[str], optional): Metrics to be evaluated.
-                Defaults to None.
-            iou_thr (list[float]): AP IoU thresholds. Defaults to (0.25, 0.5).
-            logger (logging.Logger | str, optional): Logger used for printing
-                related information during evaluation. Defaults to None.
-            show (bool, optional): Whether to visualize.
+            metric (str | list[str]): Metrics to be evaluated.
+            iou_thr (list[float]): AP IoU thresholds.
+            show (bool): Whether to visualize.
                 Default: False.
-            out_dir (str, optional): Path to save the visualization results.
+            out_dir (str): Path to save the visualization results.
                 Default: None.
             pipeline (list[dict], optional): raw data loading for showing.
                 Default: None.
@@ -359,7 +281,7 @@ class Custom3DDataset(Dataset):
         """Get data loading pipeline in self.show/evaluate function.
 
         Args:
-            pipeline (list[dict]): Input pipeline. If None is given,
+            pipeline (list[dict] | None): Input pipeline. If None is given, \
                 get from self.pipeline.
         """
         if pipeline is None:

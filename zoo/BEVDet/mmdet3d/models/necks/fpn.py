@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
@@ -8,7 +7,7 @@ from ..builder import NECKS
 
 
 @NECKS.register_module()
-class CustomFPN(BaseModule):
+class FPNForBEVDet(BaseModule):
     r"""Feature Pyramid Network.
 
     This is an implementation of paper `Feature Pyramid Networks for Object
@@ -75,7 +74,7 @@ class CustomFPN(BaseModule):
                  upsample_cfg=dict(mode='nearest'),
                  init_cfg=dict(
                      type='Xavier', layer='Conv2d', distribution='uniform')):
-        super(CustomFPN, self).__init__(init_cfg)
+        super(FPNForBEVDet, self).__init__(init_cfg)
         assert isinstance(in_channels, list)
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -176,7 +175,9 @@ class CustomFPN(BaseModule):
 
         # build outputs
         # part 1: from original levels
-        outs = [self.fpn_convs[i](laterals[i]) for i in self.out_ids]
+        outs = [
+            self.fpn_convs[i](laterals[i]) for i in self.out_ids
+        ]
         # part 2: add extra levels
         if self.num_outs > len(outs):
             # use max pool to get more levels on top of outputs

@@ -179,16 +179,15 @@ def test_seg_getitem():
 
     # test load classes from file
     import tempfile
-    with tempfile.TemporaryDirectory() as tmpdir:
-        path = tmpdir + 'classes.txt'
-        with open(path, 'w') as f:
-            f.write('beam\nwindow\n')
+    tmp_file = tempfile.NamedTemporaryFile()
+    with open(tmp_file.name, 'w') as f:
+        f.write('beam\nwindow\n')
 
     s3dis_dataset = S3DISSegDataset(
         data_root=root_path,
         ann_files=ann_file,
         pipeline=None,
-        classes=path,
+        classes=tmp_file.name,
         scene_idxs=scene_idxs)
     assert s3dis_dataset.CLASSES != original_classes
     assert s3dis_dataset.CLASSES == ['beam', 'window']
@@ -240,10 +239,9 @@ def test_seg_evaluate():
 
 
 def test_seg_show():
+    import mmcv
     import tempfile
     from os import path as osp
-
-    import mmcv
 
     tmp_dir = tempfile.TemporaryDirectory()
     temp_dir = tmp_dir.name

@@ -1,17 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
-
-from mmdet3d.ops.spconv import IS_SPCONV2_AVAILABLE
-
-if IS_SPCONV2_AVAILABLE:
-    from spconv.pytorch import SparseConvTensor, SparseSequential
-else:
-    from mmcv.ops import SparseConvTensor, SparseSequential
-
 from mmcv.runner import BaseModule, auto_fp16
 
 from mmdet3d.ops import SparseBasicBlock, make_sparse_convmodule
-from mmdet3d.ops.sparse_block import replace_feature
+from mmdet3d.ops import spconv as spconv
 from ..builder import MIDDLE_ENCODERS
 
 
@@ -116,8 +108,9 @@ class SparseUNet(BaseModule):
             dict[str, torch.Tensor]: Backbone features.
         """
         coors = coors.int()
-        input_sp_tensor = SparseConvTensor(voxel_features, coors,
-                                           self.sparse_shape, batch_size)
+        input_sp_tensor = spconv.SparseConvTensor(voxel_features, coors,
+                                                  self.sparse_shape,
+                                                  batch_size)
         x = self.conv_input(input_sp_tensor)
 
         encode_features = []
@@ -169,11 +162,10 @@ class SparseUNet(BaseModule):
             :obj:`SparseConvTensor`: Upsampled feature.
         """
         x = lateral_layer(x_lateral)
-        x = replace_feature(x, torch.cat((x_bottom.features, x.features),
-                                         dim=1))
+        x.features = torch.cat((x_bottom.features, x.features), dim=1)
         x_merge = merge_layer(x)
         x = self.reduce_channel(x, x_merge.features.shape[1])
-        x = replace_feature(x, x_merge.features + x.features)
+        x.features = x_merge.features + x.features
         x = upsample_layer(x)
         return x
 
@@ -193,7 +185,8 @@ class SparseUNet(BaseModule):
         n, in_channels = features.shape
         assert (in_channels % out_channels
                 == 0) and (in_channels >= out_channels)
-        x = replace_feature(x, features.view(n, out_channels, -1).sum(dim=2))
+
+        x.features = features.view(n, out_channels, -1).sum(dim=2)
         return x
 
     def make_encoder_layers(self, make_block, norm_cfg, in_channels):
@@ -207,7 +200,7 @@ class SparseUNet(BaseModule):
         Returns:
             int: The number of encoder output channels.
         """
-        self.encoder_layers = SparseSequential()
+        self.encoder_layers = spconv.SparseSequential()
 
         for i, blocks in enumerate(self.encoder_channels):
             blocks_list = []
@@ -238,7 +231,7 @@ class SparseUNet(BaseModule):
                             conv_type='SubMConv3d'))
                 in_channels = out_channels
             stage_name = f'encoder_layer{i + 1}'
-            stage_layers = SparseSequential(*blocks_list)
+            stage_layers = spconv.SparseSequential(*blocks_list)
             self.encoder_layers.add_module(stage_name, stage_layers)
         return out_channels
 

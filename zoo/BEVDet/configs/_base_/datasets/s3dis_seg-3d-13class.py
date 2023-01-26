@@ -3,27 +3,12 @@ dataset_type = 'S3DISSegDataset'
 data_root = './data/s3dis/'
 class_names = ('ceiling', 'floor', 'wall', 'beam', 'column', 'window', 'door',
                'table', 'chair', 'sofa', 'bookcase', 'board', 'clutter')
-
-file_client_args = dict(backend='disk')
-# Uncomment the following if use ceph or other file clients.
-# See https://mmcv.readthedocs.io/en/latest/api.html#mmcv.fileio.FileClient
-# for more details.
-# file_client_args = dict(
-#     backend='petrel',
-#     path_mapping=dict({
-#         './data/s3dis/':
-#         's3://openmmlab/datasets/detection3d/s3dis_processed/',
-#         'data/s3dis/':
-#         's3://openmmlab/datasets/detection3d/s3dis_processed/'
-#     }))
-
 num_points = 4096
 train_area = [1, 2, 3, 4, 6]
 test_area = 5
 train_pipeline = [
     dict(
         type='LoadPointsFromFile',
-        file_client_args=file_client_args,
         coord_type='DEPTH',
         shift_height=False,
         use_color=True,
@@ -31,7 +16,6 @@ train_pipeline = [
         use_dim=[0, 1, 2, 3, 4, 5]),
     dict(
         type='LoadAnnotations3D',
-        file_client_args=file_client_args,
         with_bbox_3d=False,
         with_label_3d=False,
         with_mask_3d=False,
@@ -55,7 +39,6 @@ train_pipeline = [
 test_pipeline = [
     dict(
         type='LoadPointsFromFile',
-        file_client_args=file_client_args,
         coord_type='DEPTH',
         shift_height=False,
         use_color=True,
@@ -93,7 +76,6 @@ test_pipeline = [
 eval_pipeline = [
     dict(
         type='LoadPointsFromFile',
-        file_client_args=file_client_args,
         coord_type='DEPTH',
         shift_height=False,
         use_color=True,
@@ -101,7 +83,6 @@ eval_pipeline = [
         use_dim=[0, 1, 2, 3, 4, 5]),
     dict(
         type='LoadAnnotations3D',
-        file_client_args=file_client_args,
         with_bbox_3d=False,
         with_label_3d=False,
         with_mask_3d=False,
@@ -135,8 +116,7 @@ data = dict(
         scene_idxs=[
             data_root + f'seg_info/Area_{i}_resampled_scene_idxs.npy'
             for i in train_area
-        ],
-        file_client_args=file_client_args),
+        ]),
     val=dict(
         type=dataset_type,
         data_root=data_root,
@@ -146,8 +126,7 @@ data = dict(
         test_mode=True,
         ignore_index=len(class_names),
         scene_idxs=data_root +
-        f'seg_info/Area_{test_area}_resampled_scene_idxs.npy',
-        file_client_args=file_client_args),
+        f'seg_info/Area_{test_area}_resampled_scene_idxs.npy'),
     test=dict(
         type=dataset_type,
         data_root=data_root,
@@ -155,7 +134,6 @@ data = dict(
         pipeline=test_pipeline,
         classes=class_names,
         test_mode=True,
-        ignore_index=len(class_names),
-        file_client_args=file_client_args))
+        ignore_index=len(class_names)))
 
 evaluation = dict(pipeline=eval_pipeline)

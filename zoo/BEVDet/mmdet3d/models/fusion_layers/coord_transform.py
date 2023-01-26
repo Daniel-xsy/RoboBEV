@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from functools import partial
-
 import torch
+from functools import partial
 
 from mmdet3d.core.points import get_points_type
 
