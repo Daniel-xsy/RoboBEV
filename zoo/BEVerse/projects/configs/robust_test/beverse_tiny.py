@@ -71,6 +71,7 @@ data = dict(
         future_frames=future_frames,
     ),
 )
+corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
 
 
 # Evaluating bboxes of pts_bbox
