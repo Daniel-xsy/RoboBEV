@@ -2,7 +2,7 @@
 
 CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVFormer/projects/configs/robust_test/bevformer_base_no_temp.py
 CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/BEVFormer/bevformer_r101_dcn_24ep.pth
-GPUS=8
+GPUS=1
 PORT=${PORT:-29501}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
