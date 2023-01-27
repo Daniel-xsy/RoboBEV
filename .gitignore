@@ -4,11 +4,12 @@ models
 data
 # vs code config
 .vscode
+# compiled file
 *.cpython-38.pyc
 *.cpython-37.pyc
-# compiled file
 *.cu
 *.cpp
 *.h
 *.so
 *.o
+*.egg-info
