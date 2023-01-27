@@ -277,8 +277,8 @@ train_pipeline = [
                     'transformation_3d_flow', 'img_info')),
 ]
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_MTL',
-         using_ego=True, data_aug_conf=data_aug_conf),
+    dict(type='Custom_LoadMultiViewImageFromFiles_MTL',
+         using_ego=True, data_aug_conf=data_aug_conf, corruption_root=corruption_root),
     dict(type='LoadAnnotations3D_MTL', with_bbox_3d=True,
          with_label_3d=True, with_instance_tokens=True),
     dict(type='RasterizeMapVectors', map_grid_conf=map_grid_conf),
@@ -364,6 +364,7 @@ data = dict(
 
 optimizer = dict(type='AdamW', lr=2e-4, weight_decay=0.01)
 evaluation = dict(interval=999, pipeline=test_pipeline)
+corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
 
 
 # Evaluating bboxes of pts_bbox

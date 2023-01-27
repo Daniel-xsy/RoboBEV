@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVerse/projects/configs/robust_test/beverse_tiny.py
-CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/BEVerse/beverse_tiny.pth
-GPUS=4
+CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVerse/projects/configs/robust_test/beverse_small.py
+CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/BEVerse/beverse_small.pth
+GPUS=8
 PORT=${PORT:-29501}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
