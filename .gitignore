@@ -5,3 +5,10 @@ data
 # vs code config
 .vscode
 *.cpython-38.pyc
+*.cpython-37.pyc
+# compiled file
+*.cu
+*.cpp
+*.h
+*.so
+*.o
