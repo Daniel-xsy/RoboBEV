@@ -1,3 +1,0 @@
-[submodule "mmdetection3d"]
-	path = mmdetection3d
-	url = git@github.com:open-mmlab/mmdetection3d.git
