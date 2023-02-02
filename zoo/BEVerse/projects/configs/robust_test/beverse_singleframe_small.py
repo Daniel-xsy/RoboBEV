@@ -364,7 +364,8 @@ data = dict(
 
 optimizer = dict(type='AdamW', lr=2e-4, weight_decay=0.01)
 evaluation = dict(interval=999, pipeline=test_pipeline)
-corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
+corruptions = ['ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
+# 'MotionBlur', 'Fog', 'Snow', s
 
 
 # Evaluating bboxes of pts_bbox

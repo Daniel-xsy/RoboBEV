@@ -3,6 +3,18 @@ import os
 import sys
 from mmcv.runner import (get_dist_info)
 
+def empty_results():
+    results = dict()
+    results['pts_bbox_NuScenes/NDS'] = 0.0
+    results['pts_bbox_NuScenes/mAP'] = 0.0
+    results['pts_bbox_NuScenes/mATE'] = 1.0
+    results['pts_bbox_NuScenes/mASE'] = 1.0
+    results['pts_bbox_NuScenes/mAOE'] = 1.0
+    results['pts_bbox_NuScenes/mAVE'] = 1.0
+    results['pts_bbox_NuScenes/mAAE'] = 1.0
+    
+    return results
+
 
 def collect_metric(results, logging):
 
