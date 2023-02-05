@@ -246,6 +246,10 @@ def main():
             logging.write(f'#### Severity {severity}\n')
             data_loader.dataset.pipeline.transforms[0].corruption = corruption
             data_loader.dataset.pipeline.transforms[0].severity = severity
+            if cfg.test_pipeline[1]['type'] == 'Custom_LoadMultiViewImageFromMultiSweepsFiles':
+                data_loader.dataset.pipeline.transforms[1].corruption = corruption
+                data_loader.dataset.pipeline.transforms[1].severity = severity
+
             outputs = multi_gpu_test(model, data_loader, args.tmpdir,
                                      args.gpu_collect)
             
