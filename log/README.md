@@ -5,6 +5,7 @@ This folder contains the results of nuScenes-c benchmark. Some corruption types 
 | **Model** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |  **Clean Config** |  **Corruption Config** | 
 | ------- | ------- |------- | ------- | ------- |------- | ------- | ------- |------- | ------- | 
 |  BEVFormer-Base   |  0.5174    | 0.4164    | 0.6726     | 0.2734     | 0.3704     | 0.3941     | 0.1974     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_base.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/bevformer_base.py) |
+|  BEVFormer-Base w/o temp   | 0.4129    | 0.3461    | 0.7549     | 0.2832     | 0.4520     | 0.8917     | 0.2194     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_base.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/bevformer_base_no_temp.py.py) |
 |  DETR   | | | | | | | | | [config](../zoo/DETR3D//projects//configs//robust_test/) |
 |  PETR   | | | | | | | | | [config](../zoo/PETR/projects/configs/robust_test/) |
 |  BEVDet    | | | | | | | |  | TBD |
