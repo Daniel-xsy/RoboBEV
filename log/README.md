@@ -4,7 +4,7 @@ This folder contains the results of nuScenes-c benchmark. Some corruption types 
 
 Clean results are shown on the following table:
 
-| **Model** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |  **Clean Config** |  **Crpt Config** | **Checkpoint** |
+| **Model** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |  **Clean Config** |  **Crpt Config** | **Ckpt** |
 | ------- | ------- |------- | ------- | ------- |------- | ------- | ------- |------- | ------- | ------- | 
 |  **BEVFormer-Small**   |  0.4787    | 0.3700    | 0.7212     | 0.2792     | 0.4065     | 0.4364     | 0.2201     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_small.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/bevformer_small.py) | [ckpt](https://github.com/zhiqi-li/storage/releases/download/v1.0/bevformer_small_epoch_24.pth) |
 |  **BEVFormer-Small w/o temp**   | 0.2622    | 0.1324    | 0.9352     | 0.3024     | 0.5556     | 1.1106     | 0.2466     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_small_no_temp.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/) | [ckpt](https://github.com/zhiqi-li/storage/releases/download/v1.0/bevformer_small_epoch_24.pth) |
