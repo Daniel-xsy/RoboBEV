@@ -182,6 +182,7 @@ def main():
 
     # build the dataloader
     dataset = build_dataset(cfg.data.test)
+    b = dataset[1]  # for dubug only
     data_loader = build_dataloader(
         dataset,
         samples_per_gpu=samples_per_gpu,
