@@ -6,5 +6,7 @@ GPUS=1
 PORT=${PORT:-29502}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
-python -m debugpy --listen 5678 --wait-for-client -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
+python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
     $(dirname "$0")/robust_test.py $CONFIG $CHECKPOINT --launcher pytorch ${@:4} --eval bbox
+
+# -m debugpy --listen 5678 --wait-for-client 

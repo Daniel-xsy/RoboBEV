@@ -250,6 +250,7 @@ def main():
                 data_loader.dataset.pipeline.transforms[1].corruption = corruption
                 data_loader.dataset.pipeline.transforms[1].severity = severity
 
+            a, b = data_loader.dataset[0], data_loader.dataset[3]
             outputs = multi_gpu_test(model, data_loader, args.tmpdir,
                                      args.gpu_collect)
             
