@@ -7,7 +7,7 @@ This folder contains the results of nuScenes-c benchmark. Some corruption types 
 |  BEVFormer   | TBD | [config](../zoo/BEVFormer/projects/configs/robust_test/) |
 | ------- | ------- |------- |
 |  DETR   |  TBD | [config](../zoo/DETR3D//projects//configs//robust_test/) |
-| ------- | ------- |
+| ------- | ------- |------- |
 |  PETR   |  TBD | [config](../zoo/PETR/projects/configs/robust_test/) |
 | ------- | ------- |------- |
 |  BEVDet    TBD | | TBD |
