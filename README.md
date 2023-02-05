@@ -6,8 +6,9 @@ We benchmark prevalent camera-based object detection models under natural corrup
 
 ## Evaluate under corruption
 
-To evaluate model under corruptions, add `corruptions` in mmdet config file, and run the folowwing command:
+To evaluate model under corruptions, add `corruptions` in mmdet config file, and run the following command:
 ```shell
+cd ./zoo/${models}
 bash tools/dist_robust_test.sh
 ```
 Results will be saved in `./log` folder with the prefix of model name.

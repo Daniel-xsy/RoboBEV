@@ -1,6 +1,6 @@
 _base_ = [
-    '../../../mmdetection3d/configs/_base_/datasets/nus-3d.py',
-    '../../../mmdetection3d/configs/_base_/default_runtime.py'
+    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/datasets/nus-3d.py',
+    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/default_runtime.py'
 ]
 
 plugin=True
@@ -114,7 +114,8 @@ model = dict(
             pc_range=point_cloud_range))))
 
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '../../data/'
 
 file_client_args = dict(backend='disk')
 
@@ -202,8 +203,18 @@ data = dict(
             # and box_type_3d='Depth' in sunrgbd and scannet dataset.
             box_type_3d='LiDAR'),
     ),
-    val=dict(pipeline=test_pipeline, classes=class_names, modality=input_modality),
-    test=dict(pipeline=test_pipeline, classes=class_names, modality=input_modality))
+    val=dict(
+        pipeline=test_pipeline, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        classes=class_names, 
+        modality=input_modality),
+    test=dict(        
+        pipeline=test_pipeline, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        classes=class_names, 
+        modality=input_modality))
 
 optimizer = dict(
     type='AdamW', 
