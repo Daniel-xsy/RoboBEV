@@ -14,7 +14,7 @@ from mmdet3d.datasets import build_dataset
 from project.mmdet3d_plugin.corruptions import CORRUPTIONS
 
 
-SEVERITY = {'2': 'easy', '3': "mid", '4': "mid", '5': 'hard'}
+SEVERITY = {'1': 'easy', '3':'hard'}
 
 
 def parse_args():
@@ -111,8 +111,8 @@ def main():
     for corruption in cfg.corruptions:
         print(f'Corruption type: {corruption}')  
 
-        for severity in [4, 5]:
-            print(f'Severity: {severity}')  
+        for severity in [1, 3]:
+            print(f'\nSeverity: {severity}')  
             corrupt = CORRUPTIONS.build(dict(type=corruption, severity=severity, norm_config=cfg.img_norm_cfg))
 
             prog_bar = mmcv.ProgressBar(len(data_loader))
@@ -122,7 +122,7 @@ def main():
             for i, data in enumerate(data_loader):
                 # s = time.time()
 
-                if i >= 1790:
+                if i <= 1780:
                     prog_bar.update()
                     continue
 
