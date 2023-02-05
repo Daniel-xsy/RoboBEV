@@ -50,5 +50,5 @@ data = dict(
     shuffler_sampler=dict(type='DistributedGroupSampler')
 )
 
-corruptions = ['LowLight']
+corruptions = ['Snow']
 # 'MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost'

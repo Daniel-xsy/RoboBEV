@@ -14,7 +14,7 @@ from mmdet3d.datasets import build_dataset
 from project.mmdet3d_plugin.corruptions import CORRUPTIONS
 
 
-SEVERITY = {'2': 'easy'}
+SEVERITY = {'1': 'easy', '3':'hard'}
 
 
 def parse_args():
@@ -111,7 +111,7 @@ def main():
     for corruption in cfg.corruptions:
         print(f'Corruption type: {corruption}')  
 
-        for severity in [2]:
+        for severity in [1, 3]:
             print(f'\nSeverity: {severity}')  
             corrupt = CORRUPTIONS.build(dict(type=corruption, severity=severity, norm_config=cfg.img_norm_cfg))
 
