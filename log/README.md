@@ -12,11 +12,14 @@ Clean results are shown on the following table:
 |  **BEVFormer-Base w/o temp**   | 0.4129    | 0.3461    | 0.7549     | 0.2832     | 0.4520     | 0.8917     | 0.2194     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_base.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/bevformer_base_no_temp.py.py) | [ckpt](https://github.com/zhiqi-li/storage/releases/download/v1.0/bevformer_r101_dcn_24ep.pth) |
 |  **DETR**   | | | | | | | | [config](../zoo/DETR3D//projects/configs/detr3d/detr3d_res101_gridmask.py) | [config](../zoo/DETR3D//projects/configs/robust_test/detr3d_res101_gridmask.py) |[ckpt](https://drive.google.com/file/d/1YWX-jIS6fxG5_JKUBNVcZtsPtShdjE4O/view?usp=sharing) |
 |  **DETR w cbgs**  | | | | | | | | [config](../zoo/DETR3D//projects/configs/detr3d/detr3d_res101_gridmask_cbgs.py) | [config](../zoo/DETR3D//projects//configs/robust_test/detr3d_res101_gridmask_cbgs.py) | [ckpt](https://drive.google.com/file/d/1YWX-jIS6fxG5_JKUBNVcZtsPtShdjE4O/view?usp=sharing) |
-|  **PETR-r50-p4**   | | | | | | | | [config](../zoo/PETR/projects/configs/petr/petr_r50dcn_gridmask_p4.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_r50dcn_gridmask_p4.py) | (ckpt)[https://drive.google.com/file/d/1eYymeIbS0ecHhQcB8XAFazFxLPm3wIHY/view?usp=sharing] |
-|  **PETR-vov-p4**   | | | | | | | | [config](../zoo/PETR/projects/configs/petr/petr_vovnet_gridmask_p4_1600x640.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_vovnet_gridmask_p4_1600x640.py) | (ckpt)[https://drive.google.com/file/d/1SV0_n0PhIraEXHJ1jIdMu3iMg9YZsm8c/view?usp=sharing] |
+|  **PETR-r50-p4**   | | | | | | | | [config](../zoo/PETR/projects/configs/petr/petr_r50dcn_gridmask_p4.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_r50dcn_gridmask_p4.py) | [ckpt](https://drive.google.com/file/d/1eYymeIbS0ecHhQcB8XAFazFxLPm3wIHY/view?usp=sharing) |
+|  **PETR-vov-p4**   | | | | | | | | [config](../zoo/PETR/projects/configs/petr/petr_vovnet_gridmask_p4_1600x640.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_vovnet_gridmask_p4_1600x640.py) | [ckpt](https://drive.google.com/file/d/1eYymeIbS0ecHhQcB8XAFazFxLPm3wIHY/view?usp=sharing) |
 |  BEVDet    | | | | | | | |  | TBD | TBD |
 |  BEVDepth   | | | | | | | |   | TBD | TBD |
-|  BEVerse   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/) | TBD |
+|  **BEVerse-Tiny**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Tiny w/o Temp**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_singleframe_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Small**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Small w/o Temp**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs/beverse_singleframe_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
 |  ORA3D   | | | | | | | |  |  [config](../zoo/ora3d/projects/configs/robust_test/) | TBD |
 
 ### Notice
