@@ -71,7 +71,7 @@ data = dict(
         future_frames=future_frames,
     ),
 )
-corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
+corruptions = ['ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
 
 # mAP: 0.3512                                                                                                                                
 # mATE: 0.6243

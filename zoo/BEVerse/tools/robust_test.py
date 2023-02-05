@@ -19,7 +19,7 @@ from mmdet3d.models import build_model
 from mmdet.apis import multi_gpu_test, set_random_seed
 from mmdet.datasets import replace_ImageToTensor
 from tools.analysis_tools.parse_results import (Logging_str, collect_metric, 
-                        collect_average_metric)
+                        collect_average_metric, empty_results)
 
 
 
@@ -267,7 +267,11 @@ def main():
                         eval_kwargs.pop(key, None)
                     eval_kwargs.update(dict(metric=args.eval, **kwargs))
                     # print(dataset.evaluate(outputs, **eval_kwargs))
-                    results_dict = dataset.evaluate(outputs, **eval_kwargs)
+                    try:
+                        results_dict = dataset.evaluate(outputs, **eval_kwargs)
+                    except:
+                        # No detection results: the model completely fail
+                        results_dict = empty_results()
                     results_dict['corruption'] = corruption
                     results_dict['severity'] = severity
                     results_dict_list.append(results_dict)
