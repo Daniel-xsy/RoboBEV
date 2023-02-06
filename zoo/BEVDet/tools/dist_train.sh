@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CONFIG=$1
-GPUS=$2
+CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVDet/configs/bevdet/bevdet-r101.py
+GPUS=8
 PORT=${PORT:-29500}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
