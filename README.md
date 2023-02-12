@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <img src="docs/figs/logo.png" align="center" width="26%">
+  <img src="docs/figs/logo.png" align="center" width="24%">
   
   <h3 align="center"><strong>RoboDet: Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
