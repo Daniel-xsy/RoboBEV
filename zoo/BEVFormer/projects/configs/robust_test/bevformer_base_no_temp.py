@@ -259,5 +259,5 @@ log_config = dict(
 
 checkpoint_config = dict(interval=1)
 
-corruptions = ['Snow', 'ColorQuant', 'LowLight']
+corruptions = ['MotionBlur', 'Fog', 'Brightness', 'CameraCrash', 'FrameLost']
 # 'Clean', 'MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 
