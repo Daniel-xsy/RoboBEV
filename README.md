@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <img src="docs/figs/logo.png" align="center" width="32%">
+  <img src="docs/figs/logo.png" align="center" width="26%">
   
   <h3 align="center"><strong>RoboDet: Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
@@ -19,7 +19,7 @@
   </a>
   
   <a href="" target='_blank'>
-    <img src="https://img.shields.io/badge/Demo-%F0%9F%8E%AC-pink">
+    <img src="https://img.shields.io/badge/Demo-%F0%9F%8E%AC-yellow">
   </a>
   
   <a href="" target='_blank'>
@@ -34,7 +34,7 @@
 
 
 ## Updates
-- [2023.02] - 
+- [2023.02] - The `nuScenes-C` dataset is ready to be downloaded! See [here](docs/DATA_PREPARE.md) for more details.
 
 
 ## Outline
