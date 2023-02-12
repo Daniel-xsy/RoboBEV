@@ -238,4 +238,4 @@ evaluation = dict(interval=2, pipeline=test_pipeline)
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='ckpts/fcos3d.pth'
 
-corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
+corruptions = ['Snow', 'ColorQuant', 'LowLight']
