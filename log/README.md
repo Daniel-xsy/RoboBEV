@@ -16,10 +16,10 @@ Clean results are shown on the following table:
 |  **PETR-vov-p4**   | | | | | | | | [config](../zoo/PETR/projects/configs/petr/petr_vovnet_gridmask_p4_1600x640.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_vovnet_gridmask_p4_1600x640.py) | [ckpt](https://drive.google.com/file/d/1eYymeIbS0ecHhQcB8XAFazFxLPm3wIHY/view?usp=sharing) |
 |  BEVDet    | | | | | | | |  | TBD | TBD |
 |  BEVDepth   | | | | | | | |   | TBD | TBD |
-|  **BEVerse-Tiny**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
-|  **BEVerse-Tiny w/o Temp**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_singleframe_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
-|  **BEVerse-Small**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
-|  **BEVerse-Small w/o Temp**   | | | | | | | |   | [config](../zoo/BEVerse//projects//configs/beverse_singleframe_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Tiny**   | 0.4665 | 0.3214  | 0.6807 | 0.2782 | 0.4657 | 0.3281 | 0.1893 | [config](../zoo/BEVerse//projects//configs/beverse_tiny.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Tiny w/o Temp**   | 0.1603 | 0.0826 | 0.8298 | 0.5296 | 0.8771 | 1.2639 | 0.5739 | [config](../zoo/BEVerse//projects//configs/beverse_singleframe_tiny.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_singleframe_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Small**   | 0.4951 | 0.3512  | 0.6243 | 0.2694 | 0.3999 | 0.3292 | 0.1827 | [config](../zoo/BEVerse//projects//configs/beverse_small.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
+|  **BEVerse-Small w/o Temp**   | 0.2682 | 0.1513  | 0.6631 | 0.4228 | 0.5406 | 1.3996 | 0.4483 |   | [config](../zoo/BEVerse//projects//configs/beverse_singleframe_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
 |  ORA3D   | | | | | | | |  |  [config](../zoo/ora3d/projects/configs/robust_test/) | TBD |
 
 ### Notice
