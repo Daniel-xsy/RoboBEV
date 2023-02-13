@@ -30,11 +30,12 @@
 
 
 ## About
-`RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under common corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>weather conditions, <sup>2</sup>motions, and <sup>3</sup>sensor failures.
+`RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>weather conditions, <sup>2</sup>motions, and <sup>3</sup>sensor failures.
 
 
 ## Updates
 - [2023.02] - The `nuScenes-C` dataset is ready to be downloaded! See [here](docs/DATA_PREPARE.md) for more details.
+- [2023.01] - Launch of the `RoboDet` benchmark! :beers:
 
 
 ## Outline
@@ -60,16 +61,7 @@ Please refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepa
 
 ## Getting Started
 
-We benchmark prevalent camera-based object detection models under natural corruptions. Since models have different dependencies, please follow the official model repo to prepare the environment and data.
-
-### Evaluate under corruption
-
-To evaluate model under corruptions, add `corruptions` in mmdet config file, and run the following command:
-```shell
-cd ./zoo/${models}
-bash tools/dist_robust_test.sh
-```
-Results will be saved in `./log` folder with the prefix of model name.
+Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about this codebase.
 
 
 ## Model Zoo
@@ -82,8 +74,14 @@ Results will be saved in `./log` folder with the prefix of model name.
 > - [x] **[BEVStereo](https://arxiv.org/abs/2209.10248), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVStereo)</sup>
 > - [x] **[BEVDepth](https://arxiv.org/abs/2206.10092), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
 > - [ ] **[MatrixVT](https://arxiv.org/abs/2211.10593), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
+> - [ ] **[Sparse4D](https://arxiv.org/abs/2211.10581), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/linxuewu/Sparse4D)</sup>
+> - [ ] **[SOLOFusion](https://arxiv.org/abs/2210.02443), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/Divadi/SOLOFusion)</sup>
+> - [ ] **[SRCN3D](https://arxiv.org/abs/2206.14451), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/synsin0/SRCN3D)</sup>
+> - [ ] **[PolarDETR](https://arxiv.org/abs/2206.10965), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/hustvl/PolarDETR)</sup>
 > - [x] **[BEVerse](https://arxiv.org/abs/2205.09743), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/zhangyp15/BEVerse)</sup>
+> - [ ] **[M^2BEV](https://arxiv.org/abs/2204.05088), arXiv 2022.** <sup>[**`[Code]`**](https://nvlabs.github.io/M2BEV/)</sup>
 > - [x] **[ORA3D](https://arxiv.org/abs/2207.00865), BMVC 2022.** <sup>[**`[Code]`**](https://github.com/anonymous2776/ora3d)</sup>
+> - [ ] **[Graph-DETR3D](https://arxiv.org/abs/2204.11582), ACM MM 2022.** <sup>[**`[Code]`**](https://github.com/zehuichen123/Graph-DETR3D)</sup>
 > - [x] **[PETR](https://arxiv.org/abs/2203.05625), ECCV 2022.** <sup>[**`[Code]`**](https://github.com/megvii-research/PETR)</sup>
 > - [x] **[BEVFormer](https://arxiv.org/abs/2203.17270), ECCV 2022.** <sup>[**`[Code]`**](https://github.com/fundamentalvision/BEVFormer)</sup>
 > - [x] **[BEVDet](https://arxiv.org/abs/2112.11790), arXiv 2021.** <sup>[**`[Code]`**](https://github.com/HuangJunJie2017/BEVDet)</sup>
@@ -121,17 +119,12 @@ If you find this work helpful, please kindly consider citing our paper:
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
 <br />
-This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>, while some specific operations in this codebase might be with other licenses. Please refer to [LICENSE.md](docs/LICENSE.md) for a more careful check, if you are using our code for commercial matters.
 
 
 
 
 ## Acknowledgements
-This project is built upon the following repo.
-- [BEVFormer](https://github.com/fundamentalvision/BEVFormer)
-- [DETR3D](https://github.com/WangYueFt/detr3d)
-- [BEVDet](https://github.com/HuangJunJie2017/BEVDet)
-- [BEVerse]()
-- [SRCN3D]()
-- [PolarFormer]()
-- [ORA3D]()
+We thank the exceptional support from [Shanghai AI Laboratory](https://www.shlab.org.cn/)! Please refer to [ACKNOWLEDGE.md](docs/ACKNOWLEDGE.md) for more detailed acknowledgments of this codebase.
+
+
