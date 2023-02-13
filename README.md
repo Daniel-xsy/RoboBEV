@@ -33,6 +33,18 @@
 `RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>weather conditions, <sup>2</sup>motions, and <sup>3</sup>sensor failures.
 
 
+| | | | | | | |
+| :--------: | :---: | :---------: | :-: | :--------: | :---: | :---------: |
+| FRONT_LEFT | FRONT | FRONT_RIGHT |     | FRONT_LEFT | FRONT | FRONT_RIGHT |
+| ![z](docs/figs/front_left_snow.gif) | ![z](docs/figs/front_snow.gif) | ![z](docs/figs/front_right_snow.gif) |
+| ![z](docs/figs/back_left_snow.gif)  | ![z](docs/figs/back_snow.gif)  | ![z](docs/figs/back_right_snow.gif)  |
+| BACK_LEFT  | BACK  | BACK_RIGHT  |     | BACK_LEFT  | BACK  | BACK_RIGHT  |
+
+Visit our [project page]() to explore more examples. :blue_car:
+
+
+
+
 ## Updates
 - [2023.02] - The `nuScenes-C` dataset is ready to be downloaded! See [here](docs/DATA_PREPARE.md) for more details.
 - [2023.01] - Launch of the `RoboDet` benchmark! :beers:
