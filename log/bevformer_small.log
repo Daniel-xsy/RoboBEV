@@ -100,3 +100,11 @@ Evaluating Results
 
 #### Severity easy
 
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3896    | 0.2884    | 0.7960     | 0.2806     | 0.4468     | 0.7878     | 0.2345     |
+
+#### Severity mid
+
