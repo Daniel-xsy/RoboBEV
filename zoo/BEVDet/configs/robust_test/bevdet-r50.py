@@ -39,7 +39,7 @@ voxel_size = [0.1, 0.1, 0.2]
 numC_Trans=64
 
 model = dict(
-    type='BEVDepth',
+    type='BEVDet',
     img_backbone=dict(
         pretrained='torchvision://resnet50',
         type='ResNet',
@@ -58,23 +58,16 @@ model = dict(
         num_outs=1,
         start_level=0,
         out_ids=[0]),
-    img_view_transformer=dict(type='ViewTransformerLSSBEVDepth',
-                              loss_depth_weight=100.0,
+    img_view_transformer=dict(type='ViewTransformerLiftSplatShoot',
                               grid_config=grid_config,
                               data_config=data_config,
-                              numC_Trans=numC_Trans,
-                              extra_depth_net=dict(type='ResNetForBEVDet',
-                                                   numC_input=256,
-                                                   num_layer=[3,],
-                                                   num_channels=[256,],
-                                                   stride=[1,])),
+                              numC_Trans=numC_Trans),
     img_bev_encoder_backbone = dict(type='ResNetForBEVDet', numC_input=numC_Trans),
     img_bev_encoder_neck = dict(type='FPN_LSS',
                                 in_channels=numC_Trans*8+numC_Trans*2,
                                 out_channels=256),
     pts_bbox_head=dict(
         type='CenterHead',
-        task_specific=True,
         in_channels=256,
         tasks=[
             dict(num_class=1, class_names=['car']),
@@ -138,6 +131,7 @@ model = dict(
 # Data
 dataset_type = 'NuScenesDataset'
 data_root = '/nvme/share/data/sets/nuScenes/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 anno_root = '../../data/'
 file_client_args = dict(backend='disk')
 
@@ -146,6 +140,7 @@ train_pipeline = [
     dict(type='LoadMultiViewImageFromFiles_BEVDet', is_train=True, data_config=data_config),
     dict(
         type='LoadPointsFromFile',
+        dummy=True,
         coord_type='LIDAR',
         load_dim=5,
         use_dim=5,
@@ -163,7 +158,6 @@ train_pipeline = [
         flip_ratio_bev_horizontal=0.5,
         flip_ratio_bev_vertical=0.5,
         update_img2lidar=True),
-    dict(type='PointToMultiViewDepth', grid_config=grid_config),
     dict(type='ObjectRangeFilter', point_cloud_range=point_cloud_range),
     dict(type='ObjectNameFilter', classes=class_names),
     dict(type='DefaultFormatBundle3D', class_names=class_names),
@@ -178,7 +172,7 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root),
     # load lidar points for --show in test.py only
     dict(
         type='LoadPointsFromFile',
@@ -186,7 +180,6 @@ test_pipeline = [
         load_dim=5,
         use_dim=5,
         file_client_args=file_client_args),
-    dict(type='PointToMultiViewDepth', grid_config=grid_config),
     dict(
         type='MultiScaleFlipAug3D',
         img_scale=(1333, 800),
@@ -204,13 +197,6 @@ test_pipeline = [
 # please keep its loading function consistent with test_pipeline (e.g. client)
 eval_pipeline = [
     dict(type='LoadMultiViewImageFromFiles_BEVDet', data_config=data_config),
-    dict(
-        type='LoadPointsFromFile',
-        coord_type='LIDAR',
-        load_dim=5,
-        use_dim=5,
-        file_client_args=file_client_args),
-    dict(type='PointToMultiViewDepth', grid_config=grid_config),
     dict(
         type='DefaultFormatBundle3D',
         class_names=class_names,
@@ -233,7 +219,7 @@ data = dict(
         dataset=dict(
             type=dataset_type,
             data_root=data_root,
-            ann_file=data_root + 'nuscenes_infos_train.pkl',
+            ann_file=anno_root + 'nuscenes_infos_train.pkl',
             pipeline=train_pipeline,
             classes=class_names,
             test_mode=False,
@@ -267,13 +253,14 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[16, 22])
 runner = dict(type='EpochBasedRunner', max_epochs=24)
+corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
 
 # Evaluating bboxes of pts_bbox
-# mAP: 0.3328                                                                                                                                                                                 
-# mATE: 0.6633
-# mASE: 0.2714
-# mAOE: 0.5581
-# mAVE: 0.8763
-# mAAE: 0.2369
-# NDS: 0.4058
-# Eval time: 118.3s
+# mAP: 0.2987                                                                                                                                                                                 
+# mATE: 0.7336
+# mASE: 0.2744
+# mAOE: 0.5713
+# mAVE: 0.9051
+# mAAE: 0.2394
+# NDS: 0.3770
+# Eval time: 129.8s
