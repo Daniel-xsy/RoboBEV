@@ -36,9 +36,10 @@
 | | | | | | | |
 | :--------: | :---: | :---------: | :-: | :--------: | :---: | :---------: |
 | FRONT_LEFT | FRONT | FRONT_RIGHT |     | FRONT_LEFT | FRONT | FRONT_RIGHT |
-| ![z](docs/figs/front_left_snow.gif) | ![z](docs/figs/front_snow.gif) | ![z](docs/figs/front_right_snow.gif) |
-| ![z](docs/figs/back_left_snow.gif)  | ![z](docs/figs/back_snow.gif)  | ![z](docs/figs/back_right_snow.gif)  |
+| <img src="docs/figs/front_left_snow.gif" width="180" height="100"> | <img src="docs/figs/front_snow.gif" width="180" height="100"> | <img src="docs/figs/front_right_snow.gif" width="180" height="100"> |
+| <img src="docs/figs/back_left_snow.gif" width="180" height="100">  | <img src="docs/figs/back_snow.gif" width="180" height="100">  | <img src="docs/figs/back_right_snow.gif" width="180" height="100">  |
 | BACK_LEFT  | BACK  | BACK_RIGHT  |     | BACK_LEFT  | BACK  | BACK_RIGHT  |
+| | | | | | | |
 
 Visit our [project page]() to explore more examples. :blue_car:
 
