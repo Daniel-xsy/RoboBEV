@@ -1,0 +1,286 @@
+<img src="../figs/logo.png" align="right" width="10%">
+
+# RoboDet Benchmark
+
+The official [nuScenes metric](https://www.nuscenes.org/object-detection/?externalData=all&mapData=all&modalities=Any) are considered in our benchmark:
+
+- **Average Translation Error (ATE)** is the Euclidean center distance in 2D (units in meters). 
+- **Average Scale Error (ASE)** is the 3D intersection-over-union (IoU) after aligning orientation and translation (1 − IoU).
+- **Average Orientation Error (AOE)** is the smallest yaw angle difference between prediction and ground truth (radians). All angles are measured on a full 360-degree period except for barriers where they are measured on a 180-degree period.
+- **Average Velocity Error (AVE)** is the absolute velocity error as the L2 norm of the velocity differences in 2D (m/s).
+- **Average Attribute Error (AAE)** is defined as 1 minus attribute classification accuracy (1 − acc).
+- **nuScenes Detection Score (NDS)**: $$\text{NDS} = \frac{1}{10} [5\text{mAP}+\sum_{\text{mTP}\in\mathbb{TP}} (1-\min(1, \text{mTP}))]$$
+
+## DETR3D
+
+| **Corruption** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- |------- | ------- | ------- |------- | ------- | ------- |
+| **Clean** | 0.4224 | 0.3468 | 0.7647 | 0.2678 | 0.3917 | 0.8754 | 0.2108 |
+| **Motion Blur** | 0.2661    | 0.1479    | 0.9146     | 0.3085     | 0.6351     | 1.0385     | 0.2526     |
+| **Color Quant** | 0.3177    | 0.2165    | 0.8953     | 0.2816     | 0.5266     | 0.9813     | 0.2483     |
+| **Frame Lost** | 0.2604    | 0.0898    | 0.8647     | 0.3030     | 0.5041     | 0.9297     | 0.2439     |
+| **Camera Crash** | 0.2859    | 0.1144    | 0.8400     | 0.2821     | 0.4707     | 0.8992     | 0.2202     |
+| **Brightness** | 0.4002    | 0.3149    | 0.7915     | 0.2703     | 0.4348     | 0.8733     | 0.2028     |
+| **Low Light** | 0.3156    | 0.2020    | 0.8399     | 0.2823     | 0.5279     | 0.9601     | 0.2472     |
+| **Fog** | 0.3912    | 0.3007    | 0.7961     | 0.2711     | 0.4326     | 0.8807     | 0.2110     |
+| **Snow** | 0.1913    | 0.0776    | 0.9714     | 0.3752     | 0.7486     | 1.2478     | 0.3797     |
+
+## Experiment Log
+
+Time: Sun Feb 12 14:09:13 2023
+
+### Evaluating MotionBlur
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3721    | 0.2813    | 0.8103     | 0.2756     | 0.4653     | 0.9047     | 0.2295     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2343    | 0.1023    | 0.9436     | 0.3137     | 0.6570     | 1.0311     | 0.2545     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.1918    | 0.0601    | 0.9900     | 0.3363     | 0.7829     | 1.1796     | 0.2738     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2661    | 0.1479    | 0.9146     | 0.3085     | 0.6351     | 1.0385     | 0.2526     |
+
+### Evaluating Fog
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.4047    | 0.3161    | 0.7841     | 0.2700     | 0.4216     | 0.8545     | 0.2037     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3922    | 0.3026    | 0.7923     | 0.2701     | 0.4334     | 0.8813     | 0.2139     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3767    | 0.2833    | 0.8118     | 0.2731     | 0.4428     | 0.9064     | 0.2153     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3912    | 0.3007    | 0.7961     | 0.2711     | 0.4326     | 0.8807     | 0.2110     |
+
+### Evaluating Snow
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2432    | 0.1212    | 0.9459     | 0.3114     | 0.6199     | 1.1665     | 0.2973     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.1692    | 0.0602    | 0.9792     | 0.4073     | 0.8043     | 1.2775     | 0.4185     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.1616    | 0.0514    | 0.9890     | 0.4068     | 0.8215     | 1.2994     | 0.4233     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.1913    | 0.0776    | 0.9714     | 0.3752     | 0.7486     | 1.2478     | 0.3797     |
+
+### Evaluating ColorQuant
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3990    | 0.3169    | 0.8051     | 0.2678     | 0.4159     | 0.8900     | 0.2163     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3255    | 0.2277    | 0.8831     | 0.2764     | 0.4983     | 0.9717     | 0.2544     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2287    | 0.1049    | 0.9978     | 0.3005     | 0.6657     | 1.0823     | 0.2741     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3177    | 0.2165    | 0.8953     | 0.2816     | 0.5266     | 0.9813     | 0.2483     |
+
+### Evaluating Brightness
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.4225    | 0.3411    | 0.7668     | 0.2680     | 0.3981     | 0.8427     | 0.2052     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.4012    | 0.3161    | 0.7893     | 0.2702     | 0.4301     | 0.8764     | 0.2025     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3769    | 0.2876    | 0.8183     | 0.2728     | 0.4763     | 0.9008     | 0.2006     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.4002    | 0.3149    | 0.7915     | 0.2703     | 0.4348     | 0.8733     | 0.2028     |
+
+### Evaluating LowLight
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3319    | 0.2233    | 0.8310     | 0.2776     | 0.5103     | 0.9357     | 0.2429     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3320    | 0.2224    | 0.8321     | 0.2783     | 0.5030     | 0.9344     | 0.2441     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2830    | 0.1604    | 0.8566     | 0.2911     | 0.5704     | 1.0102     | 0.2545     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3156    | 0.2020    | 0.8399     | 0.2823     | 0.5279     | 0.9601     | 0.2472     |
+
+### Evaluating CameraCrash
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3284    | 0.1760    | 0.8120     | 0.2769     | 0.4190     | 0.8741     | 0.2138     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2594    | 0.0776    | 0.8709     | 0.2821     | 0.4674     | 0.9513     | 0.2225     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2700    | 0.0895    | 0.8371     | 0.2874     | 0.5258     | 0.8723     | 0.2244     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2859    | 0.1144    | 0.8400     | 0.2821     | 0.4707     | 0.8992     | 0.2202     |
+
+### Evaluating FrameLost
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3437    | 0.2004    | 0.7959     | 0.2734     | 0.4139     | 0.8753     | 0.2063     |
+
+#### Severity mid
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2514    | 0.0600    | 0.8680     | 0.2880     | 0.4980     | 0.9172     | 0.2145     |
+
+#### Severity hard
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.1860    | 0.0092    | 0.9302     | 0.3476     | 0.6005     | 0.9965     | 0.3110     |
+
+#### Average
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2604    | 0.0898    | 0.8647     | 0.3030     | 0.5041     | 0.9297     | 0.2439     |
