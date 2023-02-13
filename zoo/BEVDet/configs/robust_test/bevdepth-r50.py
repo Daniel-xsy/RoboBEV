@@ -138,12 +138,13 @@ model = dict(
 # Data
 dataset_type = 'NuScenesDataset'
 data_root = '/nvme/share/data/sets/nuScenes/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 anno_root = '../../data/'
 file_client_args = dict(backend='disk')
 
 
 train_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', is_train=True, data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root),
     dict(
         type='LoadPointsFromFile',
         coord_type='LIDAR',
@@ -267,6 +268,7 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[16, 22])
 runner = dict(type='EpochBasedRunner', max_epochs=24)
+corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
 
 # Evaluating bboxes of pts_bbox
 # mAP: 0.3328                                                                                                                                                                                 
