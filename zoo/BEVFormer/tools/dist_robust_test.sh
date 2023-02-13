@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVFormer/projects/configs/robust_test/bevformer_base_no_temp.py
+CONFIG=/nvme/konglingdong/models/RoboDet/zoo/BEVFormer/projects/configs/robust_test/bevformer_base.py
 CHECKPOINT=/nvme/konglingdong/models/RoboDet/models/BEVFormer/bevformer_r101_dcn_24ep.pth
 GPUS=8
 PORT=${PORT:-29501}
