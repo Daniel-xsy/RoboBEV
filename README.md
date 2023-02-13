@@ -33,13 +33,13 @@
 `RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>weather conditions, <sup>2</sup>motions, and <sup>3</sup>sensor failures.
 
 
-| | | | | | | |
-| :--------: | :---: | :---------: | :-: | :--------: | :---: | :---------: |
-| FRONT_LEFT | FRONT | FRONT_RIGHT |     | FRONT_LEFT | FRONT | FRONT_RIGHT |
-| <img src="docs/figs/front_left_snow.gif" width="150" height="80"> | <img src="docs/figs/front_snow.gif" width="150" height="80"> | <img src="docs/figs/front_right_snow.gif" width="150" height="80"> |
-| <img src="docs/figs/back_left_snow.gif" width="150" height="80">  | <img src="docs/figs/back_snow.gif" width="150" height="80">  | <img src="docs/figs/back_right_snow.gif" width="150" height="80">  |
-| BACK_LEFT  | BACK  | BACK_RIGHT  |     | BACK_LEFT  | BACK  | BACK_RIGHT  |
-| | | | | | | |
+| | | | | | |
+| :--------: | :---: | :---------: | :--------: | :---: | :---------: |
+| FRONT_LEFT | FRONT | FRONT_RIGHT | FRONT_LEFT | FRONT | FRONT_RIGHT |
+| <img src="docs/figs/front_left_snow.gif" width="140" height="80"> | <img src="docs/figs/front_snow.gif" width="140" height="80"> | <img src="docs/figs/front_right_snow.gif" width="140" height="80"> | <img src="docs/figs/front_left_dark.gif" width="140" height="80"> | <img src="docs/figs/front_dark.gif" width="140" height="80"> | <img src="docs/figs/front_right_dark.gif" width="140" height="80"> |
+| <img src="docs/figs/back_left_snow.gif" width="140" height="80">  | <img src="docs/figs/back_snow.gif" width="140" height="80">  | <img src="docs/figs/back_right_snow.gif" width="140" height="80">  | <img src="docs/figs/back_left_dark.gif" width="140" height="80">  | <img src="docs/figs/back_dark.gif" width="140" height="80">  | <img src="docs/figs/back_right_dark.gif" width="140" height="80">  |
+| BACK_LEFT  | BACK  | BACK_RIGHT  | BACK_LEFT  | BACK  | BACK_RIGHT  |
+| | | | | | |
 
 Visit our [project page]() to explore more examples. :blue_car:
 
