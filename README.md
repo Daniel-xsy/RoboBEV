@@ -36,8 +36,8 @@
 | | | | | | | |
 | :--------: | :---: | :---------: | :-: | :--------: | :---: | :---------: |
 | FRONT_LEFT | FRONT | FRONT_RIGHT |     | FRONT_LEFT | FRONT | FRONT_RIGHT |
-| <img src="docs/figs/front_left_snow.gif" width="180" height="100"> | <img src="docs/figs/front_snow.gif" width="180" height="100"> | <img src="docs/figs/front_right_snow.gif" width="180" height="100"> |
-| <img src="docs/figs/back_left_snow.gif" width="180" height="100">  | <img src="docs/figs/back_snow.gif" width="180" height="100">  | <img src="docs/figs/back_right_snow.gif" width="180" height="100">  |
+| <img src="docs/figs/front_left_snow.gif" width="150" height="80"> | <img src="docs/figs/front_snow.gif" width="150" height="80"> | <img src="docs/figs/front_right_snow.gif" width="150" height="80"> |
+| <img src="docs/figs/back_left_snow.gif" width="150" height="80">  | <img src="docs/figs/back_snow.gif" width="150" height="80">  | <img src="docs/figs/back_right_snow.gif" width="150" height="80">  |
 | BACK_LEFT  | BACK  | BACK_RIGHT  |     | BACK_LEFT  | BACK  | BACK_RIGHT  |
 | | | | | | | |
 
