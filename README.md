@@ -36,8 +36,8 @@
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
 | FRONT_LEFT | FRONT | FRONT_RIGHT | FRONT_LEFT | FRONT | FRONT_RIGHT |
-| <img src="docs/figs/front_left_snow.gif" width="140" height="80"> | <img src="docs/figs/front_snow.gif" width="140" height="80"> | <img src="docs/figs/front_right_snow.gif" width="140" height="80"> | <img src="docs/figs/front_left_dark.gif" width="140" height="80"> | <img src="docs/figs/front_dark.gif" width="140" height="80"> | <img src="docs/figs/front_right_dark.gif" width="140" height="80"> |
-| <img src="docs/figs/back_left_snow.gif" width="140" height="80">  | <img src="docs/figs/back_snow.gif" width="140" height="80">  | <img src="docs/figs/back_right_snow.gif" width="140" height="80">  | <img src="docs/figs/back_left_dark.gif" width="140" height="80">  | <img src="docs/figs/back_dark.gif" width="140" height="80">  | <img src="docs/figs/back_right_dark.gif" width="140" height="80">  |
+| <img src="docs/figs/front_left_snow.gif" width="120" height="67"> | <img src="docs/figs/front_snow.gif" width="120" height="67"> | <img src="docs/figs/front_right_snow.gif" width="120" height="67"> | <img src="docs/figs/front_left_dark.gif" width="120" height="67"> | <img src="docs/figs/front_dark.gif" width="120" height="67"> | <img src="docs/figs/front_right_dark.gif" width="120" height="67"> |
+| <img src="docs/figs/back_left_snow.gif" width="120" height="67">  | <img src="docs/figs/back_snow.gif" width="120" height="67">  | <img src="docs/figs/back_right_snow.gif" width="120" height="67">  | <img src="docs/figs/back_left_dark.gif" width="120" height="67">  | <img src="docs/figs/back_dark.gif" width="120" height="67">  | <img src="docs/figs/back_right_dark.gif" width="120" height="67">  |
 | BACK_LEFT  | BACK  | BACK_RIGHT  | BACK_LEFT  | BACK  | BACK_RIGHT  |
 | | | | | | |
 
@@ -82,7 +82,6 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 <details open>
 <summary>&nbsp<b>Camera-Only BEV Detection</b></summary>
 
-
 > - [x] **[PolarFormer](https://arxiv.org/abs/2206.15398), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/fudan-zvg/PolarFormer)</sup>
 > - [x] **[BEVStereo](https://arxiv.org/abs/2209.10248), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVStereo)</sup>
 > - [x] **[BEVDepth](https://arxiv.org/abs/2206.10092), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
@@ -100,6 +99,12 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 > - [x] **[BEVDet](https://arxiv.org/abs/2112.11790), arXiv 2021.** <sup>[**`[Code]`**](https://github.com/HuangJunJie2017/BEVDet)</sup>
 > - [x] **[DETR3D](https://arxiv.org/abs/2110.06922), CoRL 2021.** <sup>[**`[Code]`**](https://github.com/WangYueFt/detr3d)</sup>
 
+</details>
+
+<details open>
+<summary>&nbsp<b>LiDAR-Camera Fusion BEV Detection</b></summary>
+
+> - [ ] **[BEVFusion](https://arxiv.org/abs/2205.13542), ICRA 2023.** <sup>[**`[Code]`**](https://github.com/mit-han-lab/bevfusion)</sup>
 
 </details>
 
