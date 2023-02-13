@@ -1,5 +1,5 @@
-### Old version log
+# Experiment Results
 
-`ColorQuant`, `Lowlight`, `Snow ` in this folder is older version (depreciate). New results of these three corruptions will be added under `./log`.
+`ColorQuant`, `Lowlight`, `Snow` results in this folder is older version dataset (depreciated). New benchmark results of these corruptions are added under [`./log`](./).
 
-The results of [BEVFormer-Base](./bevformer_base.log) is depreciate.
+The results of [BEVFormer-Base](./bevformer_base.log) is depreciated.
