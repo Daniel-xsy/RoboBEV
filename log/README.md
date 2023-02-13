@@ -1,6 +1,6 @@
-# Log Folder
+# Experiment Results
 
-This folder contains the results of nuScenes-c benchmark. Some corruption types in [older version folder](./old_version/) are depreciated (e.g., `ColorQuant`, `LowLight`, `Snow`). New results are added under this folder.
+This folder contains the log results of nuScenes-c benchmark. Some corruption types in [older version folder](./old_version/) are depreciated (e.g., `ColorQuant`, `LowLight`, `Snow`). New results are added under this folder.
 
 Clean results are shown on the following table:
 
@@ -14,8 +14,8 @@ Clean results are shown on the following table:
 |  [**DETR w cbgs**](./detr3d_res101_gridmask_cbgs.log)  | 0.4341 | 0.3494 | 0.7163 | 0.2682 | 0.3798 | 0.8421 | 0.1997 | [config](../zoo/DETR3D//projects/configs/detr3d/detr3d_res101_gridmask_cbgs.py) | [config](../zoo/DETR3D//projects//configs/robust_test/detr3d_res101_gridmask_cbgs.py) | [ckpt](https://drive.google.com/file/d/1YWX-jIS6fxG5_JKUBNVcZtsPtShdjE4O/view?usp=sharing) |
 |  [**PETR-r50-p4**](./petr_r50dcn_gridmask_p4.log)   | 0.3665 | 0.3174 | 0.8397 | 0.2796 | 0.6158 | 0.9543 | 0.2326 | [config](../zoo/PETR/projects/configs/petr/petr_r50dcn_gridmask_p4.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_r50dcn_gridmask_p4.py) | [ckpt](https://drive.google.com/file/d/1eYymeIbS0ecHhQcB8XAFazFxLPm3wIHY/view?usp=sharing) |
 |  [**PETR-vov-p4**](./petr_vovnet_gridmask_p4_1600x640.log)   | 0.4550 | 0.4035 | 0.7362 | 0.2710 | 0.4316 | 0.8249 | 0.2039 | [config](../zoo/PETR/projects/configs/petr/petr_vovnet_gridmask_p4_1600x640.py) | [config](../zoo/PETR/projects/configs/robust_test/petr_vovnet_gridmask_p4_1600x640.py) | [ckpt](https://drive.google.com/file/d/1eYymeIbS0ecHhQcB8XAFazFxLPm3wIHY/view?usp=sharing) |
-|  BEVDet    | | | | | | | |  | TBD | TBD |
-|  BEVDepth   | | | | | | | |   | TBD | TBD |
+|  **BEVDet-R50**    | 0.3770 | 0.2987 | 0.7336 | 0.2744 | 0.5713 | 0.9051 | 0.2394 | TBD | [config](../zoo/BEVDet/configs/bevdet/bevdet-r50.py) | [ckpt](https://drive.google.com/drive/folders/1VnJv-dNb6-gkKTq7uC_Q6YsRq_q3NI-t) |
+|  **BEVDepth-R50**   | | | | | | | |   | TBD | TBD |
 |  **BEVerse-Tiny**   | 0.4665 | 0.3214  | 0.6807 | 0.2782 | 0.4657 | 0.3281 | 0.1893 | [config](../zoo/BEVerse//projects//configs/beverse_tiny.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
 |  **BEVerse-Tiny w/o Temp**   | 0.1603 | 0.0826 | 0.8298 | 0.5296 | 0.8771 | 1.2639 | 0.5739 | [config](../zoo/BEVerse//projects//configs/beverse_singleframe_tiny.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_singleframe_tiny.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
 |  [**BEVerse-Small**](./beverse_small.log)   | 0.4951 | 0.3512  | 0.6243 | 0.2694 | 0.3999 | 0.3292 | 0.1827 | [config](../zoo/BEVerse//projects//configs/beverse_small.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
