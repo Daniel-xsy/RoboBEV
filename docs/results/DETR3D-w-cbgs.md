@@ -11,7 +11,7 @@ The official [nuScenes metric](https://www.nuscenes.org/object-detection/?extern
 - **Average Attribute Error (AAE)** is defined as 1 minus attribute classification accuracy (1 − acc).
 - **nuScenes Detection Score (NDS)**: $$\text{NDS} = \frac{1}{10} [5\text{mAP}+\sum_{\text{mTP}\in\mathbb{TP}} (1-\min(1, \text{mTP}))]$$
 
-## ModleName
+## DETR3D w cbgs
 
 | **Corruption** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
 | ------- | ------- |------- | ------- | ------- |------- | ------- | ------- |
