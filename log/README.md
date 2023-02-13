@@ -21,6 +21,10 @@ Clean results are shown on the following table:
 |  [**BEVerse-Small**](./beverse_small.log)   | 0.4951 | 0.3512  | 0.6243 | 0.2694 | 0.3999 | 0.3292 | 0.1827 | [config](../zoo/BEVerse//projects//configs/beverse_small.py)  | [config](../zoo/BEVerse//projects//configs//robust_test/beverse_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
 |  [**BEVerse-Small w/o Temp**](./beverse_singleframe_small.log)   | 0.2682 | 0.1513  | 0.6631 | 0.4228 | 0.5406 | 1.3996 | 0.4483 | [config](../zoo/BEVerse//projects/configs/beverse_singleframe_small.py)  | [config](../zoo/BEVerse//projects//configs/beverse_singleframe_small.py) | [ckpt](https://drive.google.com/file/d/1S2o8v6YFkeHMuJIpw-SWNDGySacH1xCV/view?usp=sharing) |
 |  [**ORA3D**](./ora3d_res101.log)   | 0.4436 | 0.3677 | 0.7319 | 0.2698 | 0.3890 | 0.8150 | 0.1975 | [config](../zoo/ora3d/projects/configs/ora3d_res101.py) |  [config](../zoo/ora3d/projects/configs/robust_test/ora3d_res101.py) | [ckpt](https://drive.google.com/file/d/1jft64_8BJv3JjNrITS-f64wYcb5j3mxF/view?usp=sharing) |
+|  **PolarFormer-R101**   |  |  |  |  |  |  |  | [config](../zoo/PolarFormer/projects/configs/polarformer/polarformer_r101_without_bev_aug.py) |  config | [ckpt](https://drive.google.com/file/d/1Jgh49QJXls6XP6OAGhm744JHCGb7dGpP/view?usp=share_link) |
+|  **PolarFormer-VovNet**   |  |  |  |  |  |  |  | [config](../zoo/PolarFormer/projects/configs/polarformer/polarformer_vovnet.py) |  config | [ckpt](https://drive.google.com/file/d/1c5rgTpHA98dFKmQ9BJN0zZbSuBFT8_Bt/view?usp=share_link) |
+|  **SRCN3D**   |  |  |  |  |  |  |  | config |  config | ckpt |
+
 
 ### Notice
 The corruption results of PETRv2 might be unavailable, since it utilize data in `nuScenes/sweeps/` for temporal modeling, nuScenes-c only contains data in original `nuScenes/samples/` folder.
