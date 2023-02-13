@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <img src="docs/figs/logo.png" align="center" width="24%">
+  <img src="docs/figs/logo.png" align="center" width="23%">
   
   <h3 align="center"><strong>RoboDet: Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
@@ -145,4 +145,5 @@ This work is under the <a rel="license" href="http://creativecommons.org/license
 ## Acknowledgements
 We thank the exceptional support from [Shanghai AI Laboratory](https://www.shlab.org.cn/)! Please refer to [ACKNOWLEDGE.md](docs/ACKNOWLEDGE.md) for more detailed acknowledgments of this codebase.
 
+<img src="docs/figs/shlab.png" align="center" width="96%">
 
