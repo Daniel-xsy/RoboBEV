@@ -130,7 +130,8 @@ model = dict(
 
 # Data
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '../../data/'
 file_client_args = dict(backend='disk')
 
 
@@ -217,7 +218,7 @@ data = dict(
         dataset=dict(
             type=dataset_type,
             data_root=data_root,
-            ann_file=data_root + 'nuscenes_infos_train.pkl',
+            ann_file=anno_root + 'nuscenes_infos_train.pkl',
             pipeline=train_pipeline,
             classes=class_names,
             test_mode=False,
@@ -227,10 +228,19 @@ data = dict(
             # and box_type_3d='Depth' in sunrgbd and scannet dataset.
             box_type_3d='LiDAR',
             img_info_prototype='bevdet')),
-    val=dict(pipeline=test_pipeline, classes=class_names,
-        modality=input_modality, img_info_prototype='bevdet'),
-    test=dict(pipeline=test_pipeline, classes=class_names,
-        modality=input_modality, img_info_prototype='bevdet'))
+    val=dict(
+            pipeline=test_pipeline, 
+            classes=class_names,
+            data_root=data_root,
+            ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+            modality=input_modality, 
+            img_info_prototype='bevdet'),
+    test=dict(pipeline=test_pipeline, 
+            classes=class_names,
+            data_root=data_root,
+            ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+            modality=input_modality, 
+            img_info_prototype='bevdet'))
 
 # Optimizer
 optimizer = dict(type='AdamW', lr=2e-4, weight_decay=0.01)
@@ -242,3 +252,13 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[16, 22])
 runner = dict(type='EpochBasedRunner', max_epochs=24)
+
+# Evaluating bboxes of pts_bbox
+# mAP: 0.2987                                                                                                                                                                                 
+# mATE: 0.7336
+# mASE: 0.2744
+# mAOE: 0.5713
+# mAVE: 0.9051
+# mAAE: 0.2394
+# NDS: 0.3770
+# Eval time: 129.8s

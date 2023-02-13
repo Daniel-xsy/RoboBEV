@@ -137,7 +137,8 @@ model = dict(
 
 # Data
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '../../data/'
 file_client_args = dict(backend='disk')
 
 
@@ -242,10 +243,19 @@ data = dict(
             # and box_type_3d='Depth' in sunrgbd and scannet dataset.
             box_type_3d='LiDAR',
             img_info_prototype='bevdet')),
-    val=dict(pipeline=test_pipeline, classes=class_names,
-        modality=input_modality, img_info_prototype='bevdet'),
-    test=dict(pipeline=test_pipeline, classes=class_names,
-        modality=input_modality, img_info_prototype='bevdet'))
+    val=dict(
+            pipeline=test_pipeline, 
+            classes=class_names,
+            data_root=data_root,
+            ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+            modality=input_modality, 
+            img_info_prototype='bevdet'),
+    test=dict(pipeline=test_pipeline, 
+            classes=class_names,
+            data_root=data_root,
+            ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+            modality=input_modality, 
+            img_info_prototype='bevdet'))
 
 # Optimizer
 optimizer = dict(type='AdamW', lr=2e-4, weight_decay=0.01)
