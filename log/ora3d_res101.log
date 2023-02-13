@@ -1,0 +1,20 @@
+Time: Mon Feb 13 16:24:48 2023
+
+### Evaluating Snow
+
+#### Severity easy
+
+Time: Mon Feb 13 19:10:25 2023
+
+### Evaluating Snow
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.2457    | 0.1197    | 0.9051     | 0.3191     | 0.6306     | 1.2343     | 0.2871     |
+
+#### Severity mid
+
