@@ -30,7 +30,7 @@
 
 
 ## About
-**`RoboDet`** is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under common corruptions. It includes eight corruption types that are likely to appear in driving scenarios, ranging from weather conditions, motions, and sensor failures.
+`RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under common corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>weather conditions, <sup>2</sup>motions, and <sup>3</sup>sensor failures.
 
 
 ## Updates
@@ -77,7 +77,16 @@ Results will be saved in `./log` folder with the prefix of model name.
 <details open>
 <summary>&nbsp<b>Camera-Only BEV Detection</b></summary>
 
+
+> - [x] **[PolarFormer](https://arxiv.org/abs/2206.15398), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/fudan-zvg/PolarFormer)</sup>
+> - [x] **[BEVStereo](https://arxiv.org/abs/2209.10248), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVStereo)</sup>
+> - [x] **[BEVDepth](https://arxiv.org/abs/2206.10092), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
+> - [ ] **[MatrixVT](https://arxiv.org/abs/2211.10593), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
+> - [x] **[BEVerse](https://arxiv.org/abs/2205.09743), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/zhangyp15/BEVerse)</sup>
+> - [x] **[ORA3D](https://arxiv.org/abs/2207.00865), BMVC 2022.** <sup>[**`[Code]`**](https://github.com/anonymous2776/ora3d)</sup>
+> - [x] **[PETR](https://arxiv.org/abs/2203.05625), ECCV 2022.** <sup>[**`[Code]`**](https://github.com/megvii-research/PETR)</sup>
 > - [x] **[BEVFormer](https://arxiv.org/abs/2203.17270), ECCV 2022.** <sup>[**`[Code]`**](https://github.com/fundamentalvision/BEVFormer)</sup>
+> - [x] **[BEVDet](https://arxiv.org/abs/2112.11790), arXiv 2021.** <sup>[**`[Code]`**](https://github.com/HuangJunJie2017/BEVDet)</sup>
 > - [x] **[DETR3D](https://arxiv.org/abs/2110.06922), CoRL 2021.** <sup>[**`[Code]`**](https://github.com/WangYueFt/detr3d)</sup>
 
 
