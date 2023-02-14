@@ -121,7 +121,7 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | :---: | :---: | :-------: | :--------: | :---------: | :---------: | :----: | :-------: | :-: | :--: |
 | BEVFormer-Small  | 0.4787 | 0.2771 | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2851 | 0.3583 | 0.1809 |
 | BEVFormer-Base   | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2961 | 0.4069 | 0.1857 |
-| DETR             |
+| DETR3D           | 0.4224 |
 | PETR-r50-p4      |
 | PETR-vov-p4      |
 | BEVDet-r50       |
