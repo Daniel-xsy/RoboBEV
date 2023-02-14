@@ -84,6 +84,8 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
  <img src="docs/figs/taxonomy.png" width="75%">
 </p>
 
+Please refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each corruption type.
+
 
 ## Model Zoo
 
@@ -132,12 +134,12 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | DETR3D-cbgs      | 0.4341 | 0.2991    | 0.2685     | 0.3235      | 0.2542      | 0.4154 | 0.3233    | 0.4020 | 0.1925 |
 | PETR-r50-p4      | 0.3665 | 0.2320    | 0.2166     | 0.2472      | 0.2299      | 0.2841 | 0.1877    | 0.2876 | 0.1417 |
 | PETR-vov-p4      | 0.4550 | 0.2924    | 0.2792     | 0.2968      | 0.2490	     | 0.3858 | 0.2791	  | 0.3703 | 0.2632 |
-| BEVDet-r50       |
-| BEVDepth-r50     |
-| BEVerse-T        |
-| BEVerse-S        |
-| ORA3D            |
-| PolarFormer-r101 |
+| BEVDet-r50       | 0.3770 |
+| BEVDepth-r50     | 0.4058 |
+| BEVerse-T        | 0.4665 |
+| BEVerse-S        | 0.4951 |
+| ORA3D            | 0.4436 |
+| PolarFormer-r101 | 0.4602 | 
 | PolarFormer-vov  |
 | SRCN3D           |
 
