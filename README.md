@@ -51,10 +51,10 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## Outline
-- [Taxonomy](#taxonomy)
 - [Installation](#installation)
 - [Data Preparation](#data-preparation)
 - [Getting Started](#getting-started)
+- [Taxonomy](#taxonomy)
 - [Model Zoo](#model-zoo)
 - [Benchmark](#benchmark)
 - [Create Corruption Sets](#create-corruption-sets)
@@ -62,13 +62,6 @@ Visit our [project page]() to explore more examples. :blue_car:
 - [Citation](#citation)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
-
-
-## Taxonomy
-
-<p align="left">
- <img src="docs/figs/taxonomy.png" width="70%">
-</p>
 
 
 ## Installation
@@ -83,6 +76,13 @@ Please refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepa
 ## Getting Started
 
 Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about this codebase.
+
+
+## Taxonomy
+
+<p align="left">
+ <img src="docs/figs/taxonomy.png" width="75%">
+</p>
 
 
 ## Model Zoo
@@ -130,8 +130,8 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | BEVFormer-Base   | 0.5174 | 0.3154    | 0.3017     | 0.3509      | 0.2695      | 0.4184 | 0.2961    | 0.4069 | 0.1857 |
 | DETR3D           | 0.4224 | 0.2859    | 0.2604     | 0.3177      | 0.2661      | 0.4002 | 0.3156    | 0.3912 | 0.1913 |
 | DETR3D-cbgs      | 0.4341 | 0.2991    | 0.2685     | 0.3235      | 0.2542      | 0.4154 | 0.3233    | 0.4020 | 0.1925 |
-| PETR-r50-p4      |
-| PETR-vov-p4      |
+| PETR-r50-p4      | 0.3665 | 0.2320    | 0.2166     | 0.2472      | 0.2299      | 0.2841 | 0.1877    | 0.2876 | 0.1417 |
+| PETR-vov-p4      | 0.4550 | 0.2924    | 0.2792     | 0.2968      | 0.2490	     | 0.3858 | 0.2791	  | 0.3703 | 0.2632 |
 | BEVDet-r50       |
 | BEVDepth-r50     |
 | BEVerse-T        |
@@ -142,7 +142,7 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | SRCN3D           |
 
 
-For more experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
+**Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
 
 
 
