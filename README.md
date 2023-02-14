@@ -65,12 +65,12 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## Installation
-Please refer to [INSTALL.md](docs/INSTALL.md) for the installation details.
+Kindly refer to [INSTALL.md](docs/INSTALL.md) for the installation details.
 
 
 ## Data Preparation
 
-Please refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepare the [nuScenes](https://www.nuscenes.org/nuscenes) and [nuScenes-C]() datasets.
+Kindly refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepare the [nuScenes](https://www.nuscenes.org/nuscenes) and [nuScenes-C]() datasets.
 
 
 ## Getting Started
@@ -84,7 +84,7 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
  <img src="docs/figs/taxonomy.png" width="75%">
 </p>
 
-Please refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each corruption type.
+Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each corruption type.
 
 
 ## Model Zoo
@@ -182,7 +182,7 @@ This work is under the <a rel="license" href="http://creativecommons.org/license
 
 
 ## Acknowledgements
-We thank the exceptional support from [Shanghai AI Laboratory](https://www.shlab.org.cn/)! Please refer to [ACKNOWLEDGE.md](docs/ACKNOWLEDGE.md) for more detailed acknowledgments of this codebase.
+We thank the exceptional support from [Shanghai AI Laboratory](https://www.shlab.org.cn/)! Kindly refer to [ACKNOWLEDGE.md](docs/ACKNOWLEDGE.md) for more detailed acknowledgments of this codebase.
 
 <img src="docs/figs/shlab.png" align="center" width="96%">
 
