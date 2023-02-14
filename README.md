@@ -75,7 +75,7 @@ Kindly refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepa
 
 ## Getting Started
 
-Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about this codebase.
+Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about this codebase.
 
 
 ## Taxonomy
