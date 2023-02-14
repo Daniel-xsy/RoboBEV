@@ -117,10 +117,10 @@ Please refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 
 ## Benchmark
 
-| Model | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Brightness | Low Light | Fog | Snow |
-| :---: | :---: | :-------: | :--------: | :---------: | :---------: | :--------: | :-------: | :-: | :--: |
-| BEVFormer-S      | 
-| BEVFormer-B      | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2961 | 0.4069 | 0.1857 |
+| Model | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
+| :---: | :---: | :-------: | :--------: | :---------: | :---------: | :----: | :-------: | :-: | :--: |
+| BEVFormer-Small  | 0.4787 | 0.2771 | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2851 | 0.3583 | 0.1809 |
+| BEVFormer-Base   | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2961 | 0.4069 | 0.1857 |
 | DETR             |
 | PETR-r50-p4      |
 | PETR-vov-p4      |
