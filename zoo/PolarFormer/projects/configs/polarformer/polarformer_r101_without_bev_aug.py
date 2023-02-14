@@ -1,6 +1,6 @@
 _base_ = [
-    '../../../mmdetection3d/configs/_base_/datasets/nus-3d.py',
-    '../../../mmdetection3d/configs/_base_/default_runtime.py'
+    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/datasets/nus-3d.py',
+    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/default_runtime.py'
 ]
 
 plugin=True
@@ -144,7 +144,8 @@ model = dict(
             pc_range=point_cloud_range))))
 
 dataset_type = 'TransNuScenesDataset'
-data_root = 'data/nuscenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '../../data/'
 
 file_client_args = dict(backend='disk')
 
@@ -245,8 +246,20 @@ data = dict(
         # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
         # and box_type_3d='Depth' in sunrgbd and scannet dataset.
         box_type_3d='LiDAR'),
-    val=dict(type=dataset_type, pipeline=test_pipeline, classes=class_names, modality=input_modality),
-    test=dict(type=dataset_type, pipeline=test_pipeline, classes=class_names, modality=input_modality))
+    val=dict(
+        type=dataset_type, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        pipeline=test_pipeline, 
+        classes=class_names, 
+        modality=input_modality),
+    test=dict(
+        type=dataset_type, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        pipeline=test_pipeline, 
+        classes=class_names, 
+        modality=input_modality))
 
 optimizer = dict(
     type='AdamW', 
@@ -271,3 +284,13 @@ evaluation = dict(interval=1, pipeline=test_pipeline)
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='pretrained/fcos3d.pth'
+
+# Evaluating bboxes of pts_bbox
+# mAP: 0.3916                                                                                                                                                                        
+# mATE: 0.7060
+# mASE: 0.2718
+# mAOE: 0.3610
+# mAVE: 0.8079
+# mAAE: 0.2093
+# NDS: 0.4602
+# Eval time: 137.7s
