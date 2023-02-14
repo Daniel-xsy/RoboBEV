@@ -81,7 +81,7 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 ## Taxonomy
 
 <p align="left">
- <img src="docs/figs/taxonomy.png" width="75%">
+ <img src="docs/figs/taxonomy.png" width="72%">
 </p>
 
 Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each corruption type.
