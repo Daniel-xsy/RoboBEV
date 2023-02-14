@@ -1,4 +1,4 @@
-<img src="../figs/logo.png" align="right" width="10%">
+<img src="../figs/logo2.png" align="right" width="30%">
 
 # RoboDet Benchmark
 
