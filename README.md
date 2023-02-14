@@ -30,8 +30,7 @@
 
 
 ## About
-`RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>weather conditions, <sup>2</sup>motions, and <sup>3</sup>sensor failures.
-
+`RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
 
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
@@ -52,6 +51,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## Outline
+- [Taxonomy](#taxonomy)
 - [Installation](#installation)
 - [Data Preparation](#data-preparation)
 - [Getting Started](#getting-started)
@@ -62,6 +62,13 @@ Visit our [project page]() to explore more examples. :blue_car:
 - [Citation](#citation)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
+
+
+## Taxonomy
+
+<p align="left">
+ <img src="docs/figs/taxonomy.png" width="70%">
+</p>
 
 
 ## Installation
