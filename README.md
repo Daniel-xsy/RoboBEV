@@ -126,22 +126,22 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 ## Benchmark
 
-| Model            | Clean  | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog    | Snow   |
-| :--------------: | :----: | :-------: | :--------: | :---------: | :---------: | :----: | :-------: | :----: | :----: |
-| BEVFormer-Small  | 0.4787 | 0.2771    | 0.2459     | 0.3275      | 0.2570      | 0.3741 | 0.2851    | 0.3583 | 0.1809 |
-| BEVFormer-Base   | 0.5174 | 0.3154    | 0.3017     | 0.3509      | 0.2695      | 0.4184 | 0.2961    | 0.4069 | 0.1857 |
-| DETR3D           | 0.4224 | 0.2859    | 0.2604     | 0.3177      | 0.2661      | 0.4002 | 0.3156    | 0.3912 | 0.1913 |
-| DETR3D-cbgs      | 0.4341 | 0.2991    | 0.2685     | 0.3235      | 0.2542      | 0.4154 | 0.3233    | 0.4020 | 0.1925 |
-| PETR-r50-p4      | 0.3665 | 0.2320    | 0.2166     | 0.2472      | 0.2299      | 0.2841 | 0.1877    | 0.2876 | 0.1417 |
-| PETR-vov-p4      | 0.4550 | 0.2924    | 0.2792     | 0.2968      | 0.2490	     | 0.3858 | 0.2791	  | 0.3703 | 0.2632 |
-| BEVDet-r50       | 0.3770 |
-| BEVDepth-r50     | 0.4058 |
-| BEVerse-T        | 0.4665 |
-| BEVerse-S        | 0.4951 |
-| ORA3D            | 0.4436 |
-| PolarFormer-r101 | 0.4602 | 
-| PolarFormer-vov  |
-| SRCN3D           |
+| Model            | mCE (%) | mRR (%) | Clean  | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog    | Snow   |
+| :--------------: | :-----: | :-----: |:-----: | :-------: | :--------: | :---------: | :---------: | :----: | :-------: | :----: | :----: |
+| BEVFormer-Small  |         |         | 0.4787 | 0.2771    | 0.2459     | 0.3275      | 0.2570      | 0.3741 | 0.2851    | 0.3583 | 0.1809 |
+| BEVFormer-Base   |         |         | 0.5174 | 0.3154    | 0.3017     | 0.3509      | 0.2695      | 0.4184 | 0.2961    | 0.4069 | 0.1857 |
+| DETR3D           |         |         | 0.4224 | 0.2859    | 0.2604     | 0.3177      | 0.2661      | 0.4002 | 0.3156    | 0.3912 | 0.1913 |
+| DETR3D-cbgs      |         |         | 0.4341 | 0.2991    | 0.2685     | 0.3235      | 0.2542      | 0.4154 | 0.3233    | 0.4020 | 0.1925 |
+| PETR-r50-p4      |         |         | 0.3665 | 0.2320    | 0.2166     | 0.2472      | 0.2299      | 0.2841 | 0.1877    | 0.2876 | 0.1417 |
+| PETR-vov-p4      |         |         | 0.4550 | 0.2924    | 0.2792     | 0.2968      | 0.2490	     | 0.3858 | 0.2791	  | 0.3703 | 0.2632 |
+| BEVDet-r50       |         |         | 0.3770 |
+| BEVDepth-r50     |         |         | 0.4058 |
+| BEVerse-T        |         |         | 0.4665 |
+| BEVerse-S        |         |         | 0.4951 |
+| ORA3D            |         |         | 0.4436 |
+| PolarFormer-r101 |         |         | 0.4602 | 
+| PolarFormer-vov  |         |         | 
+| SRCN3D           |         |         | 
 
 
 **Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
