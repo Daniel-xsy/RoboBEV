@@ -1,4 +1,5 @@
-<br />
+<p align="right">English | <a href="">简体中文</a></p>
+
 <p align="center">
   <img src="docs/figs/logo.png" align="center" width="24%">
   
@@ -30,6 +31,7 @@
 
 
 ## About
+
 `RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
 
 | | | | | | |
@@ -130,7 +132,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | :--------------: | :-----: | :-----: |:-------: | :-------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | | | | | | | | | | | | | 
 | [DETR3D](docs/results/DETR3D.md) | $100.00$ | $71.86$ | $0.4224$ | $0.2859$ | $0.2604$ | $0.3177$ | $0.2661$ | $0.4002$ | $0.3156$ | $0.3912$ | $0.1913$ |
-| [DETR3D-cbgs](docs/results/DETR3D-w-cbgs.md) |         |         | $0.4341$ | $0.2991$  | $0.2685$ | $0.3235$ | $0.2542$ | $0.4154$ | $0.3233$ | $0.4020$ | $0.1925$ |
+| [DETR3D-cbgs](docs/results/DETR3D-w-cbgs.md) | $99.03$ | $71.37$ | $0.4341$ | $0.2991$  | $0.2685$ | $0.3235$ | $0.2542$ | $0.4154$ | $0.3233$ | $0.4020$ | $0.1925$ |
 | [BEVFormer-Small](docs/results/BEVFormer-Small.md) | $102.31$ | $60.21$ | $0.4787$ | $0.2771$  | $0.2459$ | $0.3275$ | $0.2570$ | $0.3741$ | $0.2851$ | $0.3583$ | $0.1809$ |
 | [BEVFormer-Base](docs/results/BEVFormer-Base.md) |         |         | $0.5174$ | $0.3154$  | $0.3017$ | $0.3509$ | $0.2695$ | $0.4184$ | $0.2961$ | $0.4069$ | $0.1857$ |
 | PETR-r50-p4      |         |         | $0.3665$ | $0.2320$  | $0.2166$ | $0.2472$ | $0.2299$ | $0.2841$ | $0.1877$ | $0.2876$ | $0.1417$ |
