@@ -143,13 +143,12 @@ $$
 
 
 ## References
+
 ```bib
 @article{author20xxmethod,
-  title={Title},
-  author={Author},
-  journal={arXiv preprint arXiv:2xxx.xxxxx},
-  year={20xx},
+  title = {Title},
+  author = {Author 1, Author 2, Author 3},
+  journal = {arXiv preprint arXiv:2xxx.xxxxx},
+  year = {20xx},
 }
 ```
-
-
