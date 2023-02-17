@@ -1,5 +1,5 @@
 # checkpoint
-models
+./models
 # data
 data
 *.pkl
