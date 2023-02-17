@@ -131,21 +131,21 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | Model | $\text{mCE}$ (%) | $\text{mRR}$ (%) | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | :--------------: | :-----: | :-----: |:-------: | :-------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | | | | | | | | | | | | | 
-| [DETR3D](docs/results/DETR3D.md) | $100.00$ | $71.86$ | $0.4224$ | $0.2859$ | $0.2604$ | $0.3177$ | $0.2661$ | $0.4002$ | $0.3156$ | $0.3912$ | $0.1913$ |
-| [DETR3D-cbgs](docs/results/DETR3D-w-cbgs.md) | $99.03$ | $71.37$ | $0.4341$ | $0.2991$  | $0.2685$ | $0.3235$ | $0.2542$ | $0.4154$ | $0.3233$ | $0.4020$ | $0.1925$ |
-| [BEVFormer-Small](docs/results/BEVFormer-Small.md) | $102.31$ | $60.21$ | $0.4787$ | $0.2771$  | $0.2459$ | $0.3275$ | $0.2570$ | $0.3741$ | $0.2851$ | $0.3583$ | $0.1809$ |
-| [BEVFormer-Base](docs/results/BEVFormer-Base.md) | $97.86$ | $61.48$ | $0.5174$ | $0.3154$ | $0.3017$ | $0.3509$ | $0.2695$ | $0.4184$ | $0.2961$ | $0.4069$ | $0.1857$ |
-| [PETR-r50-p4](docs/results/PETR-r50.md) | $113.29$ | $58.90$ | $0.3665$ | $0.2320$  | $0.2166$ | $0.2472$ | $0.2299$ | $0.2841$ | $0.1877$ | $0.2876$ | $0.1417$ |
-| [PETR-vov-p4](docs/results/PETR-vov.md) |         |         | $0.4550$ | $0.2924$  | $0.2792$ | $0.2968$ | $0.2490$ | $0.3858$ | $0.2791$ | $0.3703$ | $0.2632$ |
-| BEVDet-r50       |         |         | $0.3770$ |
-| BEVDepth-r50     |         |         | $0.4058$ |
-| BEVerse-T        |         |         | $0.4665$ |
-| BEVerse-S        |         |         | $0.4951$ |
-| ORA3D            |         |         | $0.4436$ |
-| PolarFormer-r101 |         |         | $0.4602$ | 
+| [DETR3D](docs/results/DETR3D.md) | 100.00 | 71.86 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.3156 | 0.3912 | 0.1913 |
+| [DETR3D-cbgs](docs/results/DETR3D-w-cbgs.md) | 99.03 | 71.37 | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | 0.3233 | 0.4020 | 0.1925 |
+| [BEVFormer-Small](docs/results/BEVFormer-Small.md) | 102.31 | 60.21 | 0.4787 | 0.2771  | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2851 | 0.3583 | 0.1809 |
+| [BEVFormer-Base](docs/results/BEVFormer-Base.md) | 97.86 | 61.48 | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2961 | 0.4069 | 0.1857 |
+| [PETR-r50-p4](docs/results/PETR-r50.md) | 113.29 | 58.90 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1877 | 0.2876 | 0.1417 |
+| [PETR-vov-p4](docs/results/PETR-vov.md) |         |         | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2791 | 0.3703 | 0.2632 |
+| BEVDet-r50       |         |         | 0.3770 |
+| BEVDepth-r50     |         |         | 0.4058 |
+| BEVerse-T        |         |         | 0.4665 |
+| BEVerse-S        |         |         | 0.4951 |
+| ORA3D            |         |         | 0.4436 |
+| PolarFormer-r101 |         |         | 0.4602 | 
 | PolarFormer-vov  |         |         | 
 | SRCN3D           |         |         | 
-| Sparse4D         |         |         | $0.5438$ | 
+| Sparse4D         |         |         | 0.5438 | 
 
 **Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
 - **mCE:** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
