@@ -1,0 +1,14 @@
+Time: Fri Feb 17 18:56:16 2023
+
+### Evaluating CameraCrash
+
+#### Severity easy
+
+Evaluating Results
+
+| **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
+| ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| 0.3619    | 0.2181    | 0.7442     | 0.2770     | 0.3972     | 0.8414     | 0.2112     |
+
+#### Severity mid
+
