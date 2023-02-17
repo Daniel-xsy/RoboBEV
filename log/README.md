@@ -1,6 +1,6 @@
 # Experiment Results
 
-This folder contains the **raw** log results of `nuScenes-c` benchmark. Some corruption types in [older version folder](./old_version/) are depreciated (e.g., `ColorQuant`, `LowLight`, `Snow`). New results are added under this folder. For final results, please refer to [`docs/results`](../docs/results/)
+This folder contains the **raw** log results of `nuScenes-c` benchmark. Some corruption types in [./older_version](./old_version/) are depreciated (e.g., `ColorQuant`, `LowLight`, `Snow`). New results are added under this folder. For final results, please refer to [`docs/results`](../docs/results/)
 
 Clean results are shown on the following table:
 
