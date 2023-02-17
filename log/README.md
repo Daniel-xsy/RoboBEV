@@ -5,7 +5,7 @@ This folder contains the **raw** log results of `nuScenes-c` benchmark. Some cor
 Clean results are shown on the following table:
 
 | **Model** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |  **Clean** |  **Corrupt** | **Ckpt** |
-| ------- | ------- |------- | ------- | ------- |------- | ------- | ------- |------- | ------- | ------- | 
+| ------- | :-------: | :-------: | :-------: | :-------: |:-------: | :-------: | :-------: |:-------: | :-------: | :-------: | 
 | [**BEVFormer-Small**](./bevformer_small.log)   |  0.4787    | 0.3700    | 0.7212     | 0.2792     | 0.4065     | 0.4364     | 0.2201     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_small.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/bevformer_small.py) | [ckpt](https://github.com/zhiqi-li/storage/releases/download/v1.0/bevformer_small_epoch_24.pth) |
 |  [**BEVFormer-Small w/o temp**](./bevformer_small_no_temp.log)   | 0.2622    | 0.1324    | 0.9352     | 0.3024     | 0.5556     | 1.1106     | 0.2466     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_small_no_temp.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/) | [ckpt](https://github.com/zhiqi-li/storage/releases/download/v1.0/bevformer_small_epoch_24.pth) |
 |  [**BEVFormer-Base**](./bevformer_base.log)   |  0.5174    | 0.4164    | 0.6726     | 0.2734     | 0.3704     | 0.3941     | 0.1974     | [config](../zoo/BEVFormer/projects/configs/bevformer/bevformer_base.py) | [config](../zoo/BEVFormer/projects/configs/robust_test/bevformer_base.py) | [ckpt](https://github.com/zhiqi-li/storage/releases/download/v1.0/bevformer_r101_dcn_24ep.pth) |
