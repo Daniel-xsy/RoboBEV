@@ -280,3 +280,26 @@ evaluation = dict(interval=1, pipeline=test_pipeline)
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='pretrained/dd3_det_final.pth'
 find_unused_parameters=True
+
+
+# mAP: 0.5004                                                                                                                                                                       
+# mATE: 0.5826
+# mASE: 0.2621
+# mAOE: 0.2473
+# mAVE: 0.6015
+# mAAE: 0.1926
+# NDS: 0.5616
+# Eval time: 116.7s
+
+# Per-class results:
+# Object Class    AP      ATE     ASE     AOE     AVE     AAE
+# car     0.687   0.393   0.147   0.046   0.651   0.203
+# truck   0.469   0.617   0.207   0.059   0.604   0.225
+# bus     0.580   0.569   0.196   0.048   1.107   0.250
+# trailer 0.325   0.849   0.221   0.206   0.438   0.151
+# construction_vehicle    0.193   0.947   0.447   0.508   0.145   0.360
+# pedestrian      0.554   0.549   0.293   0.452   0.406   0.193
+# motorcycle      0.493   0.555   0.240   0.292   1.089   0.152
+# bicycle 0.453   0.496   0.271   0.492   0.371   0.006
+# traffic_cone    0.637   0.390   0.309   nan     nan     nan
+# barrier 0.613   0.461   0.290   0.123   nan     nan
