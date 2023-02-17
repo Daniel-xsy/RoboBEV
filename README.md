@@ -128,7 +128,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 ## Benchmark
 
-| Model | $\text{mCE}$ (%) | $\text{mRR}$ (%) | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
+| Model | mCE (%) | mRR (%) | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | :--------------: | :-----: | :-----: |:-------: | :-------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | | | | | | | | | | | | | 
 | [DETR3D](docs/results/DETR3D.md) | 100.00 | 71.86 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.3156 | 0.3912 | 0.1913 |
@@ -139,8 +139,8 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | [PETR-vov-p4](docs/results/PETR-vov.md) |         |         | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2791 | 0.3703 | 0.2632 |
 | BEVDet-r50       |         |         | 0.3770 |
 | BEVDepth-r50     |         |         | 0.4058 |
-| BEVerse-T        |         |         | 0.4665 |
-| BEVerse-S        |         |         | 0.4951 |
+| BEVerse-Tiny     |         |         | 0.4665 |
+| BEVerse-Small    |         |         | 0.4951 |
 | ORA3D            |         |         | 0.4436 |
 | PolarFormer-r101 |         |         | 0.4602 | 
 | PolarFormer-vov  |         |         | 
