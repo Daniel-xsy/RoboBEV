@@ -20,7 +20,7 @@ However, there are a few things to do before you can run the above command succe
 
 ### Custom Loading
 
-If the original config uses  [`LoadMultiViewImageFromFiles`](https://github.com/open-mmlab/mmdetection3d/blob/47285b3f1e9dba358e98fcd12e523cfd0769c876/mmdet3d/datasets/pipelines/loading.py#L11) to load images. You can simply add [`custom_loading.py`](../corruptions/project/mmdet3d_plugin/datasets/pipelines/custom_loading.py) to the corresponding folder (e.g., `./zoo/<MODEL>/projects/mmdet3d_plugin/datasets/pipelines/`) and add the `Custom_LoadMultiViewImageFromFiles` in the `__init__.py` in `pipelines/` folder by following line:
+If the original config uses  [`LoadMultiViewImageFromFiles`](https://github.com/open-mmlab/mmdetection3d/blob/47285b3f1e9dba358e98fcd12e523cfd0769c876/mmdet3d/datasets/pipelines/loading.py#L11) to load images. You can simply add [`custom_loading.py`](../corruptions/project/mmdet3d_plugin/datasets/pipelines/custom_loading.py) to the corresponding folder (e.g., `./zoo/<MODEL>/projects/mmdet3d_plugin/datasets/pipelines/`) and add the [`Custom_LoadMultiViewImageFromFiles`](https://github.com/Daniel-xsy/RoboDet/blob/25ab276f73bd3253fe3caf605c8ab871d7e52aa9/corruptions/project/mmdet3d_plugin/datasets/pipelines/custom_loading.py#L18) in the `__init__.py` in `pipelines/` folder by following line:
 
 ```python
 from .transform_3d import PadMultiViewImage, NormalizeMultiviewImage
