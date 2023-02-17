@@ -140,9 +140,7 @@ model = dict(
 
 dataset_type = 'TransNuScenesDataset'
 data_root = '/nvme/share/data/sets/nuScenes/'
-corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 anno_root = '../../data/'
-
 
 file_client_args = dict(backend='disk')
 
@@ -202,7 +200,7 @@ train_pipeline = [
                             'transformation_3d_flow'))
 ]
 test_pipeline = [
-    dict(type='Custom_LoadMultiViewImageFromFiles', to_float32=True, corruption_root=corruption_root),
+    dict(type='LoadMultiViewImageFromFiles', to_float32=True),
     dict(type='NormalizeMultiviewImage', **img_norm_cfg),
     dict(type='PadMultiViewImage', size_divisor=32),
     dict(
@@ -283,7 +281,6 @@ runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='pretrained/dd3_det_final.pth'
 find_unused_parameters=True
 
-corruptions = ['CameraCrash', 'FrameLost', 'MotionBlur', 'ColorQuant', 'Brightness', 'Fog', 'Snow']
 
 # mAP: 0.5004                                                                                                                                                                       
 # mATE: 0.5826
