@@ -3,18 +3,12 @@ import os
 import warnings
 import time
 import numpy as np
-
 import torch
-
 import mmcv
 from mmdet3d.datasets import build_dataset, build_dataloader
 from mmcv import Config, DictAction
 from mmdet3d.datasets import build_dataset
-
 from project.mmdet3d_plugin.corruptions import CORRUPTIONS
-
-
-SEVERITY = {'1': 'easy', '3':'hard'}
 
 
 def parse_args():
@@ -39,14 +33,16 @@ def parse_args():
 
 
 def save_path(corruption_root, corruption, severity, filepath):
+    """Return save path of generated corruptted images
+    """
     folder, filename = os.path.split(filepath)
     _, subfolder = os.path.split(folder)
     # mmcv.mkdir_or_exist(os.path.join(corruption_root, corruption, SEVERITY[str(severity)], subfolder))
-    return os.path.join(corruption_root, corruption, SEVERITY[str(severity)], subfolder, filename)
+    return os.path.join(corruption_root, corruption, severity, subfolder, filename)
     
 
 def save_multi_view_img(imgs, img_filenames, root, corruption, severity):
-    """
+    """Save six view images
     Args:
         img (np.array): [B, M, H, W, C]
     """
@@ -58,7 +54,6 @@ def save_multi_view_img(imgs, img_filenames, root, corruption, severity):
         filepath = save_path(root, corruption, severity, img_filenames[i])
         mmcv.imwrite(imgs[i], filepath)
     
-
 
 def main():
 
@@ -109,46 +104,22 @@ def main():
 
     print('Begin generating nuScenes-C dataset')
     for corruption in cfg.corruptions:
-        print(f'Corruption type: {corruption}')  
+        print(f'Corruption type: {corruption.type}')  
 
-        for severity in [1, 3]:
+        for severity in ['easy', 'mid', 'hard']:
             print(f'\nSeverity: {severity}')  
-            corrupt = CORRUPTIONS.build(dict(type=corruption, severity=severity, norm_config=cfg.img_norm_cfg))
+            corrupt = CORRUPTIONS.build(dict(type=corruption.type, severity=corruption[severity], norm_config=cfg.img_norm_cfg))
 
             prog_bar = mmcv.ProgressBar(len(data_loader))
-            # load_avg_time = 0.0
-            # corr_avg_time = 0.0
-            # save_avg_time = 0.0
             for i, data in enumerate(data_loader):
-                # s = time.time()
-
-                if i <= 1780:
-                    prog_bar.update()
-                    continue
 
                 img = data['img'][0].data[0]
                 img_filename = data['img_metas'][0].data[0][0]['filename']
-                # e = time.time()
-                # load_avg_time += (e - s)
                 new_img = corrupt(img)
-                # s = time.time()
-                # corr_avg_time += (s - e)
                 new_img = new_img.astype(np.uint8)
                 
-                save_multi_view_img(new_img, img_filename, cfg.corruption_root, corruption, severity)
+                save_multi_view_img(new_img, img_filename, cfg.corruption_root, corruption.type, severity)
                 prog_bar.update()
-                # e = time.time()
-                # save_avg_time += (e - s)
-                
-                # print(f'load: {load_avg_time/(i+1)}\t corr: {corr_avg_time/(i+1)}\t save: {save_avg_time/(i+1)}', end='\r')
-                # used for debug
-                # std = cfg.img_norm_cfg['std']
-                # mean = cfg.img_norm_cfg['mean']
-                # orig_img = img.permute(0, 1, 3, 4, 2) # [B, M, C, H, W] => [B, M, H, W, C]
-                # orig_img = orig_img * torch.tensor(std) + torch.tensor(mean)
-                # orig_img = orig_img.numpy().astype(np.uint8)
-                # mmcv.imwrite(new_img[0, 0], '/nvme/konglingdong/models/RoboDet/corruptions/new1.jpg')
-                # mmcv.imwrite(orig_img[0, 0], '/nvme/konglingdong/models/RoboDet/corruptions/orig1.jpg')
 
 
 if __name__ == '__main__':
