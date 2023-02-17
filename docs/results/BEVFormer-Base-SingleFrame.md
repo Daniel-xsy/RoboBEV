@@ -48,7 +48,7 @@ $$
 
 ## Experiment Log
 
-Time: Sun Feb 12 10:05:19 2023
+>Time: Sun Feb 12 10:05:19 2023
 
 ### Camera Crash
 
