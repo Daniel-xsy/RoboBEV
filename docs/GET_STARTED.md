@@ -4,13 +4,13 @@
 
 ### Test Scripts
 
-The test scripts on nuScenes-c are included in [`./corruptions/tools/`](../corruptions/tools). First copy the test tools:
+The test scripts on `nuScenes-c` are included in [`./corruptions/tools/`](../corruptions/tools). First copy the test tools:
 
 ```bash
 cp -r ./corruptions/tools ./zoo/<MODEL>
 ```
 
-To test on nuScenes-c, simply run the following commands:
+To test on `nuScenes-c`, simply run the following commands:
 
 ```bash
 cd ./zoo/<MODEL>
@@ -31,7 +31,7 @@ __all__ = ['PadMultiViewImage', 'NormalizeMultiviewImage',
 'Custom_LoadMultiViewImageFromFiles']
 ```
 
-If you use your own way to load images, you can modify it to load nuScenes-c data by simply adding three `attribute` (i.e., `corruption`, `severity`, `corruption_root`) to the original `Class` like this:
+If you use your own way to load images, you can modify it to load `nuScenes-c` data by simply adding three `attribute` (i.e., `corruption`, `severity`, `corruption_root`) to the original `Class` like this:
 
 ```python
 @PIPELINES.register_module()
@@ -39,7 +39,10 @@ class Custom_LoadMultiViewImageFromFiles(object):
     def __init__(self, to_float32=False, color_type='unchanged', corruption=None, severity=None, corruption_root=None):
         self.to_float32 = to_float32
         self.color_type = color_type
+
+        ################################################################
         # the following attributes are used for loading nuScenes-c data
+        ################################################################
         self.corruption = corruption
         self.severity = severity
         self.corruption_root = corruption_root
@@ -57,11 +60,11 @@ def get_corruption_path(corruption_root, corruption, severity, filepath):
     return os.path.join(corruption_root, corruption, severity, subfolder, filename)
 ```
 
-For more details, you can refer to [`custom_loading.py`](../corruptions/project/mmdet3d_plugin/datasets/pipelines/custom_loading.py) to custom your own `Class`.
+For more details, you can refer to [`custom_loading.py`](../corruptions/project/mmdet3d_plugin/datasets/pipelines/custom_loading.py) to customize your own `Class` for loading `nuScenes-c`.
 
 ### Custom Configuration
 
-After defining the custom module to load images from nuScenes-c, we can modify the configuration file. First, we should modify the origin loading module to the custom one we defined above. We only need to change the test_pipeline from:
+After defining the custom module to load images from `nuScenes-c`, we can modify the `config` file. First, we should modify the original loading module to the custom one we defined above. We only need to change the `test_pipeline` from:
 
 ```python
 test_pipeline = [
@@ -87,4 +90,4 @@ And then specify the corruption we want to test by adding:
 corruptions = ['Snow', 'ColorQuant', 'LowLight']
 ```
 
-Then, the model can be tested on nuScenes-c successfully.
+Then, the model can be tested on `nuScenes-c` successfully.
