@@ -1,5 +1,7 @@
 # checkpoint
 *.pth
+*.pth.*
+./models/*
 # data
 data
 *.pkl
