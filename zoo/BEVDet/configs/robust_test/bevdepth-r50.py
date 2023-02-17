@@ -179,7 +179,7 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root),
     # load lidar points for --show in test.py only
     dict(
         type='LoadPointsFromFile',
