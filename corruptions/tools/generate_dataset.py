@@ -15,7 +15,6 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Generate Nuscenes-C Dataset')
     parser.add_argument('config', help='test config file path')
-    parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument(
         '--cfg-options',
