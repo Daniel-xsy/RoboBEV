@@ -163,7 +163,7 @@ You can manage to create your own "RoboDet" corrpution sets! Follow the instruct
 - [x] Initial release. 🚀
 - [x] Add scripts for creating common corruptions.
 - [ ] Add download link of nuScenes-C.
-- [ ] Add evaluation scripts on corruption sets.
+- [x] Add evaluation scripts on corruption sets.
 - [ ] ...
 
 
