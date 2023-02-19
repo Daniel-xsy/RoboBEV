@@ -243,7 +243,7 @@ log_config = dict(
 
 find_unused_parameters = True
 
-corruptions = ['MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost']
+corruptions = ['LowLight']
 
 
 # mAP: 0.3677                                                                                                                     
