@@ -28,4 +28,5 @@ Clean results are shown on the following table:
 
 
 ### Notice
-The corruption results of PETRv2 is unavailable, since it utilize data in `nuScenes/sweeps/` for temporal modeling, nuScenes-c only contains data in original `nuScenes/samples/` folder.
+
+`LowLight` corruption is re-benchmarked.
