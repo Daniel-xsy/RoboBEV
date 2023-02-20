@@ -133,26 +133,32 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 | Model | mCE (%) | mRR (%) | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| | | | | | | | | | | | | 
+| |
 | <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 71.86 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.3156 | 0.3912 | 0.1913 |
 | [DETR3D<sub>cbgs</sub>](docs/results/DETR3D-w-cbgs.md) | 99.03 | 71.37 | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | 0.3233 | 0.4020 | 0.1925 |
 | [BEVFormer<sub>Small</sub>](docs/results/BEVFormer-Small.md) | 102.31 | 60.21 | 0.4787 | 0.2771  | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2851 | 0.3583 | 0.1809 |
 | [BEVFormer<sub>Base</sub>](docs/results/BEVFormer-Base.md) | 97.86 | 61.48 | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2961 | 0.4069 | 0.1857 |
 | [PETR<sub>r50-p4</sub>](docs/results/PETR-r50.md) | 113.29 | 58.90 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1877 | 0.2876 | 0.1417 |
 | [PETR<sub>vov-p4</sub>](docs/results/PETR-vov.md) | 101.41 | 65.03 | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2791 | 0.3703 | 0.2632 |
-| [BEVDet<sub>r50</sub>](docs/results//BEVDet-r50.md)       | 115.95 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
-| [BEVDepth<sub>r50</sub>](docs/results/BEVDepth-r50.md)     | 110.79  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
-| [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md)     | 111.56 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
-| [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md)    | 108.65 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
-| [ORA3D](docs/results/ORA3D.md)            | 99.87 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
+| [BEVDet<sub>r50</sub>](docs/results//BEVDet-r50.md) | 115.95 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
+| [BEVDepth<sub>r50</sub>](docs/results/BEVDepth-r50.md) | 110.79  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
+| [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 111.56 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
+| [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md) | 108.65 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
+| [ORA3D](docs/results/ORA3D.md) | 99.87 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
 | [PolarFormer<sub>r101</sub>](docs/results/PolarFormer-r101.md) | 96.76  | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
 | [PolarFormer<sub>vov</sub>](docs/results/PolarFormer-Vov.md)  | 88.46 | 68.14 | 0.5616 | 0.3904 | 0.3593 | 0.4328 | 0.3448 | 0.5055 | 0.2719 | 0.4905 | 0.2662 |
-| SRCN3D           |         |         | 
-| Sparse4D         |         |         | 0.5438 | 
+| SRCN3D<sub>r101</sub> |  |  |  |
+| SRCN3D<sub>vov</sub> |  |  |  |
+| Sparse4D<sub>r101</sub> |  |  | 0.5438 | 
+| |
+| BEVFusion<sub>Cam</sub> |  |  | 0.4121 |  |
+| BEVFusion<sub>LiDAR</sub> | - | - | 0.6928 | - | - | - | - | - | - | - | - |
+| BEVFusion<sub>C+L</sub> |  |  | 0.7138 | 
+
 
 **Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
-- **mCE:** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
-- **mRR:** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
+- **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
+- **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
 
 Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
 
