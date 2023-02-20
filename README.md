@@ -147,8 +147,8 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | [ORA3D](docs/results/ORA3D.md) | 99.87 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
 | [PolarFormer<sub>r101</sub>](docs/results/PolarFormer-r101.md) | 96.76  | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
 | [PolarFormer<sub>vov</sub>](docs/results/PolarFormer-Vov.md)  | 88.46 | 68.14 | 0.5616 | 0.3904 | 0.3593 | 0.4328 | 0.3448 | 0.5055 | 0.2719 | 0.4905 | 0.2662 |
-| SRCN3D<sub>r101</sub> |  |  |  |
-| SRCN3D<sub>vov</sub> |  |  |  |
+| SRCN3D<sub>r101</sub> |  |  | 0.4286 |
+| SRCN3D<sub>vov</sub> |  |  | 0.4746 |
 | Sparse4D<sub>r101</sub> |  |  | 0.5438 | 
 | |
 | BEVFusion<sub>Cam</sub> |  |  | 0.4121 |  |
