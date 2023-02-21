@@ -160,7 +160,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 - **mCS (the higher the better):** The *average corruption score* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
 - **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
 
-Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
+Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
 
 
 
