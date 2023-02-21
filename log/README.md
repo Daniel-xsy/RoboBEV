@@ -25,6 +25,7 @@ Clean results are shown on the following table:
 |  [**PolarFormer-Vov**](./polarformer_vovnet.log)   | 0.5616  | 0.5004  | 0.5826  | 0.2621 | 0.2473  | 0.6015  | 0.1926  | [config](../zoo/PolarFormer/projects/configs/polarformer/polarformer_vovnet.py) |  [config](../zoo/PolarFormer/projects/configs/robust_test/polarformer_vovnet.py) | [ckpt](https://drive.google.com/file/d/1c5rgTpHA98dFKmQ9BJN0zZbSuBFT8_Bt/view?usp=share_link) |
 |  [**SRCN3D-R101**](./srcn3d_res101_roi7_nusc.log)   | 0.4286 | 0.3373 | 0.7783 | 0.2873 | 0.3665 | 0.7806 | 0.1878 | [config](../zoo/SRCN3D/projects/configs/srcn3d/srcn3d_res101_roi7_nusc.py) |  [config](../zoo/SRCN3D/projects/configs/robust_test/srcn3d_res101_roi7_nusc.py) | [ckpt](https://drive.google.com/uc?export=download&id=1z5Vc7Apfu0TNOMkPZTF1prj4bK5dm3CH) |
 |  [**SRCN3D-Vov**](./srcn3d_v2-99_roi7_nusc_dd3d.log)   | 0.4746 | 0.3960 | 0.7375 | 0.2939 | 0.2773 | 0.7281 | 0.1974 | [config]((../zoo/SRCN3D/projects/configs/srcn3d/)) |  [config](../zoo/SRCN3D/projects/configs/robust_test/srcn3d_v2-99_roi7_nusc_dd3d.py) | [ckpt](https://drive.google.com/uc?export=download&id=10VgRY_Q0RahJfyY58dQr1n14OVq6Wsl3) |
+|  [**Sparse4D**](./sparse4d_r101_H4.log)   | 0.5438 | 0.4409 | 0.6282 | 0.2721 | 0.3853 | 0.2922 | 0.1888 | [config](../zoo/Sparse4D/projects/configs/sparse4d_r101_H1.py) |  [config](../zoo/Sparse4D/projects/configs/robust_test/sparse4d_r101_H4.py) | [ckpt](https://github.com/linxuewu/Sparse4D/releases/download/v0.0/sparse4d_release.pth) |
 
 
 ### Notice
