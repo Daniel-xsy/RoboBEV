@@ -11,6 +11,8 @@ from .transform_3d import (
     NuScenesSparse4DAdaptor,
 )
 
+from .custom_loading import Custom_LoadMultiViewImageFromFiles
+
 __all__ = [
    "InstanceNameFilter",
    "InstanceRangeFilter",
@@ -22,4 +24,5 @@ __all__ = [
    "PhotoMetricDistortionMultiViewImage",
    "CustomCropMultiViewImage",
    "NuScenesSparse4DAdaptor",
+   "Custom_LoadMultiViewImageFromFiles"
 ]
