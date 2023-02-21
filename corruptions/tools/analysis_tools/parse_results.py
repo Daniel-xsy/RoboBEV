@@ -27,8 +27,14 @@ def collect_metric(results, logging):
 
 
 def collect_average_metric(results_list, logging):
-    assert type(results_list) == list or tuple, f'Results should be list of metric, but now {type(results_list)}'
 
+    assert type(results_list) == list or tuple, f'Results should be list of metric, but now {type(results_list)}'
+    if 'pts_bbox_NuScenes/NDS' in results_list[0].keys():
+        prefix = 'pts'
+    elif 'img_bbox_NuScenes/NDS' in results_list[0].keys():
+        prefix = 'img'
+    else:
+        raise KeyError
     NDS = 0
     mAP = 0
     mATE = 0
@@ -38,13 +44,13 @@ def collect_average_metric(results_list, logging):
     mAAE = 0
 
     for results in results_list:
-        NDS += results['pts_bbox_NuScenes/NDS']
-        mAP += results['pts_bbox_NuScenes/mAP']
-        mATE += results['pts_bbox_NuScenes/mATE']
-        mASE += results['pts_bbox_NuScenes/mASE']
-        mAOE += results['pts_bbox_NuScenes/mAOE']
-        mAVE += results['pts_bbox_NuScenes/mAVE']
-        mAAE += results['pts_bbox_NuScenes/mAAE']
+        NDS += results[f'{prefix}_bbox_NuScenes/NDS']
+        mAP += results[f'{prefix}_NuScenes/mAP']
+        mATE += results[f'{prefix}_NuScenes/mATE']
+        mASE += results[f'{prefix}_NuScenes/mASE']
+        mAOE += results[f'{prefix}_NuScenes/mAOE']
+        mAVE += results[f'{prefix}_NuScenes/mAVE']
+        mAAE += results[f'{prefix}_NuScenes/mAAE']
 
     NDS /= len(results_list)
     mAP /= len(results_list)
