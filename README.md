@@ -131,7 +131,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 ## Benchmark
 
-| Model | mCS (%) | mRR (%) | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
+| Model | mCS (%) $\uparrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | |
 | <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 71.86 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.3156 | 0.3912 | 0.1913 |
