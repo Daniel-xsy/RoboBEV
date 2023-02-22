@@ -149,7 +149,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | [PolarFormer<sub>vov</sub>](docs/results/PolarFormer-Vov.md)  | 127.17 | 68.14 | 0.5616 | 0.3904 | 0.3593 | 0.4328 | 0.3448 | 0.5055 | 0.2719 | 0.4905 | 0.2662 |
 | [SRCN3D<sub>r101</sub>](docs/results/SRCN3D-r101.md) | 99.18 | 70.23 | 0.4286 | 0.2947 | 0.2681 | 0.3318 | 0.2609 | 0.4074 | 0.2590 | 0.3940 | 0.1920 |
 | [SRCN3D<sub>vov</sub>](docs/results/SRCN3D-Vov.md) | 106.74 | 68.04 | 0.4746 | 0.3288 | 0.3038 | 0.3794 | 0.2978 | 0.4323 | 0.2171 | 0.4201 | 0.2041 |
-| [Sparse4D<sub>r101</sub>](docs/results/Sparse4D-r101.md) |  |  | 0.5438 | 0.2873 | 0.2611 | 0.3310 | 0.2514 | 0.3984 | 0.2510 | 0.3884 | 0.2259 |
+| [Sparse4D<sub>r101</sub>](docs/results/Sparse4D-r101.md) | 99.48 | 55.04 | 0.5438 | 0.2873 | 0.2611 | 0.3310 | 0.2514 | 0.3984 | 0.2510 | 0.3884 | 0.2259 |
 | |
 | BEVFusion<sub>Cam</sub> |  |  | 0.4121 |  |
 | BEVFusion<sub>LiDAR</sub> | - | - | 0.6928 | - | - | - | - | - | - | - | - |
