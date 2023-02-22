@@ -45,12 +45,12 @@ def collect_average_metric(results_list, logging):
 
     for results in results_list:
         NDS += results[f'{prefix}_bbox_NuScenes/NDS']
-        mAP += results[f'{prefix}_NuScenes/mAP']
-        mATE += results[f'{prefix}_NuScenes/mATE']
-        mASE += results[f'{prefix}_NuScenes/mASE']
-        mAOE += results[f'{prefix}_NuScenes/mAOE']
-        mAVE += results[f'{prefix}_NuScenes/mAVE']
-        mAAE += results[f'{prefix}_NuScenes/mAAE']
+        mAP += results[f'{prefix}_bbox_NuScenes/mAP']
+        mATE += results[f'{prefix}_bbox_NuScenes/mATE']
+        mASE += results[f'{prefix}_bbox_NuScenes/mASE']
+        mAOE += results[f'{prefix}_bbox_NuScenes/mAOE']
+        mAVE += results[f'{prefix}_bbox_NuScenes/mAVE']
+        mAAE += results[f'{prefix}_bbox_NuScenes/mAAE']
 
     NDS /= len(results_list)
     mAP /= len(results_list)
