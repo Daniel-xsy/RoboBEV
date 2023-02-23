@@ -134,26 +134,26 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | Model | mCS (%) $\uparrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | |
-| <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 71.86 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.3156 | 0.3912 | 0.1913 |
-| [DETR3D<sub>cbgs</sub>](docs/results/DETR3D-w-cbgs.md) | 100.07 | 71.37 | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | 0.3233 | 0.4020 | 0.1925 |
-| [BEVFormer<sub>Small</sub>](docs/results/BEVFormer-Small.md) | 95.12 | 60.21 | 0.4787 | 0.2771  | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2851 | 0.3583 | 0.1809 |
-| [BEVFormer<sub>Base</sub>](docs/results/BEVFormer-Base.md) | 102.90 | 61.48 | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2961 | 0.4069 | 0.1857 |
-| [PETR<sub>r50-p4</sub>](docs/results/PETR-r50.md) | 74.61 | 58.90 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1877 | 0.2876 | 0.1417 |
-| [PETR<sub>vov-p4</sub>](docs/results/PETR-vov.md) | 99.77 | 65.03 | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2791 | 0.3703 | 0.2632 |
-| [BEVDet<sub>r50</sub>](docs/results//BEVDet-r50.md) | 63.58 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
-| [BEVDepth<sub>r50</sub>](docs/results/BEVDepth-r50.md) | 75.31  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
-| [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 74.89 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
-| [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md) | 80.61 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
-| [ORA3D](docs/results/ORA3D.md) | 100.34 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
-| [PolarFormer<sub>r101</sub>](docs/results/PolarFormer-r101.md) | 108.35  | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
-| [PolarFormer<sub>vov</sub>](docs/results/PolarFormer-Vov.md)  | 127.17 | 68.14 | 0.5616 | 0.3904 | 0.3593 | 0.4328 | 0.3448 | 0.5055 | 0.2719 | 0.4905 | 0.2662 |
-| [SRCN3D<sub>r101</sub>](docs/results/SRCN3D-r101.md) | 99.18 | 70.23 | 0.4286 | 0.2947 | 0.2681 | 0.3318 | 0.2609 | 0.4074 | 0.2590 | 0.3940 | 0.1920 |
-| [SRCN3D<sub>vov</sub>](docs/results/SRCN3D-Vov.md) | 106.74 | 68.04 | 0.4746 | 0.3288 | 0.3038 | 0.3794 | 0.2978 | 0.4323 | 0.2171 | 0.4201 | 0.2041 |
-| Sparse4D<sub>r101</sub> |  |  | 0.5438 | 
+| <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 70.77 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.2786 | 0.3912 | 0.1913 |
+| [DETR3D<sub>cbgs</sub>](docs/results/DETR3D-w-cbgs.md) | 99.21 | 70.02 | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | 0.2766 | 0.4020 | 0.1925 |
+| [BEVFormer<sub>Small</sub>](docs/results/BEVFormer-Small.md) | 94.66 | 59.07 | 0.4787 | 0.2771  | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2413 | 0.3583 | 0.1809 |
+| [BEVFormer<sub>Base</sub>](docs/results/BEVFormer-Base.md) | 104.23 | 60.40 | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2515 | 0.4069 | 0.1857 |
+| [PETR<sub>r50-p4</sub>](docs/results/PETR-r50.md) | 75.44 | 61.26 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1571 | 0.2876 | 0.1417 |
+| [PETR<sub>vov-p4</sub>](docs/results/PETR-vov.md) | 100.98 | 65.03 | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2305 | 0.3703 | 0.2632 |
+| [BEVDet<sub>r50</sub>](docs/results//BEVDet-r50.md) | 64.16 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
+| [BEVDepth<sub>r50</sub>](docs/results/BEVDepth-r50.md) | 76.23  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
+| [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 75.20 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
+| [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md) | 81.20 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
+| [ORA3D](docs/results/ORA3D.md) | 101.72 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
+| [PolarFormer<sub>r101</sub>](docs/results/PolarFormer-r101.md) | 109.69  | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
+| [PolarFormer<sub>vov</sub>](docs/results/PolarFormer-Vov.md)  | 128.60 | 68.14 | 0.5616 | 0.3904 | 0.3593 | 0.4328 | 0.3448 | 0.5055 | 0.2719 | 0.4905 | 0.2662 |
+| [SRCN3D<sub>r101</sub>](docs/results/SRCN3D-r101.md) | 100.55 | 70.23 | 0.4286 | 0.2947 | 0.2681 | 0.3318 | 0.2609 | 0.4074 | 0.2590 | 0.3940 | 0.1920 |
+| [SRCN3D<sub>vov</sub>](docs/results/SRCN3D-Vov.md) | 107.88 | 68.04 | 0.4746 | 0.3288 | 0.3038 | 0.3794 | 0.2978 | 0.4323 | 0.2171 | 0.4201 | 0.2041 |
+| [Sparse4D<sub>r101</sub>](docs/results/Sparse4D-r101.md) | 100.80 | 55.04 | 0.5438 | 0.2873 | 0.2611 | 0.3310 | 0.2514 | 0.3984 | 0.2510 | 0.3884 | 0.2259 |
 | |
-| BEVFusion<sub>Cam</sub> |  |  | 0.4121 |  |
+| BEVFusion<sub>Cam</sub> | - | - | 0.4121 | - | - | - | - | - | - | - | - |
 | BEVFusion<sub>LiDAR</sub> | - | - | 0.6928 | - | - | - | - | - | - | - | - |
-| BEVFusion<sub>C+L</sub> |  |  | 0.7138 | 
+| BEVFusion<sub>C+L</sub> | - | - | 0.7138 | - | - | - | - | - | - | - | - | 
 
 
 **Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
