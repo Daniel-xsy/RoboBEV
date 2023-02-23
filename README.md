@@ -135,7 +135,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | |
 | <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 70.77 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.2786 | 0.3912 | 0.1913 |
-| [DETR3D<sub>cbgs</sub>](docs/results/DETR3D-w-cbgs.md) | - | - | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | - | 0.4020 | 0.1925 |
+| [DETR3D<sub>cbgs</sub>](docs/results/DETR3D-w-cbgs.md) | 99.21 | 70.02 | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | 0.2766 | 0.4020 | 0.1925 |
 | [BEVFormer<sub>Small</sub>](docs/results/BEVFormer-Small.md) | 94.66 | 59.07 | 0.4787 | 0.2771  | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2413 | 0.3583 | 0.1809 |
 | [BEVFormer<sub>Base</sub>](docs/results/BEVFormer-Base.md) | 104.23 | 60.40 | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2515 | 0.4069 | 0.1857 |
 | [PETR<sub>r50-p4</sub>](docs/results/PETR-r50.md) | 75.44 | 61.26 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1571 | 0.2876 | 0.1417 |
