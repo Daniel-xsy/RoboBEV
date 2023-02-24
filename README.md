@@ -143,7 +143,9 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | [PETR<sub>r50-p4</sub>](docs/results/PETR-r50.md) | 111.01 | 61.26 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1571 | 0.2876 | 0.1417 |
 | [PETR<sub>vov-p4</sub>](docs/results/PETR-vov.md) | 100.69 | 65.03 | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2305 | 0.3703 | 0.2632 |
 | [BEVDet<sub>r50</sub>](docs/results//BEVDet-r50.md) | 115.12 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
+| BEVDet<sub>Tiny</sub> | - | - | - | - | - | - | - | - | - | - | - |
 | BEVDet4D<sub>r50</sub> | - | - | - | - | - | - | - | - | - | - | - |
+| BEVDet4D<sub>Tiny</sub> | - | - | - | - | - | - | - | - | - | - | - |
 | [BEVDepth<sub>r50</sub>](docs/results/BEVDepth-r50.md) | 110.02  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
 | BEVDepth4D<sub>r50</sub> | -  | - | - | - | - | - | - |  - | - | - | - |
 | [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 110.67 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
