@@ -159,7 +159,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 
 **Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
-- **mCE (the lower the better):** The *average corruption score* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
+- **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
 - **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
 
 Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md). Symbol * denote usage of nuScenes val set during pretrain, which might cause unfair comparison.
