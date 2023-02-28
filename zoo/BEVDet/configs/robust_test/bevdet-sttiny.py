@@ -143,13 +143,14 @@ model = dict(
 
 # Data
 dataset_type = 'NuScenesDataset'
-data_root = '/nvme/share/data/sets/nuScenes/'
+data_root = 'data/nuscenes/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 anno_root = '../../data/'
 file_client_args = dict(backend='disk')
 
 
 train_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', is_train=True, data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root),
     dict(
         type='LoadPointsFromFile',
         dummy=True,
@@ -184,7 +185,7 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root),
     # load lidar points for --show in test.py only
     dict(
         type='LoadPointsFromFile',
@@ -265,26 +266,4 @@ lr_config = dict(
 
 optimizer = dict(type='AdamW', lr=2e-4, weight_decay=0.01)
 evaluation = dict(interval=20, pipeline=eval_pipeline)
-
-# Evaluating bboxes of pts_bbox
-# mAP: 0.3080                                                                                                                                                                 
-# mATE: 0.6648
-# mASE: 0.2729
-# mAOE: 0.5323
-# mAVE: 0.8278
-# mAAE: 0.2050
-# NDS: 0.4037
-# Eval time: 154.2s
-
-# Per-class results:
-# Object Class    AP      ATE     ASE     AOE     AVE     AAE
-# car     0.508   0.535   0.159   0.127   0.945   0.231
-# truck   0.223   0.672   0.216   0.124   0.834   0.219
-# bus     0.309   0.761   0.195   0.087   1.597   0.302
-# trailer 0.150   0.987   0.229   0.441   0.515   0.053
-# construction_vehicle    0.072   0.722   0.482   1.083   0.103   0.342
-# pedestrian      0.336   0.737   0.301   1.327   0.860   0.408
-# motorcycle      0.262   0.708   0.262   0.593   1.443   0.076
-# bicycle 0.211   0.522   0.270   0.890   0.325   0.008
-# traffic_cone    0.505   0.514   0.331   nan     nan     nan
-# barrier 0.504   0.489   0.284   0.119   nan     nan
+corruptions = ['CameraCrash','FrameLost','ColorQuant','MotionBlur','Brightness','LowLight','Fog','Snow']

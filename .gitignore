@@ -16,3 +16,5 @@ data
 *.so
 *.o
 *.egg-info
+# pdf file
+*.pdf

@@ -1,7 +1,6 @@
 # Copyright (c) Phigent Robotics. All rights reserved.
 
 _base_ = ['../_base_/datasets/nus-3d.py',
-          '../_base_/schedules/cyclic_20e.py',
           '../_base_/default_runtime.py']
 # Global
 # If point cloud range is changed, the models should also change their point
@@ -42,35 +41,25 @@ numC_Trans=64
 model = dict(
     type='BEVDet',
     img_backbone=dict(
-        type='SwinTransformer',
-        pretrained='https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth',
-        pretrain_img_size=224,
-        embed_dims=96,
-        patch_size=4,
-        window_size=7,
-        mlp_ratio=4,
-        depths=[2, 2, 6, 2],
-        num_heads=[3, 6, 12, 24],
-        strides=(4, 2, 2, 2),
-        out_indices=(2, 3,),
-        qkv_bias=True,
-        qk_scale=None,
-        patch_norm=True,
-        drop_rate=0.,
-        attn_drop_rate=0.,
-        drop_path_rate=0.0,
-        use_abs_pos_embed=False,
-        act_cfg=dict(type='GELU'),
-        norm_cfg=dict(type='LN', requires_grad=True),
-        pretrain_style='official',
-        output_missing_index_as_none=False),
+        # pretrained='torchvision://resnet101',
+        type='ResNet',
+        depth=101,
+        num_stages=4,
+        out_indices=(2, 3),
+        frozen_stages=-1,
+        norm_cfg=dict(type='BN2d', requires_grad=True),
+        norm_eval=True,
+        # with_cp=True,
+        style='caffe',
+        dcn=dict(type='DCNv2', deform_groups=1, fallback_on_stride=False),
+        stage_with_dcn=(False, False, True, True)),
     img_neck=dict(
-        type='FPN_LSS',
-        in_channels=384+768,
+        type='FPNForBEVDet',
+        in_channels=[1024, 2048],
         out_channels=512,
-        extra_upsample=None,
-        input_feature_index=(0,1),
-        scale_factor=2),
+        num_outs=1,
+        start_level=0,
+        out_ids=[0]),
     img_view_transformer=dict(type='ViewTransformerLiftSplatShoot',
                               grid_config=grid_config,
                               data_config=data_config,
@@ -224,14 +213,14 @@ input_modality = dict(
     use_external=False)
 
 data = dict(
-    samples_per_gpu=8,
-    workers_per_gpu=4,
+    samples_per_gpu=4,
+    workers_per_gpu=16,
     train=dict(
         type='CBGSDataset',
         dataset=dict(
             type=dataset_type,
             data_root=data_root,
-            ann_file=data_root + 'nuscenes_infos_train.pkl',
+            ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
             pipeline=train_pipeline,
             classes=class_names,
             test_mode=False,
@@ -248,7 +237,8 @@ data = dict(
             ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
             modality=input_modality, 
             img_info_prototype='bevdet'),
-    test=dict(pipeline=test_pipeline, 
+    test=dict(            
+            pipeline=test_pipeline, 
             classes=class_names,
             data_root=data_root,
             ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
@@ -256,35 +246,20 @@ data = dict(
             img_info_prototype='bevdet'))
 
 # Optimizer
+optimizer = dict(
+    type='AdamW', 
+    lr=2e-4, 
+    weight_decay=0.01, 
+    paramwise_cfg=dict(
+        custom_keys={
+            'img_backbone': dict(lr_mult=0.1),
+        }))
+optimizer_config = dict(grad_clip=None)
 lr_config = dict(
-    policy='cyclic',
-    target_ratio=(5, 1e-4),
-    cyclic_times=1,
-    step_ratio_up=0.4,
-)
-
-optimizer = dict(type='AdamW', lr=2e-4, weight_decay=0.01)
-evaluation = dict(interval=20, pipeline=eval_pipeline)
-
-# Evaluating bboxes of pts_bbox
-# mAP: 0.3080                                                                                                                                                                 
-# mATE: 0.6648
-# mASE: 0.2729
-# mAOE: 0.5323
-# mAVE: 0.8278
-# mAAE: 0.2050
-# NDS: 0.4037
-# Eval time: 154.2s
-
-# Per-class results:
-# Object Class    AP      ATE     ASE     AOE     AVE     AAE
-# car     0.508   0.535   0.159   0.127   0.945   0.231
-# truck   0.223   0.672   0.216   0.124   0.834   0.219
-# bus     0.309   0.761   0.195   0.087   1.597   0.302
-# trailer 0.150   0.987   0.229   0.441   0.515   0.053
-# construction_vehicle    0.072   0.722   0.482   1.083   0.103   0.342
-# pedestrian      0.336   0.737   0.301   1.327   0.860   0.408
-# motorcycle      0.262   0.708   0.262   0.593   1.443   0.076
-# bicycle 0.211   0.522   0.270   0.890   0.325   0.008
-# traffic_cone    0.505   0.514   0.331   nan     nan     nan
-# barrier 0.504   0.489   0.284   0.119   nan     nan
+    policy='step',
+    warmup='linear',
+    warmup_iters=500,
+    warmup_ratio=0.001,
+    step=[16, 22])
+runner = dict(type='EpochBasedRunner', max_epochs=24)
+load_from='/nvme/konglingdong/models/RoboDet/models/FCOS3D/fcos3d.pth'
