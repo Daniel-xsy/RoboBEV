@@ -48,8 +48,9 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## Updates
-- [2023.02] - The `nuScenes-C` dataset is ready to be downloaded! See [here](docs/DATA_PREPARE.md) for more details.
-- [2023.01] - Launch of the `RoboBEV` benchmark! :beers:
+
+- [2023.02] - The `nuScenes-C` dataset is pending release for a careful check of potential IP issues.
+- [2023.01] - Launch of the `RoboBEV` benchmark! In this initial version, we include **11** camera-only BEV detection algorithms (**22** variants), evaluated with **8** corruption types across **3** severity levels.
 
 
 ## Outline
@@ -135,7 +136,6 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 | Model | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| |
 | <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 70.77 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.2786 | 0.3912 | 0.1913 |
 | [DETR3D<sub>cbgs</sub>](docs/results/DETR3D-w-cbgs.md) | 99.21 | 70.02 | 0.4341 | 0.2991  | 0.2685 | 0.3235 | 0.2542 | 0.4154 | 0.2766 | 0.4020 | 0.1925 |
 | [BEVFormer<sub>Small</sub>](docs/results/BEVFormer-Small.md) | 101.23 | 59.07 | 0.4787 | 0.2771  | 0.2459 | 0.3275 | 0.2570 | 0.3741 | 0.2413 | 0.3583 | 0.1809 |
