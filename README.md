@@ -1,7 +1,7 @@
 <p align="right">English | <a href="">简体中文</a></p>
 
 <p align="center">
-  <img src="docs/figs/logo.png" align="center" width="28%">
+  <img src="docs/figs/logo.png" align="center" width="25%">
   
   <h3 align="center"><strong>RoboBEV: Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
