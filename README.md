@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/figs/logo.png" align="center" width="24%">
   
-  <h3 align="center"><strong>RoboDet: Robust Bird's Eye View Detection under Corruptions</strong></h3>
+  <h3 align="center"><strong>RoboBEV: Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
   <p align="center">
   </p>
@@ -32,7 +32,7 @@
 
 ## About
 
-`RoboDet` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
+`RoboBEV` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
 
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
@@ -49,7 +49,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 ## Updates
 - [2023.02] - The `nuScenes-C` dataset is ready to be downloaded! See [here](docs/DATA_PREPARE.md) for more details.
-- [2023.01] - Launch of the `RoboDet` benchmark! :beers:
+- [2023.01] - Launch of the `RoboBEV` benchmark! :beers:
 
 
 ## Outline
@@ -168,7 +168,7 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation
 
 
 ## Create Corruption Sets
-You can manage to create your own "RoboDet" corrpution sets! Follow the instructions listed in [CREATE.md](docs/CREATE.md).
+You can manage to create your own "RoboBEV" corrpution sets! Follow the instructions listed in [CREATE.md](docs/CREATE.md).
 
 
 ## TODO List
@@ -183,8 +183,8 @@ You can manage to create your own "RoboDet" corrpution sets! Follow the instruct
 If you find this work helpful, please kindly consider citing our paper:
 
 ```bibtex
-@ARTICLE{xie2023robodet,
-  title={RoboDet: Robust Bird's Eye View Detection under Corruptions},
+@ARTICLE{xie2023robobev,
+  title={RoboBEV: Robust Bird's Eye View Detection under Corruptions},
   author={xxx},
   journal={arXiv preprint arXiv:23xx.xxxxx}, 
   year={2023},
