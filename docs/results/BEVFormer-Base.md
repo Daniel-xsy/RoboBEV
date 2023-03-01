@@ -1,6 +1,6 @@
 <img src="../figs/logo2.png" align="right" width="30%">
 
-# RoboDet Benchmark
+# RoboBEV Benchmark
 
 The official [nuScenes metrics](https://www.nuscenes.org/object-detection/?externalData=all&mapData=all&modalities=Any) are considered in our benchmark:
 
