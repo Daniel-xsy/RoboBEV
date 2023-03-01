@@ -135,7 +135,8 @@ model = dict(
             pc_range=point_cloud_range))))
    
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '../../data/'
 
 file_client_args = dict(backend='disk')
 
@@ -207,11 +208,11 @@ test_pipeline = [
 
 data = dict(
     samples_per_gpu=1,
-    workers_per_gpu=4,
+    workers_per_gpu=16,
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file=data_root + 'nuscenes_infos_train.pkl',
+        ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
         pipeline=train_pipeline,
         classes=class_names,
         modality=input_modality,
@@ -220,8 +221,20 @@ data = dict(
         # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
         # and box_type_3d='Depth' in sunrgbd and scannet dataset.
         box_type_3d='LiDAR'),
-    val=dict(pipeline=test_pipeline, classes=class_names, modality=input_modality),
-    test=dict(pipeline=test_pipeline, classes=class_names, modality=input_modality))
+    val=dict(
+        type=dataset_type, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        pipeline=test_pipeline, 
+        classes=class_names, 
+        modality=input_modality),
+    test=dict(
+        type=dataset_type, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        pipeline=test_pipeline, 
+        classes=class_names, 
+        modality=input_modality))
 
 
 optimizer = dict(
@@ -245,5 +258,28 @@ total_epochs = 24
 evaluation = dict(interval=2, pipeline=test_pipeline)
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
-load_from='ckpts/dd3d_det_final.pth'
+load_from='/nvme/konglingdong/models/RoboDet/models/FCOS3D/fcos3d_vovnet_imgbackbone-remapped.pth'
 find_unused_parameters=True
+
+# Evaluating bboxes of pts_bbox                                                                                                                                                           [65/1864]
+# mAP: 0.3475                                                                                                                                                                                      
+# mATE: 0.7855
+# mASE: 0.2994
+# mAOE: 0.4099
+# mAVE: 0.8352
+# mAAE: 0.2030
+# NDS: 0.4205
+# Eval time: 145.1s
+
+# Per-class results:
+# Object Class    AP      ATE     ASE     AOE     AVE     AAE
+# car     0.547   0.541   0.161   0.065   0.850   0.204
+# truck   0.312   0.824   0.226   0.088   0.849   0.224
+# bus     0.355   0.875   0.230   0.136   2.128   0.362
+# trailer 0.172   1.102   0.270   0.586   0.546   0.074
+# construction_vehicle    0.071   1.099   0.520   1.043   0.202   0.376
+# pedestrian      0.425   0.698   0.312   0.538   0.470   0.210
+# motorcycle      0.334   0.749   0.298   0.478   1.187   0.153
+# bicycle 0.304   0.730   0.310   0.626   0.450   0.022
+# traffic_cone    0.493   0.598   0.359   nan     nan     nan
+# barrier 0.462   0.639   0.309   0.130   nan     nan
