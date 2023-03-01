@@ -135,7 +135,8 @@ model = dict(
             pc_range=point_cloud_range))))
    
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
+data_root = '/nvme/share/data/sets/nuScenes/'
+anno_root = '/nvme/konglingdong/models/RoboDet/data/'
 
 file_client_args = dict(backend='disk')
 
@@ -220,8 +221,18 @@ data = dict(
         # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
         # and box_type_3d='Depth' in sunrgbd and scannet dataset.
         box_type_3d='LiDAR'),
-    val=dict(pipeline=test_pipeline, classes=class_names, modality=input_modality),
-    test=dict(pipeline=test_pipeline, classes=class_names, modality=input_modality))
+    val=dict(
+        pipeline=test_pipeline, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        classes=class_names, 
+        modality=input_modality),
+    test=dict(
+        pipeline=test_pipeline, 
+        data_root=data_root,
+        ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
+        classes=class_names, 
+        modality=input_modality))
 
 
 optimizer = dict(
@@ -247,3 +258,13 @@ evaluation = dict(interval=2, pipeline=test_pipeline)
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='ckpts/dd3d_det_final.pth'
 find_unused_parameters=True
+
+# Evaluating bboxes of pts_bbox
+# mAP: 0.3960                                                                                                                                                                         
+# mATE: 0.7375
+# mASE: 0.2939
+# mAOE: 0.2773
+# mAVE: 0.7281
+# mAAE: 0.1974
+# NDS: 0.4746
+# Eval time: 154.2s
