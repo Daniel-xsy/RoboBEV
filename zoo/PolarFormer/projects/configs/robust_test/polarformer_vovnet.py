@@ -141,6 +141,8 @@ model = dict(
 dataset_type = 'TransNuScenesDataset'
 data_root = '/nvme/share/data/sets/nuScenes/'
 anno_root = '../../data/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
+
 
 file_client_args = dict(backend='disk')
 
@@ -200,7 +202,7 @@ train_pipeline = [
                             'transformation_3d_flow'))
 ]
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles', to_float32=True),
+    dict(type='Custom_LoadMultiViewImageFromFiles', to_float32=True, corruption_root=corruption_root),
     dict(type='NormalizeMultiviewImage', **img_norm_cfg),
     dict(type='PadMultiViewImage', size_divisor=32),
     dict(
@@ -228,11 +230,11 @@ test_pipeline = [
 
 data = dict(
     samples_per_gpu=1,
-    workers_per_gpu=6,
+    workers_per_gpu=16,
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file=data_root + 'nuscenes_infos_train.pkl',
+        ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
         pipeline=train_pipeline,
         classes=class_names,
         modality=input_modality,
@@ -278,28 +280,28 @@ total_epochs = 24
 evaluation = dict(interval=1, pipeline=test_pipeline)
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
-load_from='pretrained/dd3_det_final.pth'
+load_from='/nvme/konglingdong/models/RoboDet/models/FCOS3D/fcos3d_vovnet_imgbackbone-remapped.pth'
 find_unused_parameters=True
+corruptions = ['CameraCrash','FrameLost','ColorQuant','MotionBlur','Brightness','LowLight','Fog','Snow']
 
-
-# mAP: 0.5004                                                                                                                                                                       
-# mATE: 0.5826
-# mASE: 0.2621
-# mAOE: 0.2473
-# mAVE: 0.6015
-# mAAE: 0.1926
-# NDS: 0.5616
-# Eval time: 116.7s
+# mAP: 0.4028                                                                                                                                     
+# mATE: 0.7097
+# mASE: 0.2690
+# mAOE: 0.4019
+# mAVE: 0.8682
+# mAAE: 0.2072
+# NDS: 0.4558
+# Eval time: 118.0s
 
 # Per-class results:
 # Object Class    AP      ATE     ASE     AOE     AVE     AAE
-# car     0.687   0.393   0.147   0.046   0.651   0.203
-# truck   0.469   0.617   0.207   0.059   0.604   0.225
-# bus     0.580   0.569   0.196   0.048   1.107   0.250
-# trailer 0.325   0.849   0.221   0.206   0.438   0.151
-# construction_vehicle    0.193   0.947   0.447   0.508   0.145   0.360
-# pedestrian      0.554   0.549   0.293   0.452   0.406   0.193
-# motorcycle      0.493   0.555   0.240   0.292   1.089   0.152
-# bicycle 0.453   0.496   0.271   0.492   0.371   0.006
-# traffic_cone    0.637   0.390   0.309   nan     nan     nan
-# barrier 0.613   0.461   0.290   0.123   nan     nan
+# car     0.613   0.463   0.148   0.058   0.876   0.209
+# truck   0.363   0.726   0.216   0.080   0.882   0.235
+# bus     0.449   0.725   0.201   0.152   2.128   0.367
+# trailer 0.226   1.041   0.240   0.559   0.650   0.155
+# construction_vehicle    0.088   1.090   0.477   1.166   0.110   0.326
+# pedestrian      0.478   0.643   0.291   0.500   0.451   0.208
+# motorcycle      0.398   0.650   0.251   0.406   1.400   0.146
+# bicycle 0.367   0.637   0.257   0.549   0.448   0.011
+# traffic_cone    0.551   0.520   0.316   nan     nan     nan
+# barrier 0.495   0.602   0.292   0.146   nan     nan
