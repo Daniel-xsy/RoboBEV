@@ -32,7 +32,7 @@ $$
 $$
 
 
-## SRCN3D-Vov-DD3D-trainval-Pretrain
+## SRCN3D-Vov
 
 | **Corruption** | **NDS** | **mAP** | **mATE** | **mASE** | **mAOE** | **mAVE** | **mAAE** |
 | :------------: | :-----: | :-----: | :------: | :------: | :------: | :------: | :------: |
