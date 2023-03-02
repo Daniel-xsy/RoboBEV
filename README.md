@@ -202,7 +202,4 @@ This work is under the <a rel="license" href="http://creativecommons.org/license
 
 
 ## Acknowledgements
-We thank the exceptional support from [Shanghai AI Laboratory](https://www.shlab.org.cn/)! Kindly refer to [ACKNOWLEDGE.md](docs/ACKNOWLEDGE.md) for more detailed acknowledgments of this codebase.
-
-<img src="docs/figs/shlab.png" align="center" width="96%">
-
+To be updated.
