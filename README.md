@@ -153,7 +153,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | [BEVDepth<sub>R50</sub>](docs/results/BEVDepth-r50.md) | 110.02  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
 | [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 110.67 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
 | [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md) | 117.82 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
-| [PolarFormer<sub>R101</sub>](docs/results/PolarFormer-r101.md) | 96.06  | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
+| [PolarFormer<sub>R101</sub>](docs/results/PolarFormer-r101.md) | 96.06 | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
 | [PolarFormer<sub>VoV</sub>](docs/results/PolarFormer-Vov.md)  | 98.75 | 67.51 | 0.4558 | 0.3135 | 0.2811 | 0.3076 | 0.2344 | 0.4280 | 0.2441 | 0.4061 | 0.2468 |
 | [SRCN3D<sub>R101</sub>](docs/results/SRCN3D-r101.md) | 99.67 | 70.23 | 0.4286 | 0.2947 | 0.2681 | 0.3318 | 0.2609 | 0.4074 | 0.2590 | 0.3940 | 0.1920 |
 | [SRCN3D<sub>VoV</sub>](docs/results/SRCN3D-Vov.md) | 102.04 | 67.95 | 0.4205 | 0.2875 | 0.2579 | 0.2827 | 0.2143 | 0.3886 | 0.2274 | 0.3774	| 0.2499 |
@@ -170,8 +170,6 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [docs/results](docs/results/).
 
-<p align="center"> <img src="docs/figs/stats.png"> </p>
-
 
 ## BEV Model Calibration
 
@@ -184,6 +182,21 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation
 | [PETR<sub>R50-p4</sub>](docs/results/PETR-r50.md) | ✗ | ✗ | ✗ | ✗ | ResNet | Attention | 111.01 | 61.26 | 0.3665 |
 | [PETR<sub>VoV-p4</sub>](docs/results/PETR-vov.md) | ✓ | ✗ | ✗ | ✗ | VoVNet<sub>V2</sub> | Attention | 100.69 | 65.03 | 0.4550 |
 | [ORA3D](docs/results/ORA3D.md) | ✓ | ✗ | ✗ | ✗ | ResNet | Attention | 99.17 | 68.63 | 0.4436 |
+| [PolarFormer<sub>R101</sub>](docs/results/PolarFormer-r101.md) | ✓ | ✗ | ✗ | ✗ | ResNet | Attention | 96.06  | 70.88 | 0.4602 |
+| [PolarFormer<sub>VoV</sub>](docs/results/PolarFormer-Vov.md) | ✓ | ✗ | ✗ | ✗ | VoVNet<sub>V2</sub> | Attention | 98.75 | 67.51 | 0.4558 |
+| |
+| [SRCN3D<sub>R101</sub>](docs/results/SRCN3D-r101.md) | ✓ | ✗ | ✗ | ✗ | ResNet | CNN+Attn. | 99.67 | 70.23 | 0.4286 |
+| [SRCN3D<sub>VoV</sub>](docs/results/SRCN3D-Vov.md) | ✓ | ✗ | ✗ | ✗ | VoVNet<sub>V2</sub> | CNN+Attn. | 102.04 | 67.95 | 0.4205 |
+| [Sparse4D<sub>R101</sub>](docs/results/Sparse4D-r101.md) | ✓ | ✓ | ✗ | ✗ | ResNet | CNN+Attn. | 100.01 | 55.04 | 0.5438 |
+| |
+| [BEVDet<sub>R50</sub>](docs/results//BEVDet-r50.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 115.12 | 51.83 | 0.3770 |
+
+**Note:** *Pretrain* denotes the model is initialized from the FCOS3D checkpoint. *Temporal* indicates whether to use temporal information. *Depth* denotes models with an explicit depth estimation branch. *CBGS* highlight models use the class-balanced group-sampling strategy.
+
+
+<p align="center"> <img src="docs/figs/stats.png"> </p>
+
+
 
 
 ## Create Corruption Set
