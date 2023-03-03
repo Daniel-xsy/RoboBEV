@@ -6,6 +6,14 @@
   <h3 align="center"><strong>RoboBEV: Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
   <p align="center">
+      <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=-j1j7TkAAAAJ" target='_blank'>Lingdong Kong</a>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=QDXADSEAAAAJ" target='_blank'>Wenwei Zhang</a>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=YUKPVCoAAAAJ" target='_blank'>Jiawei Ren</a>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=lSDISOcAAAAJ" target='_blank'>Liang Pan</a>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=eGD0b7IAAAAJ" target='_blank'>Kai Chen</a>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=lc45xlcAAAAJ" target='_blank'>Ziwei Liu</a>
+    <br>
   </p>
 
 </p>
