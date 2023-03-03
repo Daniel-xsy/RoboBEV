@@ -170,6 +170,8 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [docs/results](docs/results/).
 
+<p align="center"> <img src="docs/figs/stats.png"> </p>
+
 
 ## BEV Model Calibration
 
