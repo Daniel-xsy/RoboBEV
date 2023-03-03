@@ -62,16 +62,13 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## Outline
-- [About](#about)
-- [Updates](#updates)
-- [Outline](#outline)
 - [Installation](#installation)
 - [Data Preparation](#data-preparation)
 - [Getting Started](#getting-started)
 - [Taxonomy](#taxonomy)
 - [Model Zoo](#model-zoo)
 - [Benchmark](#benchmark)
-- [Create Corruption Sets](#create-corruption-sets)
+- [Create Corruption Set](#create-corruption-set)
 - [TODO List](#todo-list)
 - [Citation](#citation)
 - [License](#license)
@@ -140,8 +137,6 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 ## Benchmark
 
-<img src="docs/figs/mCE.png" align="center" width="100%">
-
 | Model | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 70.77 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.2786 | 0.3912 | 0.1913 |
@@ -175,8 +170,17 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [docs/results](docs/results/).
 
 
+## BEV Model Calibration
 
-## Create Corruption Sets
+| Model | Pretrain | Temporal | Depth | CBGS | Backbone | Encoder<sub>BEV</sub> | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | NDS $\uparrow$ | 
+| -: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| [DETR3D](docs/results/DETR3D.md) | :heavy_check_mark: | | | :heavy_check_mark: | ResNet | Attention | 100.00 | 70.77 | 0.4224 | 
+
+
+
+
+
+## Create Corruption Set
 You can manage to create your own "RoboBEV" corrpution sets! Follow the instructions listed in [CREATE.md](docs/CREATE.md).
 
 
