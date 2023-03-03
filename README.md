@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/figs/logo.png" align="center" width="25%">
   
-  <h3 align="center"><strong>RoboBEV: Robust Bird's Eye View Detection under Corruptions</strong></h3>
+  <h3 align="center"><strong>RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions</strong></h3>
 
   <p align="center">
       <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a>&nbsp;&nbsp;
@@ -146,13 +146,13 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | [BEVFormer<sub>Base</sub>](docs/results/BEVFormer-Base.md) | 97.97 | 60.40 | 0.5174 | 0.3154 | 0.3017 | 0.3509 | 0.2695 | 0.4184 | 0.2515 | 0.4069 | 0.1857 |
 | [PETR<sub>R50-p4</sub>](docs/results/PETR-r50.md) | 111.01 | 61.26 | 0.3665 | 0.2320  | 0.2166 | 0.2472 | 0.2299 | 0.2841 | 0.1571 | 0.2876 | 0.1417 |
 | [PETR<sub>VoV-p4</sub>](docs/results/PETR-vov.md) | 100.69 | 65.03 | 0.4550 | 0.2924  | 0.2792 | 0.2968 | 0.2490 | 0.3858 | 0.2305 | 0.3703 | 0.2632 |
+| [ORA3D](docs/results/ORA3D.md) | 99.17 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
 | [BEVDet<sub>R50</sub>](docs/results//BEVDet-r50.md) | 115.12 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
 | [BEVDet<sub>R101</sub>](docs/results//BEVDet-r101.md) | 113.68 | 53.12 | 0.3877 | 0.2622 | 0.2065 | 0.2546 | 0.2265 | 0.2554 | 0.1118 | 0.2495 | 0.0810 |
 | [BEVDet<sub>Tiny</sub>](docs/results/BEVDet-Swin-Tiny.md) | 116.48 | 46.26 | 0.4037 | 0.2609 | 0.2115 | 0.2278 | 0.2128 | 0.2191 | 0.0490 | 0.2450 | 0.0680 |
 | [BEVDepth<sub>R50</sub>](docs/results/BEVDepth-r50.md) | 110.02  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
 | [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 110.67 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
 | [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md) | 117.82 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
-| [ORA3D](docs/results/ORA3D.md) | 99.17 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
 | [PolarFormer<sub>R101</sub>](docs/results/PolarFormer-r101.md) | 96.06  | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
 | [PolarFormer<sub>VoV</sub>](docs/results/PolarFormer-Vov.md)  | 98.75 | 67.51 | 0.4558 | 0.3135 | 0.2811 | 0.3076 | 0.2344 | 0.4280 | 0.2441 | 0.4061 | 0.2468 |
 | [SRCN3D<sub>R101</sub>](docs/results/SRCN3D-r101.md) | 99.67 | 70.23 | 0.4286 | 0.2947 | 0.2681 | 0.3318 | 0.2609 | 0.4074 | 0.2590 | 0.3940 | 0.1920 |
@@ -179,8 +179,9 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation
 | [DETR3D<sub>CBGS</sub>](docs/results/DETR3D-w-cbgs.md) | ✓ | ✗ | ✗ | ✓ | ResNet | Attention | 99.21 | 70.02 | 0.4341 |
 | [BEVFormer<sub>Small</sub>](docs/results/BEVFormer-Small.md) | ✓ | ✓ | ✗ | ✗ | ResNet | Attention | 101.23 | 59.07 | 0.4787 |
 | [BEVFormer<sub>Base</sub>](docs/results/BEVFormer-Base.md) | ✓ | ✓ | ✗ | ✗ | ResNet | Attention | 97.97 | 60.40 | 0.5174 |
-| [PETR<sub>R50-p4</sub>](docs/results/PETR-r50.md) |  ✗ | ✗ | ✗ | ✗ | ResNet | Attention | 111.01 | 61.26 | 0.3665 |
-
+| [PETR<sub>R50-p4</sub>](docs/results/PETR-r50.md) | ✗ | ✗ | ✗ | ✗ | ResNet | Attention | 111.01 | 61.26 | 0.3665 |
+| [PETR<sub>VoV-p4</sub>](docs/results/PETR-vov.md) | ✓ | ✗ | ✗ | ✗ | VoVNet<sub>V2</sub> | Attention | 100.69 | 65.03 | 0.4550 |
+| [ORA3D](docs/results/ORA3D.md) | ✓ | ✗ | ✗ | ✗ | ResNet | Attention | 99.17 | 68.63 | 0.4436 |
 
 
 ## Create Corruption Set
