@@ -157,8 +157,8 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation
 | [BEVDet<sub>R101</sub>](docs/results/BEVDet-r101.md) | 113.68 | 53.12 | 0.3877 | 0.2622 | 0.2065 | 0.2546 | 0.2265 | 0.2554 | 0.1118 | 0.2495 | 0.0810 |
 | [BEVDet<sub>SwinT</sub>](docs/results/BEVDet-Swin-Tiny.md) | 116.48 | 46.26 | 0.4037 | 0.2609 | 0.2115 | 0.2278 | 0.2128 | 0.2191 | 0.0490 | 0.2450 | 0.0680 |
 | [BEVDepth<sub>R50</sub>](docs/results/BEVDepth-r50.md) | 110.02  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
-| [BEVerse<sub>Tiny</sub>](docs/results/BEVerse-Tiny.md) | 110.67 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
-| [BEVerse<sub>Small</sub>](docs/results/BEVerse-Small.md) | 117.82 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
+| [BEVerse<sub>SwinT</sub>](docs/results/BEVerse-Tiny.md) | 110.67 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
+| [BEVerse<sub>SwinS</sub>](docs/results/BEVerse-Small.md) | 117.82 | 49.57 | 0.4951 | 0.3364 | 0.2485 | 0.2807 | 0.2632 | 0.3394 | 0.1118 | 0.2849 | 0.0985 |
 | [PolarFormer<sub>R101</sub>](docs/results/PolarFormer-r101.md) | 96.06 | 70.88 | 0.4602 | 0.3133 | 0.2808 | 0.3509 | 0.3221 | 0.4304 | 0.2554 | 0.4262 | 0.2304 |
 | [PolarFormer<sub>VoV</sub>](docs/results/PolarFormer-Vov.md)  | 98.75 | 67.51 | 0.4558 | 0.3135 | 0.2811 | 0.3076 | 0.2344 | 0.4280 | 0.2441 | 0.4061 | 0.2468 |
 | [SRCN3D<sub>R101</sub>](docs/results/SRCN3D-r101.md) | 99.67 | 70.23 | 0.4286 | 0.2947 | 0.2681 | 0.3318 | 0.2609 | 0.4074 | 0.2590 | 0.3940 | 0.1920 |
@@ -220,7 +220,7 @@ If you find this work helpful, please kindly consider citing our paper:
 
 ```bibtex
 @ARTICLE{xie2023robobev,
-  title={RoboBEV: Robust Bird's Eye View Detection under Corruptions},
+  title={RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
   author={xxx},
   journal={arXiv preprint arXiv:23xx.xxxxx}, 
   year={2023},
