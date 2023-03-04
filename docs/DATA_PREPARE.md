@@ -32,7 +32,7 @@ To install the [nuScenes](https://www.nuscenes.org/nuscenes) dataset, download t
                               category.json from nuScenes v1.0 is overwritten)
 ```
 
-Please follow the official [instructions](https://mmdetection3d.readthedocs.io/en/v0.17.3/datasets/nuscenes_det.html) of mmdetection3d to process the nuScenes dataset.
+Please follow the official instructions of each model repo to process the nuScenes dataset. 
 
 ### nuScenes-C
 
