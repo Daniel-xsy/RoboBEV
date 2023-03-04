@@ -146,6 +146,7 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation
 | [ORA3D](docs/results/ORA3D.md) | 99.17 | 68.63 | 0.4436 | 0.3055 | 0.2750 | 0.3360 | 0.2647 | 0.4075 | 0.2613 | 0.3959 | 0.1898 |
 | [BEVDet<sub>R50</sub>](docs/results/BEVDet-r50.md) | 115.12 | 51.83 | 0.3770 | 0.2486 | 0.1924 | 0.2408 | 0.2061 | 0.2565 | 0.1102 | 0.2461 | 0.0625 |
 | [BEVDet<sub>R101</sub>](docs/results/BEVDet-r101.md) | 113.68 | 53.12 | 0.3877 | 0.2622 | 0.2065 | 0.2546 | 0.2265 | 0.2554 | 0.1118 | 0.2495 | 0.0810 |
+| BEVDet<sub>R101-pt</sub> | - | - | - | - | - | - | - | - | - | - | - |
 | [BEVDet<sub>SwinT</sub>](docs/results/BEVDet-Swin-Tiny.md) | 116.48 | 46.26 | 0.4037 | 0.2609 | 0.2115 | 0.2278 | 0.2128 | 0.2191 | 0.0490 | 0.2450 | 0.0680 |
 | [BEVDepth<sub>R50</sub>](docs/results/BEVDepth-r50.md) | 110.02  | 56.82 | 0.4058 | 0.2638 | 0.2141 | 0.2751 | 0.2513 |  0.2879 | 0.1757 | 0.2903 | 0.0863 |
 | [BEVerse<sub>SwinT</sub>](docs/results/BEVerse-Tiny.md) | 110.67 | 48.60 | 0.4665 | 0.3181 | 0.3037 | 0.2600 | 0.2647 | 0.2656 | 0.0593 | 0.2781 | 0.0644 |
@@ -182,6 +183,7 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation
 | [Sparse4D<sub>R101</sub>](docs/results/Sparse4D-r101.md) | ✓ | ✓ | ✗ | ✗ | ResNet | CNN+Attn. | 100.01 | 55.04 | 0.5438 |
 | |
 | [BEVDet<sub>R50</sub>](docs/results/BEVDet-r50.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 115.12 | 51.83 | 0.3770 |
+| BEVDet<sub>R101-pt</sub> | ✓ | ✗ | ✓ | ✓ | ResNet | CNN | - | - | - |
 | [BEVDet<sub>R101</sub>](docs/results/BEVDet-r101.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 113.68 | 53.12 | 0.3877 |
 | [BEVDet<sub>SwinT</sub>](docs/results/BEVDet-Swin-Tiny.md) | ✗ | ✗ | ✓ | ✓ | Swin | CNN | 116.48 | 46.26 | 0.4037 |
 | [BEVDepth<sub>R50</sub>](docs/results/BEVDepth-r50.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 110.02  | 56.82 | 0.4058 |
