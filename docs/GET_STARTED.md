@@ -1,6 +1,6 @@
-<img src="../docs/figs/logo2.png" align="right" width="30%">
+<img src="../docs/figs/logo2.png" align="right" width="37%">
 
-# Get started
+# Getting Started
 
 All the models in the `./zoo` are ready to run on `nuScenes-C` by running:
 ```bash
