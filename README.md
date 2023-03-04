@@ -58,7 +58,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 ## Updates
 
 - [2023.02] - The `nuScenes-C` dataset is pending release for a careful check of potential IP issues.
-- [2023.01] - Launch of the `RoboBEV` benchmark! In this initial version, we include **11** camera-only BEV detection algorithms (**22** variants), evaluated with **8** corruption types across **3** severity levels.
+- [2023.01] - Launch of the `RoboBEV` benchmark! In this initial version, we include **10** camera-only BEV detection algorithms (**23** variants), evaluated with **8** corruption types across **3** severity levels.
 
 
 ## Outline
