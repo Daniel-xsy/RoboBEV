@@ -183,8 +183,8 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation
 | [Sparse4D<sub>R101</sub>](docs/results/Sparse4D-r101.md) | ✓ | ✓ | ✗ | ✗ | ResNet | CNN+Attn. | 100.01 | 55.04 | 0.5438 |
 | |
 | [BEVDet<sub>R50</sub>](docs/results/BEVDet-r50.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 115.12 | 51.83 | 0.3770 |
-| BEVDet<sub>R101-pt</sub> | ✓ | ✗ | ✓ | ✓ | ResNet | CNN | - | - | - |
 | [BEVDet<sub>R101</sub>](docs/results/BEVDet-r101.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 113.68 | 53.12 | 0.3877 |
+| BEVDet<sub>R101-pt</sub> | ✓ | ✗ | ✓ | ✓ | ResNet | CNN | - | - | - |
 | [BEVDet<sub>SwinT</sub>](docs/results/BEVDet-Swin-Tiny.md) | ✗ | ✗ | ✓ | ✓ | Swin | CNN | 116.48 | 46.26 | 0.4037 |
 | [BEVDepth<sub>R50</sub>](docs/results/BEVDepth-r50.md) | ✗ | ✗ | ✓ | ✓ | ResNet | CNN | 110.02  | 56.82 | 0.4058 |
 | [BEVerse<sub>SwinT</sub>](docs/results/BEVerse-Tiny.md) | ✗ | ✗ | ✓ | ✓ | Swin | CNN | 137.25 | 28.24 | 0.1603 | 
