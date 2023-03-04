@@ -138,6 +138,12 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 
 ## Robustness Benchmark
 
+**:bar_chart: Metrics:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
+- **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
+- **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
+
+Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [docs/results](docs/results/).
+
 | Model | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | -: | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | <sup>:star:</sup>[DETR3D](docs/results/DETR3D.md) | 100.00 | 70.77 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.2786 | 0.3912 | 0.1913 |
@@ -163,12 +169,7 @@ Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each
 | BEVFusion<sub>LiDAR</sub> | - | - | 0.6928 | - | - | - | - | - | - | - | - |
 | BEVFusion<sub>C+L</sub> | - | - | 0.7138 | - | - | - | - | - | - | - | - | 
 
-
-**Note:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
-- **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
-- **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
-
-Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation. For more detailed experimental results, please refer to [docs/results](docs/results/).
+<p align="center"> <img src="docs/figs/stats.png"> </p>
 
 
 ## BEV Model Calibration
@@ -199,10 +200,6 @@ Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCS* calculation
 | [BEVerse<sub>SwinS</sub>](docs/results/BEVerse-Small.md) | ✗ | ✓ | ✓ | ✓ | ResNet | Swin | 117.82 | 49.57 | 0.4951 | 
 
 **Note:** *Pretrain* denotes models initialized from the FCOS3D checkpoint. *Temporal* indicates whether temporal information is used. *Depth* denotes models with an explicit depth estimation branch. *CBGS* highlight models use the class-balanced group-sampling strategy.
-
-
-<p align="center"> <img src="docs/figs/stats.png"> </p>
-
 
 
 
