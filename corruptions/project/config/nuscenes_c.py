@@ -16,9 +16,9 @@ input_modality = dict(
     use_external=True)
 
 dataset_type = 'CustomNuScenesDataset'
-data_root = '/nvme/share/data/sets/nuScenes/'
-anno_root = '/nvme/konglingdong/models/RoboDet/data/'
-corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
+data_root = './nuScenes/'
+anno_root = './nuScenes/'
+corruption_root = './nuScenes-C/'
 file_client_args = dict(backend='disk')
 
 test_pipeline = [
@@ -50,5 +50,11 @@ data = dict(
     shuffler_sampler=dict(type='DistributedGroupSampler')
 )
 
-corruptions = [dict(type='LowLight', easy=2, mid=3, hard=4)]
-# 'MotionBlur', 'Fog', 'Snow', 'ColorQuant', 'Brightness', 'LowLight', 'CameraCrash', 'FrameLost'
+corruptions = [dict(type='CameraCrash', easy=2, mid=4, hard=5),
+               dict(type='FrameLost', easy=2, mid=4, hard=5),
+               dict(type='MotionBlur', easy=2, mid=4, hard=5),
+               dict(type='ColorQuant', easy=1, mid=2, hard=3),
+               dict(type='Brightness', easy=2, mid=4, hard=5),
+               dict(type='LowLight', easy=2, mid=3, hard=4),
+               dict(type='Fog', easy=2, mid=4, hard=5),
+               dict(type='Snow', easy=1, mid=2, hard=3)]

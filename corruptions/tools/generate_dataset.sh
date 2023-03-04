@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-PYTHONPATH="/nvme/konglingdong/models/RoboDet/corruptions":$PYTHONPATH \
-python $(dirname "$0")/generate_dataset.py \
-/nvme/konglingdong/models/RoboDet/corruptions/project/config/nuscenes_c.py \
-# -m debugpy --listen 5677 --wait-for-client 
+CONFIG=$1
+
+PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
+python -m debugpy --listen 5678 --wait-for-client $(dirname "$0")/generate_dataset.py \
+$CONFIG \
