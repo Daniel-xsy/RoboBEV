@@ -1,8 +1,10 @@
-<img src="../docs/figs/logo2.png" align="right" width="30%">
+<img src="../docs/figs/logo2.png" align="right" width="37%">
 
 # Installation
 
-The codebase is based on [MMDetection3D](https://github.com/open-mmlab/mmdetection3d). Since models have different environment settings, please refer to the official repo of each model for environment installation.
+The codebase is based on the awesome [MMDetection3D](https://github.com/open-mmlab/mmdetection3d)! :tada:
+
+Since the models benchmarked might contain different environment settings, please refer to the official repo of each model for environment installation.
 
 
 
