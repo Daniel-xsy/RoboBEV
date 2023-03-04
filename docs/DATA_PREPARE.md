@@ -1,4 +1,4 @@
-<img src="../docs/figs/logo2.png" align="right" width="30%">
+<img src="../docs/figs/logo2.png" align="right" width="37%">
 
 # Data Preparation
 
@@ -36,14 +36,15 @@ Please follow the official [instructions](https://mmdetection3d.readthedocs.io/e
 
 ### nuScenes-C
 
-To be updated.
+This dataset is pending release for a careful check of potential IP issues. If you would like to test the robustness of your model in the current stage, please seek a solution from the following two options:
+- Get in touch with us; include the inference code and the model checkpoint and we will evaluate it for you.
+- Generate the corruption sets by yourself and evaluate the model performance accordingly. Kindly refer to more details in [this](https://github.com/Daniel-xsy/RoboBEV/blob/master/docs/CREATE.md) page.
 
 
 ### References
 
 Please note that you should cite the corresponding paper(s) once you use these datasets.
 
-#### nuScenes
 ```bibtex
 @inproceedings{caesar2020nuscenes,
     author = {H. Caesar and V. Bankiti and A. H. Lang and S. Vora and V. E. Liong and Q. Xu and A. Krishnan and Y. Pan and G. Baldan and O. Beijbom},
