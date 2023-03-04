@@ -1,4 +1,4 @@
-<img src="../docs/figs/logo2.png" align="right" width="37%">
+<img src="../docs/figs/logo2.png" align="right" width="30%">
 
 # Data Preparation
 
