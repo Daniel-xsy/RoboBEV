@@ -82,21 +82,12 @@ Kindly refer to [INSTALL.md](docs/INSTALL.md) for the installation details.
 
 ## Data Preparation
 
-Kindly refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepare the [nuScenes](https://www.nuscenes.org/nuscenes) and [nuScenes-C]() datasets.
+Kindly refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepare the `nuScenes` and `nuScenes-C` datasets.
 
 
 ## Getting Started
 
 Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about this codebase.
-
-
-## Taxonomy
-
-<p align="left">
- <img src="docs/figs/taxonomy.png" width="72%">
-</p>
-
-Kindly refer to [DEMO.md](docs/DEMO.md) to explore more visual examples for each corruption type.
 
 
 ## Model Zoo
