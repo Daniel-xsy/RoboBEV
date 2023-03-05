@@ -32,7 +32,7 @@ To install the [nuScenes](https://www.nuscenes.org/nuscenes) dataset, download t
                               category.json from nuScenes v1.0 is overwritten)
 ```
 
-Please follow the official instructions of each model repo to process the nuScenes dataset. 
+Please follow the official instructions of each model repo to process the nuScenes dataset. It's recommend to use the **absolute dataset path** when generate the `.pkl` annotation file.
 
 ### nuScenes-C
 
