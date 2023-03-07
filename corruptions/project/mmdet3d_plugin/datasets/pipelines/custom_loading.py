@@ -56,11 +56,13 @@ class Custom_LoadMultiViewImageFromFiles(object):
         """
         orig_filenames = results['img_filename']
         # img is of shape (h, w, c, num_views)
-
-        filenames = [os.path.split(filename)[1] for filename in orig_filenames]
-        subfolders = [os.path.split(os.path.split(filename)[0])[1] for filename in orig_filenames]
-        filenames = [os.path.join(subfolder, filename) for subfolder, filename in zip(subfolders, filenames)]
-        filenames = [get_corruption_path(self.corruption_root, self.corruption, self.severity, filename) for filename in filenames]
+        if self.corruption != 'Clean':
+            filenames = [os.path.split(filename)[1] for filename in orig_filenames]
+            subfolders = [os.path.split(os.path.split(filename)[0])[1] for filename in orig_filenames]
+            filenames = [os.path.join(subfolder, filename) for subfolder, filename in zip(subfolders, filenames)]
+            filenames = [get_corruption_path(self.corruption_root, self.corruption, self.severity, filename) for filename in filenames]
+        else:
+            filenames = orig_filenames
 
         img = np.stack(
             [mmcv.imread(name, self.color_type) for name in filenames], axis=-1)
