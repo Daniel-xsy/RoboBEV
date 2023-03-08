@@ -213,11 +213,11 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 If you find this work helpful, please kindly consider citing our paper:
 
 ```bibtex
-@ARTICLE{xie2023robobev,
-  title={RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
-  author={xxx},
-  journal={arXiv preprint arXiv:23xx.xxxxx}, 
-  year={2023},
+@misc{robobev2023,
+    title={RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
+    author={Shaoyuan Xie, Lingdong Kong, Wenwei Zhang, Jiawei Ren, Liang Pan, Kai Chen, Ziwei Liu},
+    howpublished = {\url{https://github.com/Daniel-xsy/RoboBEV}},
+    year={2023}
 }
 ```
 
