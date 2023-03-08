@@ -224,7 +224,7 @@ If you find this work helpful, please kindly consider citing our paper:
 # Repo:
 @misc{robobev2023,
     title={RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
-    author={Shaoyuan Xie, Lingdong Kong, Wenwei Zhang, Jiawei Ren, Liang Pan, Kai Chen, Ziwei Liu},
+    author={Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
     howpublished = {\url{https://github.com/Daniel-xsy/RoboBEV}},
     year={2023}
 }
