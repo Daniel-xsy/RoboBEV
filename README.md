@@ -65,7 +65,6 @@ Visit our [project page]() to explore more examples. :blue_car:
 - [Installation](#installation)
 - [Data Preparation](#data-preparation)
 - [Getting Started](#getting-started)
-- [Taxonomy](#taxonomy)
 - [Model Zoo](#model-zoo)
 - [Robustness Benchmark](#robustness-benchmark)
 - [BEV Model Calibration](#bev-model-calibration)
