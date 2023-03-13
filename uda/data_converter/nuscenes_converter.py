@@ -106,7 +106,7 @@ def custom_create_nuscenes_infos(root_path,
 
     metadata = dict(version=version)
     if version == 'city2city':
-        print('Boston train sample: {}, val sample'.format(len(d1_train_nusc_infos), len(d1_val_nusc_infos)))
+        print('Boston train sample: {}, val sample: {}'.format(len(d1_train_nusc_infos), len(d1_val_nusc_infos)))
         data = dict(infos=d1_train_nusc_infos, metadata=metadata)
         info_path = osp.join(root_path,
                              '{}_infos_boston_train.pkl'.format(info_prefix))
@@ -116,7 +116,7 @@ def custom_create_nuscenes_infos(root_path,
                              '{}_infos_boston_val.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
-        print('Singapore train sample: {}, val sample'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
+        print('Singapore train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
         info_path = osp.join(root_path,
                              '{}_infos_sing_train.pkl'.format(info_prefix))
@@ -133,7 +133,7 @@ def custom_create_nuscenes_infos(root_path,
                              '{}_infos_daytime_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
-        print('Night train sample: {}, val sample'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
+        print('Night train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
         info_path = osp.join(root_path,
                              '{}_infos_night_train.pkl'.format(info_prefix))
@@ -150,7 +150,7 @@ def custom_create_nuscenes_infos(root_path,
                              '{}_infos_dry_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
-        print('Rain train sample: {}, val sample'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
+        print('Rain train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
         info_path = osp.join(root_path,
                              '{}_infos_rain_train.pkl'.format(info_prefix))
