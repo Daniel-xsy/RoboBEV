@@ -95,12 +95,12 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 <summary>&nbsp<b>Camera-Only BEV Detection</b></summary>
 
 > - [ ] **[Fast-BEV](https://arxiv.org/abs/2301.12511), arXiv 2023.** <sup>[**`[Code]`**](https://github.com/Sense-GVT/Fast-BEV)</sup>
+> - [ ] **[SOLOFusion](https://arxiv.org/abs/2210.02443), ICLR 2023.** <sup>[**`[Code]`**](https://github.com/Divadi/SOLOFusion)</sup>
 > - [x] **[PolarFormer](https://arxiv.org/abs/2206.15398), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/fudan-zvg/PolarFormer)</sup>
 > - [x] **[BEVStereo](https://arxiv.org/abs/2209.10248), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVStereo)</sup>
 > - [x] **[BEVDepth](https://arxiv.org/abs/2206.10092), AAAI 2023.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
 > - [ ] **[MatrixVT](https://arxiv.org/abs/2211.10593), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/Megvii-BaseDetection/BEVDepth)</sup>
 > - [x] **[Sparse4D](https://arxiv.org/abs/2211.10581), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/linxuewu/Sparse4D)</sup>
-> - [ ] **[SOLOFusion](https://arxiv.org/abs/2210.02443), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/Divadi/SOLOFusion)</sup>
 > - [ ] **[CrossDTR](https://arxiv.org/abs/2209.13507), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/sty61010/CrossDTR)</sup>
 > - [x] **[SRCN3D](https://arxiv.org/abs/2206.14451), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/synsin0/SRCN3D)</sup>
 > - [ ] **[PolarDETR](https://arxiv.org/abs/2206.10965), arXiv 2022.** <sup>[**`[Code]`**](https://github.com/hustvl/PolarDETR)</sup>
@@ -116,7 +116,7 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 </details>
 
 <details open>
-<summary>&nbsp<b>Camera-Only Monocular Input Detection</b></summary>
+<summary>&nbsp<b>Camera-Only Monocular 3D Detection</b></summary>
 
 > - [x] **[FCOS3D](https://openaccess.thecvf.com/content/ICCV2021W/3DODI/html/Wang_FCOS3D_Fully_Convolutional_One-Stage_Monocular_3D_Object_Detection_ICCVW_2021_paper.html), ICCVW 2021.** <sup>[**`[Code]`**](https://github.com/open-mmlab/mmdetection3d)</sup>
 </details>
@@ -216,23 +216,24 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 
 
 ## Citation
-If you find this work helpful, please kindly consider citing our paper:
+If you find this work helpful, please kindly consider citing the following:
 
+#### Paper (to be updated)
 ```bibtex
-# Paper: To be update
-@ARTICLE{xie2023robobev,
-  title={RoboBEV: Robust Bird's Eye View Detection under Corruptions},
-  author={xxx},
-  journal={arXiv preprint arXiv:23xx.xxxxx}, 
-  year={2023},
+@article{xie2023robobev,
+    title = {RoboBEV: Robust Bird's Eye View Detection under Corruptions},
+    author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
+    journal = {arXiv preprint arXiv:23xx.xxxxx}, 
+    year = {2023}
 }
-
-# Repo:
-@misc{robobev2023,
-    title={RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
-    author={Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
+```
+#### Codebase & Benchmark
+```bibtex
+@misc{xie2023robobev_codebase,
+    title = {RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
+    author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
     howpublished = {\url{https://github.com/Daniel-xsy/RoboBEV}},
-    year={2023}
+    year = {2023}
 }
 ```
 
