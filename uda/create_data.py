@@ -9,6 +9,7 @@ from data_converter.create_gt_database import create_groundtruth_database
 def custom_nuscenes_data_prep(root_path,
                        info_prefix,
                        version,
+                       domain_version,
                        dataset_name,
                        out_dir,
                        max_sweeps=10):
@@ -23,12 +24,13 @@ def custom_nuscenes_data_prep(root_path,
         root_path (str): Path of dataset root.
         info_prefix (str): The prefix of info filenames.
         version (str): Dataset version.
+        domain_version (str): Domain split.
         dataset_name (str): The dataset class name.
         out_dir (str): Output directory of the groundtruth database info.
         max_sweeps (int): Number of input consecutive frames. Default: 10
     """
     nuscenes_converter.custom_create_nuscenes_infos(
-        root_path, info_prefix, version=version, max_sweeps=max_sweeps)
+        root_path, info_prefix, version=version, domain_version=domain_version, out_dir=out_dir, max_sweeps=max_sweeps)
 
 
 def nuscenes_data_prep(root_path,
@@ -83,6 +85,12 @@ parser.add_argument(
     required=False,
     help='specify the dataset version, no need for kitti')
 parser.add_argument(
+    '--domain',
+    type=str,
+    default=None,
+    required=False,
+    help='specify the dataset domain split')
+parser.add_argument(
     '--max-sweeps',
     type=int,
     default=10,
@@ -100,7 +108,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    if args.dataset == 'nuscenes' and args.version == 'v1.0':
+    if args.dataset == 'nuscenes' and args.version == 'v1.0' and args.domain == None:
         train_version = f'{args.version}-trainval'
         nuscenes_data_prep(
             root_path=args.root_path,
@@ -117,7 +125,7 @@ if __name__ == '__main__':
             dataset_name='NuScenesDataset',
             out_dir=args.out_dir,
             max_sweeps=args.max_sweeps)
-    elif args.dataset == 'nuscenes' and args.version == 'v1.0-mini':
+    elif args.dataset == 'nuscenes' and args.version == 'v1.0-mini' and args.domain == None:
         train_version = f'{args.version}'
         nuscenes_data_prep(
             root_path=args.root_path,
@@ -126,12 +134,13 @@ if __name__ == '__main__':
             dataset_name='NuScenesDataset',
             out_dir=args.out_dir,
             max_sweeps=args.max_sweeps)
-    elif args.dataset == 'nuscenes' and args.version in ['city2city', 'day2night', 'dry2rain']:
-        version = f'{args.version}'
+    elif args.dataset == 'nuscenes' and args.domain in ['city2city', 'day2night', 'dry2rain']:
+        train_version = f'{args.version}-trainval'
         custom_nuscenes_data_prep(
             root_path=args.root_path,
             info_prefix=args.extra_tag,
-            version=version,
+            version=train_version,
+            domain_version=args.domain,
             dataset_name='NuScenesDataset',
             out_dir=args.out_dir,
             max_sweeps=args.max_sweeps)

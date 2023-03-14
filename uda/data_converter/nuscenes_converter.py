@@ -26,7 +26,9 @@ nus_attributes = ('cycle.with_rider', 'cycle.without_rider',
 
 def custom_create_nuscenes_infos(root_path,
                           info_prefix,
-                          version='city2city',
+                          version='v1.0-trainval',
+                          domain_version='city2city',
+                          out_dir='./',
                           max_sweeps=10):
     """Create info file of nuscene dataset.
 
@@ -42,21 +44,21 @@ def custom_create_nuscenes_infos(root_path,
     """
     from nuscenes.nuscenes import NuScenes
     # Use v1.0-trainval to generate domain by default
-    nusc = NuScenes(version='v1.0-trainval', dataroot=root_path, verbose=True)
+    nusc = NuScenes(version=version, dataroot=root_path, verbose=True)
     import tools.domain_split as splits
     available_vers = ['city2city', 'day2night', 'dry2rain']
-    assert version in available_vers
-    if version == 'city2city':
+    assert domain_version in available_vers
+    if domain_version == 'city2city':
         d1_train_scenes = splits.boston_train
         d1_val_scenes = splits.boston_val
         d2_train_scenes = splits.singapore_train
         d2_val_scenes = splits.singapore_val
-    elif version == 'day2night':
+    elif domain_version == 'day2night':
         d1_train_scenes = splits.daytime_train
         d1_val_scenes = []
         d2_train_scenes = splits.night_train
         d2_val_scenes = splits.night_val
-    elif version == 'dry2rain':
+    elif domain_version == 'dry2rain':
         d1_train_scenes = splits.daytime_train
         d1_val_scenes = []
         d2_train_scenes = splits.night_train
@@ -91,7 +93,7 @@ def custom_create_nuscenes_infos(root_path,
         for s in d2_val_scenes
     ])
 
-    is_city = 'city' in version
+    is_city = 'city' in domain_version
     if not is_city:
         print('domain A train scene: {}, val scene: {}'.format(len(d1_train_scenes), len(d1_val_scenes)))
         print('doamin B val scene'.format(len(d2_val_scenes)))
@@ -105,58 +107,58 @@ def custom_create_nuscenes_infos(root_path,
         nusc, d2_train_scenes, d2_val_scenes, max_sweeps=max_sweeps)
 
     metadata = dict(version=version)
-    if version == 'city2city':
+    if domain_version == 'city2city':
         print('Boston train sample: {}, val sample: {}'.format(len(d1_train_nusc_infos), len(d1_val_nusc_infos)))
         data = dict(infos=d1_train_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_boston_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
         data = dict(infos=d1_val_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_boston_val.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
         print('Singapore train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_sing_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
         data = dict(infos=d2_val_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_sing_val.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
-    elif version == 'day2night':
+    elif domain_version == 'day2night':
         print('Daytime train sample: {}'.format(len(d1_train_nusc_infos)))
         data = dict(infos=d1_train_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_daytime_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
         print('Night train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_night_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
         data = dict(infos=d2_val_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_night_val.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
-    elif version == 'dry2rain':
+    elif domain_version == 'dry2rain':
         print('Dry train sample: {}'.format(len(d1_train_nusc_infos)))
         data = dict(infos=d1_train_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_dry_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
         print('Rain train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_rain_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
         data = dict(infos=d2_val_nusc_infos, metadata=metadata)
-        info_path = osp.join(root_path,
+        info_path = osp.join(out_dir,
                              '{}_infos_rain_val.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
 
