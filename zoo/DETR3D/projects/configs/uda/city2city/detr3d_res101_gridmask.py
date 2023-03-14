@@ -201,12 +201,14 @@ data = dict(
         # and box_type_3d='Depth' in sunrgbd and scannet dataset.
         box_type_3d='LiDAR'),
     val=dict(
+        type='UDANuScenesDataset',
         pipeline=test_pipeline, 
         data_root=data_root,
         ann_file=anno_root + 'nuscenes_infos_sing_val.pkl',
         classes=class_names, 
         modality=input_modality),
     test=dict(        
+        type='UDANuScenesDataset',
         pipeline=test_pipeline, 
         data_root=data_root,
         ann_file=anno_root + 'nuscenes_infos_sing_val.pkl',
@@ -230,7 +232,7 @@ lr_config = dict(
     warmup_ratio=1.0 / 3,
     min_lr_ratio=1e-3)
 total_epochs = 24
-evaluation = dict(interval=2, pipeline=test_pipeline)
+evaluation = dict(interval=1, pipeline=test_pipeline)
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from='/nvme/konglingdong/models/RoboDet/models/FCOS3D/fcos3d.pth'
