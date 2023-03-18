@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/figs/logo.png" align="center" width="25%">
   
-  <h3 align="center"><strong>RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions</strong></h3>
+  <h3 align="center"><strong>Towards Robust Bird's Eye View Perception under Common Corruption and Domain Shift</strong></h3>
 
   <p align="center">
       <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a>&nbsp;&nbsp;
@@ -40,7 +40,7 @@
 
 ## About
 
-`RoboBEV` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) detection under natural corruptions. It includes **eight corruption types** that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
+`RoboBEV` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) perception under natural data corruptions and domain shift. It includes eight corruption types that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
 
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
@@ -57,8 +57,8 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 ## Updates
 
-- [2023.02] - The `nuScenes-C` dataset is pending release for a careful check of potential IP issues.
-- [2023.01] - Launch of the `RoboBEV` benchmark! In this initial version, we include **10** camera-only BEV detection algorithms (**23** variants), evaluated with **8** corruption types across **3** severity levels.
+- [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](docs/INVITE.md) page. :beers:
+- [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
 
 
 ## Outline
@@ -127,6 +127,29 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 > - [ ] **[BEVDistill](https://arxiv.org/abs/2211.09386), ICLR 2023.** <sup>[**`[Code]`**](https://github.com/zehuichen123/BEVDistill)</sup>
 > - [ ] **[BEVFusion](https://arxiv.org/abs/2205.13542), ICRA 2023.** <sup>[**`[Code]`**](https://github.com/mit-han-lab/bevfusion)</sup>
 > - [ ] **[BEVFusion](https://arxiv.org/abs/2205.13790), NeurIPS 2022.** <sup>[**`[Code]`**](https://github.com/ADLab-AutoDrive/BEVFusion)</sup>
+
+</details>
+
+<details open>
+<summary>&nbsp<b>Camera-Only BEV Map Segmentation</b></summary>
+
+> - [ ] **[LaRa](https://arxiv.org/abs/2206.13294), CoRL 2022.** <sup>[**`[Code]`**](https://github.com/valeoai/LaRa)</sup>
+> - [ ] **[CVT](https://arxiv.org/abs/2205.02833), CVPR 2022.** <sup>[**`[Code]`**](https://github.com/bradyz/cross_view_transformers)</sup>
+
+</details>
+
+<details open>
+<summary>&nbsp<b>Multi-Camera Depth Estimation</b></summary>
+
+> - [ ] **[SurroundDepth](https://arxiv.org/abs/2204.03636), CoRL 2022.** <sup>[**`[Code]`**](https://github.com/weiyithu/SurroundDepth)</sup>
+
+</details>
+
+<details open>
+<summary>&nbsp<b>Multi-Camera Semantic Occupancy Prediction</b></summary>
+
+> - [ ] **[SurroundOcc](), arXiv 2023.** <sup>[**`[Code]`**](https://github.com/weiyithu/SurroundOcc)</sup>
+> - [ ] **[TPVFormer](https://arxiv.org/abs/2302.07817), CVPR, 2023.** <sup>[**`[Code]`**](https://github.com/wzzheng/TPVFormer)</sup>
 
 </details>
 
@@ -212,13 +235,15 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 - [x] Add scripts for creating common corruptions.
 - [ ] Add download link of nuScenes-C.
 - [x] Add evaluation scripts on corruption sets.
+- [ ] Establish benchmark for BEV map segmentation.
+- [ ] Establish benchmark for multi-camera depth estimation.
+- [ ] Establish benchmark for multi-camera semantic occupancy prediction.
 - [ ] ...
 
 
 ## Citation
 If you find this work helpful, please kindly consider citing the following:
 
-#### Paper (to be updated)
 ```bibtex
 @article{xie2023robobev,
     title = {RoboBEV: Robust Bird's Eye View Detection under Corruptions},
@@ -227,7 +252,6 @@ If you find this work helpful, please kindly consider citing the following:
     year = {2023}
 }
 ```
-#### Codebase & Benchmark
 ```bibtex
 @misc{xie2023robobev_codebase,
     title = {RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
