@@ -32,7 +32,11 @@
   </a>
   
   <a href="" target='_blank'>
-    <img src="https://img.shields.io/badge/%E4%B8%AD%E8%AF%91%E7%89%88-%F0%9F%90%BC-red">
+    <img src="https://img.shields.io/badge/%E4%B8%AD%E8%AF%91%E7%89%88-%F0%9F%90%BC-lightyellow">
+  </a>
+  
+  <a href="" target='_blank'>
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=Daniel-xsy.RoboBEV&left_color=gray&right_color=red">
   </a>
 </p>
 
