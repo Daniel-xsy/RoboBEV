@@ -48,7 +48,7 @@ class Custom_LoadMultiViewImageFromFiles_BEVDet(object):
         self.corruption = corruption
         self.severity = severity
         self.corruption_root = corruption_root
-        if corruption is not None:
+        if corruption is not None and corruption != 'Clean':
             assert severity in ['easy', 'mid', 'hard'], f"Specify a severity of corruption benchmark, now {severity}"
             assert corruption_root is not None, f"When benchmark corruption, specify nuScenes-C root"
 
@@ -135,10 +135,13 @@ class Custom_LoadMultiViewImageFromFiles_BEVDet(object):
             cam_data = results['img_info'][cam]
             orig_filename = cam_data['data_path']
 
-            filename = os.path.split(orig_filename)[1]
-            subfolder = os.path.split(os.path.split(orig_filename)[0])[1]
-            filename = os.path.join(subfolder, filename)
-            filename = get_corruption_path(self.corruption_root, self.corruption, self.severity, filename)
+            if self.corruption != 'Clean':
+                filename = os.path.split(orig_filename)[1]
+                subfolder = os.path.split(os.path.split(orig_filename)[0])[1]
+                filename = os.path.join(subfolder, filename)
+                filename = get_corruption_path(self.corruption_root, self.corruption, self.severity, filename)
+            else:
+                filename = orig_filename
 
             img = Image.open(filename)
             post_rot = torch.eye(2)
@@ -172,7 +175,13 @@ class Custom_LoadMultiViewImageFromFiles_BEVDet(object):
                 assert 'adjacent' in results
                 if not type(results['adjacent']) is list:
                     filename_adjacent = results['adjacent']['cams'][cam]['data_path']
-                    img_adjacent = Image.open(filename_adjacent)
+                    # Load corruption images
+                    filename = os.path.split(filename_adjacent)[1]
+                    subfolder = os.path.split(os.path.split(filename_adjacent)[0])[1]
+                    filename = os.path.join(subfolder, filename)
+                    filename = get_corruption_path(self.corruption_root, self.corruption, self.severity, filename)
+
+                    img_adjacent = Image.open(filename)
                     img_adjacent = self.img_transform_core(img_adjacent,
                                                            resize_dims=resize_dims,
                                                            crop=crop,
@@ -182,7 +191,13 @@ class Custom_LoadMultiViewImageFromFiles_BEVDet(object):
                 else:
                     for id in range(len(results['adjacent'])):
                         filename_adjacent = results['adjacent'][id]['cams'][cam]['data_path']
-                        img_adjacent = Image.open(filename_adjacent)
+                        # Load corruption images
+                        filename = os.path.split(filename_adjacent)[1]
+                        subfolder = os.path.split(os.path.split(filename_adjacent)[0])[1]
+                        filename = os.path.join(subfolder, filename)
+                        filename = get_corruption_path(self.corruption_root, self.corruption, self.severity, filename)
+
+                        img_adjacent = Image.open(filename)
                         img_adjacent = self.img_transform_core(img_adjacent,
                                                                resize_dims=resize_dims,
                                                                crop=crop,
