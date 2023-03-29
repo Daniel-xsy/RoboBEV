@@ -3,7 +3,6 @@
 *.pth.*
 ./models/*
 # data
-data
 *.pkl
 # vs code config
 .vscode
