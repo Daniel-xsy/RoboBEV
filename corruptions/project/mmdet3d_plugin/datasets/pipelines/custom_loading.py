@@ -157,7 +157,7 @@ class Custom_LoadMultiViewImageFromFiles(object):
 
         orig_filenames = results['img_filename']
         # img is of shape (h, w, c, num_views)
-        if self.corruption != 'Clean':
+        if self.corruption != 'Clean' and self.corruption != None:
             filenames = [os.path.split(filename)[1] for filename in orig_filenames]
             subfolders = [os.path.split(os.path.split(filename)[0])[1] for filename in orig_filenames]
             filenames = [os.path.join(subfolder, filename) for subfolder, filename in zip(subfolders, filenames)]
