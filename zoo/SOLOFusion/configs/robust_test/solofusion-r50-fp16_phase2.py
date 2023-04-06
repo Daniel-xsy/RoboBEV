@@ -280,11 +280,13 @@ data_root = '/nvme/share/data/sets/nuScenes/'
 anno_root = '/nvme/konglingdong/models/RoboDet/data/'
 corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
 file_client_args = dict(backend='petrel', 
-                        path_mapping={'/nvme/share/':'s3://youquanliu/'},)
+                        path_mapping={'/nvme/share/':'s3://youquanliu/',
+                                      '/nvme/konglingdong/data/sets/nuScenes-c/': 's3://youquanliu/data/sets/RoboBEV/nuScenes-C/'},)
 
 train_pipeline = [
     dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', is_train=True, 
-         data_config=data_config, corruption_root=corruption_root),
+         data_config=data_config, corruption_root=corruption_root,
+         file_client_args=file_client_args),
     dict(
         type='LoadPointsFromFile',
         coord_type='LIDAR',
@@ -372,7 +374,7 @@ data = dict(
     val=dict(pipeline=test_pipeline, 
              classes=class_names,
              data_root=data_root,
-             ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
+             ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
              modality=input_modality, 
              img_info_prototype='bevdet',
              use_sequence_group_flag=True,
@@ -380,7 +382,7 @@ data = dict(
     test=dict(pipeline=test_pipeline, 
               classes=class_names,
               data_root=data_root,
-              ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
+              ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
               modality=input_modality,
               img_info_prototype='bevdet',
               use_sequence_group_flag=True,
@@ -433,4 +435,4 @@ log_config = dict(
         dict(type='TextLoggerHook'),
         dict(type='TensorboardLoggerHook')
     ])
-corruptions = ['CameraCrash','FrameLost','ColorQuant','MotionBlur','Brightness','LowLight','Fog','Snow']
+corruptions = ['Clean','CameraCrash','FrameLost','ColorQuant','MotionBlur','Brightness','LowLight','Fog','Snow']

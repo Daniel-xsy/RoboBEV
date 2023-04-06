@@ -1,30 +1,47 @@
 """
-R50, Short-Term Only, No CBGS
+R50, Long-Term, Short-Term, CBGS; (Phase 2)
 
-No Phase 1 pre-training for short-term only.
+Phase 1: We pre-train without long-term fusion for 6 epochs, similar to what is
+    done in NeuralRecon. The concatenation module is simply bypassed. Training 
+    Phase 1 for 6 non-CBGS epochs is sufficient to initialize the model.
+Phase 2: We load Part 1 weights and continue training to finish the 20-epoch
+    CBGS cycle. 
+
+    Changes from Phase 1 to Phase 2:
+        - resume_from specified
+        - do_history False -> True
+        - bev_encoder_in_channels 80 -> 160
+        - velocity_code_weight changed 0.2 -> 1.0
+        - CBGS multiplier of 4.554 on num_iters_per_epoch.
+        - num_epochs 6 -> 20
+    
+    Changes from No CBGS -> CBGS:
+        - Weight decay 1e-7 -> 1e-2
+
+Note that CBGS for SOLOFusion is just a longer schedule.
 
 Released Checkpoint Results:
-mAP: 0.3439                                                                                                                                                                                                                                                                                                                                                                 
-mATE: 0.6703
-mASE: 0.2811
-mAOE: 0.6643
-mAVE: 0.8808
-mAAE: 0.3174
-NDS: 0.3906
-Eval time: 110.6s
+mAP: 0.4300                                                                                                                                                                                                                                                                                                                                                                 
+mATE: 0.5820
+mASE: 0.2747
+mAOE: 0.4555
+mAVE: 0.2424
+mAAE: 0.2108
+NDS: 0.5384
+Eval time: 91.6s
 
 Per-class results:
 Object Class	AP	ATE	ASE	AOE	AVE	AAE
-car	0.514	0.523	0.170	0.201	0.986	0.232
-truck	0.254	0.713	0.228	0.210	0.821	0.249
-bus	0.353	0.739	0.218	0.175	1.902	0.428
-trailer	0.160	1.007	0.234	0.522	0.645	0.164
-construction_vehicle	0.080	0.936	0.492	1.345	0.106	0.369
-pedestrian	0.354	0.712	0.299	1.457	0.827	0.732
-motorcycle	0.318	0.649	0.263	0.879	1.242	0.250
-bicycle	0.359	0.490	0.262	1.021	0.520	0.116
-traffic_cone	0.550	0.457	0.364	nan	nan	nan
-barrier	0.496	0.476	0.282	0.170	nan	nan
+car	0.625	0.417	0.158	0.106	0.271	0.197
+truck	0.379	0.596	0.212	0.106	0.199	0.187
+bus	0.407	0.680	0.213	0.055	0.452	0.302
+trailer	0.205	0.988	0.239	0.320	0.146	0.173
+construction_vehicle	0.146	0.860	0.489	1.332	0.121	0.407
+pedestrian	0.473	0.622	0.289	0.706	0.345	0.200
+motorcycle	0.422	0.511	0.256	0.689	0.282	0.216
+bicycle	0.426	0.400	0.262	0.644	0.122	0.003
+traffic_cone	0.624	0.367	0.343	nan	nan	nan
+barrier	0.595	0.379	0.286	0.141	nan	nan
 """
 
 ###############################################################################
@@ -35,7 +52,7 @@ _base_ = ['../_base_/datasets/nus-3d.py',
 
 work_dir = None
 load_from = None
-resume_from = None
+resume_from = "work_dirs/r50-fp16-cbgs_phase1/iter_2634.pth"
 resume_optimizer = False
 find_unused_parameters = False
 
@@ -47,8 +64,8 @@ find_unused_parameters = False
 # samples in nuScenes.
 num_gpus = 4
 batch_size = 16
-num_iters_per_epoch = 28130 // (num_gpus * batch_size)
-num_epochs = 24
+num_iters_per_epoch = int(28130 // (num_gpus * batch_size) * 4.554)
+num_epochs = 20
 checkpoint_epoch_interval = 4
 
 # Each nuScenes sequence is ~40 keyframes long. Our training procedure samples
@@ -74,7 +91,7 @@ with_cp = False
 base_bev_channels = 80
 
 # Long-Term Fusion Parameters
-do_history = False
+do_history = True
 history_cat_num = 16
 history_cat_conv_out_channels = 160
 
@@ -266,8 +283,13 @@ model = dict(
 # Set-up the dataset
 
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
-file_client_args = dict(backend='disk')
+data_root = '/nvme/konglingdong/models/RoboDet/data/nuScenes/'
+anno_root = '/nvme/konglingdong/models/RoboDet/data/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
+file_client_args = dict(backend='petrel', 
+                        path_mapping={'/nvme/share/':'s3://youquanliu/',
+                                      '/nvme/konglingdong/data/sets/nuScenes-c/': 's3://youquanliu/data/sets/RoboBEV/nuScenes-C/',
+                                      '/nvme/konglingdong/models/RoboDet/data/': 's3://youquanliu/data/sets/'},)
 
 train_pipeline = [
     dict(type='LoadMultiViewImageFromFiles_BEVDet', is_train=True, 
@@ -299,7 +321,8 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root,
+         file_client_args=file_client_args),
     dict(
         type='MultiScaleFlipAug3D',
         img_scale=(1333, 800),
@@ -337,7 +360,7 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file=data_root + 'nuscenes_infos_train.pkl',
+        ann_file=anno_root + 'nuscenes_infos_temporal_train.pkl',
         pipeline=train_pipeline,
         classes=class_names,
         test_mode=False,
@@ -356,15 +379,17 @@ data = dict(
         sequences_split_num=train_sequences_split_num,
         filter_empty_gt=filter_empty_gt),
     val=dict(pipeline=test_pipeline, 
+             data_root=data_root,
              classes=class_names,
-             ann_file=data_root + 'nuscenes_infos_val.pkl',
+             ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
              modality=input_modality, 
              img_info_prototype='bevdet',
              use_sequence_group_flag=True,
              sequences_split_num=test_sequences_split_num),
     test=dict(pipeline=test_pipeline, 
+              data_root=data_root,
               classes=class_names,
-              ann_file=data_root + 'nuscenes_infos_val.pkl',
+              ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
               modality=input_modality,
               img_info_prototype='bevdet',
               use_sequence_group_flag=True,
@@ -381,7 +406,7 @@ data = dict(
 # rate based on actual # of gpus used, assuming the given learning rate is
 # w.r.t 8 gpus.
 lr = (2e-4 / 64) * (8 * batch_size)
-optimizer = dict(type='AdamW', lr=lr, weight_decay=1e-7)
+optimizer = dict(type='AdamW', lr=lr, weight_decay=1e-2)
 
 # Mixed-precision training scales the loss up by a factor before doing 
 # back-propagation. I found that in early iterations, the loss, once scaled by
@@ -417,3 +442,4 @@ log_config = dict(
         dict(type='TextLoggerHook'),
         dict(type='TensorboardLoggerHook')
     ])
+corruptions = ['Clean','CameraCrash','FrameLost','ColorQuant','MotionBlur','Brightness','LowLight','Fog','Snow']

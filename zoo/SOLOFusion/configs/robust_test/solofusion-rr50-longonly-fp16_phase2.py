@@ -270,8 +270,13 @@ model = dict(
 # Set-up the dataset
 
 dataset_type = 'NuScenesDataset'
-data_root = 'data/nuscenes/'
-file_client_args = dict(backend='disk')
+data_root = '/nvme/konglingdong/models/RoboDet/data/nuScenes/'
+anno_root = '/nvme/konglingdong/models/RoboDet/data/'
+corruption_root = '/nvme/konglingdong/data/sets/nuScenes-c/'
+file_client_args = dict(backend='petrel', 
+                        path_mapping={'/nvme/share/':'s3://youquanliu/',
+                                      '/nvme/konglingdong/data/sets/nuScenes-c/': 's3://youquanliu/data/sets/RoboBEV/nuScenes-C/',
+                                      '/nvme/konglingdong/models/RoboDet/data/': 's3://youquanliu/data/sets/'},)
 
 train_pipeline = [
     dict(type='LoadMultiViewImageFromFiles_BEVDet', is_train=True, 
@@ -303,7 +308,8 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadMultiViewImageFromFiles_BEVDet', data_config=data_config),
+    dict(type='Custom_LoadMultiViewImageFromFiles_BEVDet', data_config=data_config, corruption_root=corruption_root,
+         file_client_args=file_client_args),
     dict(
         type='MultiScaleFlipAug3D',
         img_scale=(1333, 800),
@@ -360,15 +366,17 @@ data = dict(
         sequences_split_num=train_sequences_split_num,
         filter_empty_gt=filter_empty_gt),
     val=dict(pipeline=test_pipeline, 
+             data_root=data_root,
              classes=class_names,
-             ann_file=data_root + 'nuscenes_infos_val.pkl',
+             ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
              modality=input_modality, 
              img_info_prototype='bevdet',
              use_sequence_group_flag=True,
              sequences_split_num=test_sequences_split_num),
     test=dict(pipeline=test_pipeline, 
+              data_root=data_root,
               classes=class_names,
-              ann_file=data_root + 'nuscenes_infos_val.pkl',
+              ann_file=anno_root + 'nuscenes_infos_temporal_val.pkl',
               modality=input_modality,
               img_info_prototype='bevdet',
               use_sequence_group_flag=True,
@@ -421,3 +429,4 @@ log_config = dict(
         dict(type='TextLoggerHook'),
         dict(type='TensorboardLoggerHook')
     ])
+corruptions = ['Clean','CameraCrash','FrameLost','ColorQuant','MotionBlur','Brightness','LowLight','Fog','Snow']
