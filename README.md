@@ -191,9 +191,9 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | |
 | [FCOS3D<sub>finetune</sub>](docs/results/FCOS3D-ft.md) | 107.82 | 62.09 | 0.3949 | 0.2849 | 0.2479 | 0.2574 | 0.2570 | 0.3218 | 0.1468 | 0.3321 | 0.1136 |
 | |
-| [BEVFusion<sub>Cam</sub>](docs/results/BEVFusion-Camera.md) | - | - | 0.4121 | - | - | - | - | - | - | - | - |
+| [BEVFusion<sub>Cam</sub>](docs/results/BEVFusion-Camera.md) | 109.02 | 57.81 | 0.4121 | 0.2777 | 0.2255 | 0.2763 | 0.2788 | 0.2902 | 0.1076 | 0.3041 | 0.1461 |
 | [BEVFusion<sub>LiDAR</sub>](docs/results/BEVFusion-LiDAR.md) | - | - | 0.6928 | - | - | - | - | - | - | - | - |
-| [BEVFusion<sub>C+L</sub>](docs/results/BEVFusion-Fusion.md) | - | - | 0.7138 | - | - | - | - | - | - | - | - | 
+| [BEVFusion<sub>C+L</sub>](docs/results/BEVFusion-Fusion.md) | 43.80 | 97.41 | 0.7138 | 0.6963 | 0.6931 | 0.7044 | 0.6977 | 0.7018 | 0.6787	 | - | - | 
 
 <p align="center"> <img src="docs/figs/stats.png"> </p>
 
