@@ -165,8 +165,9 @@ class Custom_LoadMultiViewImageFromFiles(object):
         else:
             filenames = orig_filenames
 
+        ## TODO: Check this load approaches
         img = np.stack(
-            [mmcv.imfrombytes(self.file_client.get(name), flag=self.color_type) for name in filenames], axis=-1)
+            [mmcv.imfrombytes(self.file_client.get(name), flag=self.color_type, channel_order='rgb') for name in filenames], axis=-1)
         if self.to_float32:
             img = img.astype(np.float32)
         results['filename'] = filenames
