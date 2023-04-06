@@ -18,4 +18,6 @@ Since the models benchmarked might contain different environment settings, pleas
 |       ORA3D       | [installation](../zoo/ora3d/README.md) |
 |      SRCN3D       | [installation](../zoo/SRCN3D/README.md) |
 |      Sparse4D       | [installation](../zoo/Sparse4D/README.md) |
+|      SOLOFusion       | [installation](../zoo/SOLOFusion/docs/getting_started.md) |
+|      BEVFusion       | [installation](../zoo/BEVFusion/README.md) |
 
