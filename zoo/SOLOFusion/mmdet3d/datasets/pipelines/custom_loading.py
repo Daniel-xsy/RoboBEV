@@ -138,7 +138,7 @@ class Custom_LoadMultiViewImageFromFiles_BEVDet(object):
             cam_data = results['img_info'][cam]
             orig_filename = cam_data['data_path']
 
-            if self.corruption != 'Clean':
+            if self.corruption != 'Clean' and self.corruption != None:
                 filename = os.path.split(orig_filename)[1]
                 subfolder = os.path.split(os.path.split(orig_filename)[0])[1]
                 filename = os.path.join(subfolder, filename)
@@ -147,7 +147,9 @@ class Custom_LoadMultiViewImageFromFiles_BEVDet(object):
                 filename = orig_filename
 
             # img = Image.open(filename)
-            img = mmcv.imfrombytes(self.file_client.get(filename), flag=self.color_type)
+            img = mmcv.imfrombytes(self.file_client.get(filename), channel_order='rgb')
+            img = Image.fromarray(img)
+
             post_rot = torch.eye(2)
             post_tran = torch.zeros(2)
 
