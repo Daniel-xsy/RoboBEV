@@ -2,6 +2,13 @@
 
 # Data Preparation
 
+## Outline
+- [Corruption Generation](#corruption-generation)
+- [Domain Split](#domain-split)
+
+
+## Corruption Generation
+
 ### Corruption Configuration
 
 The [`config`](../corruptions/project/config/nuscenes_c.py) file is a [`mmcv` style](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) configuration file. Please first [prepare](./DATA_PREPARE.md) the nuScenes datasets and specify the data path carefully in [`config`](../corruptions/project/config/nuscenes_c.py). Then specify the `corruptions` parameters using the below format, our nuScenes-C dataset use the following severity: 
@@ -42,4 +49,12 @@ bash tools/generate_dataset.sh <CONFIG>
 
 This might take several days, you can generate different corruption types parallelly to accelerate.
 
+## Domain Split
 
+### Dataset Preparation
+Use the following command to generate the domain annotation files.
+```bash
+cd ./uda
+bash tools/create_data.sh
+```
+The `domain` config includes `city2city`, `day2night`, and `dry2rain`.
