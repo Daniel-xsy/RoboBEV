@@ -114,7 +114,7 @@ cp uda/projects/mmdet3d_plugin/datasets/uda_nuscenes.py uda/custom_nuscenes zoo/
 ```
 Add the `UDANuScenesDataset` module to `datasets/__init__.py` to [register](https://mmcv.readthedocs.io/en/latest/understand_mmcv/registry.html)
 
-Modify the `ann_file` config file to domain annotation generated in [data prepration](./CREATE.md):
+Modify the `ann_file` config file to domain annotation generated in [data prepration](./DATA_PREPARE.md):
 ```bash
 data = dict(
     train=dict(
