@@ -34,6 +34,13 @@ To install the [nuScenes](https://www.nuscenes.org/nuscenes) dataset, download t
 
 Please follow the official instructions of each model repo to process the nuScenes dataset. It's recommend to use the **absolute dataset path** when generate the `.pkl` annotation file.
 
+To generate domain-specific annotation, please use the following command to generate the domain annotation files.
+```bash
+cd ./uda
+bash tools/create_data.sh
+```
+The `domain` config includes `city2city`, `day2night`, and `dry2rain`.
+
 ### nuScenes-C
 
 This dataset is pending release for a careful check of potential IP issues. If you would like to test the robustness of your model in the current stage, please seek a solution from the following two options:
