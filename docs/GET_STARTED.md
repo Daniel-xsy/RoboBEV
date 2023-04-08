@@ -2,6 +2,12 @@
 
 # Getting Started
 
+## Outline
+- [Natrual Corruption](#natrual-corruption)
+- [Unsupervised Domain Adaptation](#unsupervised-domain-adaptation)
+
+## Natural Corruption
+
 All the models in the `./zoo` are ready to run on `nuScenes-C` by running:
 ```bash
 cd ./zoo/<MODEL>
@@ -92,9 +98,36 @@ test_pipeline = [
 ]
 ```
 
-Lastly, specify the corruption types to be test by adding:
+Lastly, specify the corruption types to be tested by adding:
 
 ```python
-corruptions = ['CameraCrash', 'FrameLost', 'MotionBlur', , 'ColorQuant', 'Brightness', 
+corruptions = ['CameraCrash', 'FrameLost', 'MotionBlur', 'ColorQuant', 'Brightness', 
                 'LowLight', 'Fog', 'Snow']
+```
+
+## Unsupervised Domain Adaptation
+
+First copy the [`custom_nuscenes`](../uda/custom_nuscenes/) and [`uda_nuscenes.py`](../uda/projects/mmdet3d_plugin/datasets/uda_nuscenes.py) to the model folder:
+```bash
+cp -r uda/custom_nuscenes zoo/<MODEL>/
+cp uda/projects/mmdet3d_plugin/datasets/uda_nuscenes.py uda/custom_nuscenes zoo/<MODEL>/projects/mmdet3d_plugin/datasets
+```
+Add the `UDANuScenesDataset` module to `datasets/__init__.py` to [register](https://mmcv.readthedocs.io/en/latest/understand_mmcv/registry.html)
+
+Modify the `ann_file` config file to domain annotation generated in [data prepration](./CREATE.md):
+```bash
+data = dict(
+    train=dict(
+        ...
+        ann_file=anno_root + 'nuscenes_infos_boston_train.pkl',),
+    val=dict(
+        ## Modify to UDANuScenesDataset
+        ## to test on the specific domain
+        type='UDANuScenesDataset',
+        ann_file=anno_root + 'nuscenes_infos_sing_val.pkl'),
+    test=dict(    
+        ## Modify to UDANuScenesDataset
+        ## to test on the specific domain    
+        type='UDANuScenesDataset',
+        ann_file=anno_root + 'nuscenes_infos_sing_val.pkl'))
 ```
