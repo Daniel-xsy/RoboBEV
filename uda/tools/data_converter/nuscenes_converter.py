@@ -93,13 +93,8 @@ def custom_create_nuscenes_infos(root_path,
         for s in d2_val_scenes
     ])
 
-    is_city = 'city' in domain_version
-    if not is_city:
-        print('domain A train scene: {}, val scene: {}'.format(len(d1_train_scenes), len(d1_val_scenes)))
-        print('doamin B val scene {}'.format(len(d2_val_scenes)))
-    else:
-        print('domain A train scene: {}, val scene: {}'.format(len(d1_train_scenes), len(d1_val_scenes)))
-        print('domain B train scene: {}, val scene: {}'.format(len(d2_train_scenes), len(d2_val_scenes)))
+    print('domain A train scene: {}, val scene: {}'.format(len(d1_train_scenes), len(d1_val_scenes)))
+    print('domain B train scene: {}, val scene: {}'.format(len(d2_train_scenes), len(d2_val_scenes)))
 
     d1_train_nusc_infos, d1_val_nusc_infos = _custom_fill_trainval_infos(
         nusc, d1_train_scenes, d1_val_scenes, max_sweeps=max_sweeps)
