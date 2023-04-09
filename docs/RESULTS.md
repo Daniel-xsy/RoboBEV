@@ -9,7 +9,7 @@
 The Corruption Error (CE) for a model $A$ under corruption $i$ across 3 severity levels is:
 
 $$
-\text{CE}_i^{\text{Model}A} = \frac{\sum^{3}_{l=1}((1 - \text{NDS})_{i,l}^{\text{Model}A})}{\sum^{3}_{l=1}((1 - \text{NDS})_{i,l}^{\text{Baseline}})} .
+\text{CE}_i^{\text{Model}A} = \frac{\sum_{l=1}((1 - \text{NDS})_{i,l}^{\text{Model}A})}{\sum_{l=1}((1 - \text{NDS})_{i,l}^{\text{Baseline}})} .
 $$
 
 The average CE for a model $A$ on all corruptions, i.e., mCE, is calculated as:
@@ -60,9 +60,9 @@ where $N=8$ denotes the number of corruption types in our benchmark. We choose D
 The Resilience Rate (RR) for a model $A$ under corruption $i$ across 3 severity levels is:
 
 $$
-\text{RR}_i^{\text{Model}A} = \frac{\sum^{3}_{l=1}(\text{NDS}_{i,l}^{\text{Model}A})}{3\times \text{NDS}_{\text{clean}}^{\text{Model}A}} .
-
+\text{RR}_i^{\text{Model}A} = \frac{\sum_{l=1}(\text{NDS}_{i,l}^{\text{Model}A})}{3\times \text{NDS}_{\text{clean}}^{\text{Model}A}} .
 $$
+
 The average RR for a model $A$ on all corruptions, i.e., mRR, is calculated as:
 
 $$
