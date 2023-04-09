@@ -55,14 +55,14 @@ def custom_create_nuscenes_infos(root_path,
         d2_val_scenes = splits.singapore_val
     elif domain_version == 'day2night':
         d1_train_scenes = splits.daytime_train
-        d1_val_scenes = []
+        d1_val_scenes = splits.daytime_val
         d2_train_scenes = splits.night_train
         d2_val_scenes = splits.night_val
     elif domain_version == 'dry2rain':
-        d1_train_scenes = splits.daytime_train
-        d1_val_scenes = []
-        d2_train_scenes = splits.night_train
-        d2_val_scenes = splits.night_val
+        d1_train_scenes = splits.dry_train
+        d1_val_scenes = splits.dry_val
+        d2_train_scenes = splits.rain_train
+        d2_val_scenes = splits.rain_val
     else:
         raise ValueError('unknown')
 
@@ -131,13 +131,18 @@ def custom_create_nuscenes_infos(root_path,
         mmcv.dump(data, info_path)
 
     elif domain_version == 'day2night':
-        metadata['domain'] = 'day2night'
-        print('Daytime train sample: {}'.format(len(d1_train_nusc_infos)))
+        metadata['domain'] = 'day2night-day'
+        print('Daytime train sample: {}, val sample: {}'.format(len(d1_train_nusc_infos), len(d1_val_nusc_infos)))
         data = dict(infos=d1_train_nusc_infos, metadata=metadata)
         info_path = osp.join(out_dir,
                              '{}_infos_daytime_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
+        data = dict(infos=d1_val_nusc_infos, metadata=metadata)
+        info_path = osp.join(out_dir,
+                             '{}_infos_daytime_val.pkl'.format(info_prefix))
+        mmcv.dump(data, info_path)
 
+        metadata['domain'] = 'day2night-night'
         print('Night train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
         info_path = osp.join(out_dir,
@@ -149,13 +154,18 @@ def custom_create_nuscenes_infos(root_path,
         mmcv.dump(data, info_path)
 
     elif domain_version == 'dry2rain':
-        metadata['domain'] = 'dry2rain'
-        print('Dry train sample: {}'.format(len(d1_train_nusc_infos)))
+        metadata['domain'] = 'dry2rain-dry'
+        print('Dry train sample: {}, val sample: {}'.format(len(d1_train_nusc_infos), len(d1_val_nusc_infos)))
         data = dict(infos=d1_train_nusc_infos, metadata=metadata)
         info_path = osp.join(out_dir,
                              '{}_infos_dry_train.pkl'.format(info_prefix))
         mmcv.dump(data, info_path)
+        data = dict(infos=d1_val_nusc_infos, metadata=metadata)
+        info_path = osp.join(out_dir,
+                             '{}_infos_dry_val.pkl'.format(info_prefix))
+        mmcv.dump(data, info_path)
 
+        metadata['domain'] = 'dry2rain-rain'
         print('Rain train sample: {}, val sample: {}'.format(len(d2_train_nusc_infos), len(d2_val_nusc_infos)))
         data = dict(infos=d2_train_nusc_infos, metadata=metadata)
         info_path = osp.join(out_dir,

@@ -393,8 +393,10 @@ class UDANuScenesDataset(Custom3DDataset):
         eval_set_map = {
             'city2city-bos': 'bos-val',
             'city2city-sing': 'sing-val',
-            'day2night': 'night-val',
-            'dry2rain': 'rain-val',
+            'day2night-day': 'day-val',
+            'day2night-night': 'night-val',
+            'dry2rain-dry': 'dry-val',
+            'dry2rain-rain': 'rain-val',
         }
         nusc_eval = NuScenesEval(
             nusc,
