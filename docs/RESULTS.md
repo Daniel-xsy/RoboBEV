@@ -7,13 +7,17 @@
 ### 📐 Metric Setting
 
 The Corruption Error (CE) for a model $A$ under corruption $i$ across 3 severity levels is:
+
 $$
 \text{CE}_i^{\text{Model}A} = \frac{\sum^{3}_{l=1}((1 - \text{NDS})_{i,l}^{\text{Model}A})}{\sum^{3}_{l=1}((1 - \text{NDS})_{i,l}^{\text{Baseline}})} .
 $$
+
 The average CE for a model $A$ on all corruptions, i.e., mCE, is calculated as:
+
 $$
 \text{mCE} = \frac{1}{N}\sum^N_{i=1}\text{CE}_i ,
 $$
+
 where $N=8$ denotes the number of corruption types in our benchmark. We choose DETR3D as the baseline to calculate CE metric.
 
 ### 📊 Benchmark
@@ -54,13 +58,17 @@ where $N=8$ denotes the number of corruption types in our benchmark. We choose D
 
 ### 📐Metric Setting
 The Resilience Rate (RR) for a model $A$ under corruption $i$ across 3 severity levels is:
+
 $$
 \text{RR}_i^{\text{Model}A} = \frac{\sum^{3}_{l=1}(\text{NDS}_{i,l}^{\text{Model}A})}{3\times \text{NDS}_{\text{clean}}^{\text{Model}A}} .
+
 $$
 The average RR for a model $A$ on all corruptions, i.e., mRR, is calculated as:
+
 $$
 \text{mRR} = \frac{1}{N}\sum^N_{i=1}\text{RR}_i ,
 $$
+
 where $N=8$ denotes the number of corruption types in our benchmark.
 
 ### 📊 Benchmark
