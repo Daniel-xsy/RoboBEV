@@ -236,4 +236,6 @@ evaluation = dict(interval=1, pipeline=test_pipeline)
 checkpoint_config = dict(interval=2)
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
-load_from='/nvme/konglingdong/models/RoboDet/models/FCOS3D/fcos3d.pth'
+# FCOS3D is pre-trained on nuScenes train dataset, 
+# which cotains singapore val dataset
+load_from=None

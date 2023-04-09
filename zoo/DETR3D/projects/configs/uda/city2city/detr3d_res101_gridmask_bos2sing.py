@@ -186,8 +186,8 @@ test_pipeline = [
 
 
 data = dict(
-    samples_per_gpu=1,
-    workers_per_gpu=4,
+    samples_per_gpu=2,
+    workers_per_gpu=16,
     train=dict(
         type=dataset_type,
         data_root=data_root,
@@ -204,14 +204,14 @@ data = dict(
         type='UDANuScenesDataset',
         pipeline=test_pipeline, 
         data_root=data_root,
-        ann_file=anno_root + 'nuscenes_infos_sing_val.pkl',
+        ann_file=anno_root + 'nuscenes_infos_boston_val.pkl',
         classes=class_names, 
         modality=input_modality),
     test=dict(        
         type='UDANuScenesDataset',
         pipeline=test_pipeline, 
         data_root=data_root,
-        ann_file=anno_root + 'nuscenes_infos_sing_val.pkl',
+        ann_file=anno_root + 'nuscenes_infos_boston_val.pkl',
         classes=class_names, 
         modality=input_modality))
 
@@ -235,4 +235,6 @@ total_epochs = 24
 evaluation = dict(interval=1, pipeline=test_pipeline)
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
-load_from='/nvme/konglingdong/models/RoboDet/models/FCOS3D/fcos3d.pth'
+# FCOS3D is pre-trained on nuScenes train dataset, 
+# which cotains singapore val dataset
+load_from=None
