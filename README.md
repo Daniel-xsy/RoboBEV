@@ -189,7 +189,7 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | [SRCN3D<sub>VoV</sub>](docs/results/SRCN3D-Vov.md) | 102.04 | 67.95 | 0.4205 | 0.2875 | 0.2579 | 0.2827 | 0.2143 | 0.3886 | 0.2274 | 0.3774	| 0.2499 |
 | [Sparse4D<sub>R101</sub>](docs/results/Sparse4D-r101.md) | 100.01 | 55.04 | 0.5438 | 0.2873 | 0.2611 | 0.3310 | 0.2514 | 0.3984 | 0.2510 | 0.3884 | 0.2259 |
 | [SOLOFusion<sub>short</sub>](docs/results/SOLOFusion-short.md) | 108.68 | 61.45 | 0.3907 | 0.2541 | 0.2195 | 0.2804 | 0.2603 | 0.2966 | 0.2033 | 0.2998 | 0.1066 |
-| [SOLOFusion<sub>long</sub>](docs/results/SOLOFusion-short.md) | 97.99 | 64.42 | 0.4850 | 0.3159	| 0.2490 | 0.3598 | 0.3460	| 0.4002 | 0.2814 | 0.3991 | 0.1480 |
+| [SOLOFusion<sub>long</sub>](docs/results/SOLOFusion-Long.md) | 97.99 | 64.42 | 0.4850 | 0.3159	| 0.2490 | 0.3598 | 0.3460	| 0.4002 | 0.2814 | 0.3991 | 0.1480 |
 | [SOLOFusion<sub>fusion</sub>](docs/results/SOLOFusion.md) | 92.86 | 64.53 | 0.5381 | 0.3806 | 0.3464 | 0.4058 | 0.3642 | 0.4329 | 0.2626	 | 0.4480	 | 0.1376 |
 | |
 | [FCOS3D<sub>finetune</sub>](docs/results/FCOS3D-ft.md) | 107.82 | 62.09 | 0.3949 | 0.2849 | 0.2479 | 0.2574 | 0.2570 | 0.3218 | 0.1468 | 0.3321 | 0.1136 |
@@ -228,9 +228,9 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | [BEVerse<sub>SwinT</sub>](docs/results/BEVerse-Tiny.md) | ✗ | ✓ | ✓ | ✓ | Swin | CNN | 704×256 | 110.67 | 48.60 | 0.4665 | 
 | [BEVerse<sub>SwinS</sub>](docs/results/BEVerse-Small.md) | ✗ | ✗ | ✓ | ✓ | Swin | CNN | 1408×512 | 132.13 | 29.54 | 0.2682 |
 | [BEVerse<sub>SwinS</sub>](docs/results/BEVerse-Small.md) | ✗ | ✓ | ✓ | ✓ | Swin | CNN | 1408×512 | 117.82 | 49.57 | 0.4951 | 
-| [SOLOFusion<sub>short</sub>](docs/results/BEVerse-Tiny.md) | ✗ | ✓ | ✓ | ✗ | ResNet | CNN | 704×256 | 108.68 | 61.45 | 0.3907 | 
-| [SOLOFusion<sub>long</sub>](docs/results/BEVerse-Small.md) | ✗ | ✓ | ✓ | ✗ | ResNet | CNN | 704×256 | 97.99 | 64.42 | 0.4850 |
-| [SOLOFusion<sub>fusion</sub>](docs/results/BEVerse-Small.md) | ✗ | ✓ | ✓ | ✓ | ResNet | CNN | 704×256 | 92.86 | 64.53 | 0.5381 | 
+| [SOLOFusion<sub>short</sub>](docs/results/SOLOFusion-short.md) | ✗ | ✓ | ✓ | ✗ | ResNet | CNN | 704×256 | 108.68 | 61.45 | 0.3907 | 
+| [SOLOFusion<sub>long</sub>](docs/results/SOLOFusion-Long.md) | ✗ | ✓ | ✓ | ✗ | ResNet | CNN | 704×256 | 97.99 | 64.42 | 0.4850 |
+| [SOLOFusion<sub>fusion</sub>](docs/results/SOLOFusion.md) | ✗ | ✓ | ✓ | ✓ | ResNet | CNN | 704×256 | 92.86 | 64.53 | 0.5381 | 
 
 **Note:** *Pretrain* denotes models initialized from the FCOS3D checkpoint. *Temporal* indicates whether temporal information is used. *Depth* denotes models with an explicit depth estimation branch. *CBGS* highlight models use the class-balanced group-sampling strategy.
 
