@@ -90,6 +90,10 @@ Kindly refer to [INSTALL.md](docs/INSTALL.md) for the installation details.
 
 ## Data Preparation
 
+Our datasets are hosted by [OpenDataLab](https://opendatalab.com/).
+><img src="https://raw.githubusercontent.com/opendatalab/dsdl-sdk/2ae5264a7ce1ae6116720478f8fa9e59556bed41/resources/opendatalab.svg" width="32%"/><br>
+> OpenDataLab is a pioneering open data platform for the large AI model era, making datasets accessible. By using OpenDataLab, researchers can obtain free formatted datasets in various fields.
+
 Kindly refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepare the `nuScenes` and `nuScenes-C` datasets.
 
 
