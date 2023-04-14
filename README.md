@@ -6,14 +6,18 @@
   <h3 align="center"><strong>Towards Robust Bird's Eye View Perception under Common Corruption and Domain Shift</strong></h3>
 
   <p align="center">
-      <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=-j1j7TkAAAAJ" target='_blank'>Lingdong Kong</a>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=QDXADSEAAAAJ" target='_blank'>Wenwei Zhang</a>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=YUKPVCoAAAAJ" target='_blank'>Jiawei Ren</a>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=lSDISOcAAAAJ" target='_blank'>Liang Pan</a>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=eGD0b7IAAAAJ" target='_blank'>Kai Chen</a>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=lc45xlcAAAAJ" target='_blank'>Ziwei Liu</a>
+      <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a><sup>1</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=-j1j7TkAAAAJ" target='_blank'>Lingdong Kong</a><sup>2,3</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=QDXADSEAAAAJ" target='_blank'>Wenwei Zhang</a><sup>2,4</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=YUKPVCoAAAAJ" target='_blank'>Jiawei Ren</a><sup>4</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=lSDISOcAAAAJ" target='_blank'>Liang Pan</a><sup>4</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=eGD0b7IAAAAJ" target='_blank'>Kai Chen</a><sup>2</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=lc45xlcAAAAJ" target='_blank'>Ziwei Liu</a><sup>4</sup>
     <br>
+    <small><sup>1</sup>HUST&nbsp;&nbsp;</small>
+    <small><sup>2</sup>Shanghai AI Laboratory&nbsp;&nbsp;</small>
+    <small><sup>3</sup>NUS&nbsp;&nbsp;</small>
+    <small><sup>4</sup>S-Lab, Nanyang Technological University</small>
   </p>
 
 </p>
@@ -61,6 +65,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 ## Updates
 
+- [2023.04] - We establish "Robust BEV Perception" leaderboards on [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view). Join the challenge today! :raising_hand:
 - [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](docs/INVITE.md) page. :beers:
 - [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
 
@@ -264,7 +269,7 @@ If you find this work helpful, please kindly consider citing the following:
 ```
 ```bibtex
 @misc{xie2023robobev_codebase,
-    title = {RoboBEV: Towards Robust Bird's Eye View Detection under Corruptions},
+    title = {The RoboBEV Benchmark for Robust Bird's Eye View Detection under Common Corruption and Domain Shift},
     author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
     howpublished = {\url{https://github.com/Daniel-xsy/RoboBEV}},
     year = {2023}
@@ -278,7 +283,9 @@ If you find this work helpful, please kindly consider citing the following:
 This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>, while some specific operations in this codebase might be with other licenses. Please refer to [LICENSE.md](docs/LICENSE.md) for a more careful check, if you are using our code for commercial matters.
 
 
-
-
 ## Acknowledgements
-To be updated.
+This work is developed based on the [MMDetection3D](https://github.com/open-mmlab/mmdetection3d) codebase.
+
+:heart: We thank Jiangmiao Pang and Tai Wang for their insightful discussions and feedback. We thank the [OpenDataLab](https://opendatalab.com/) platform for hosting our datasets.
+
+
