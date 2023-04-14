@@ -65,7 +65,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 ## Updates
 
-- [2023.04] - We establish "Robust BEV Perception" leaderboards on [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view). Join the challenge today! :raising_hand:
+- [2023.04] - We establish *"Robust BEV Perception"* leaderboards on [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view). Join the challenge today! :raising_hand:
 - [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](docs/INVITE.md) page. :beers:
 - [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
 
@@ -169,7 +169,7 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 
 ## Robustness Benchmark
 
-**:bar_chart: Metrics:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
+**:triangular_ruler: Metrics:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
 - **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
 - **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
 
