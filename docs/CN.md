@@ -1,7 +1,7 @@
 <p align="right"><a href="https://github.com/Daniel-xsy/RoboBEV">English</a> | 简体中文</p>
 
 <p align="center">
-  <img src="docs/figs/logo.png" align="center" width="25%">
+  <img src="./figs/logo.png" align="center" width="25%">
   
   <h3 align="center"><strong>Towards Robust Bird's Eye View Perception under Common Corruption and Domain Shift</strong></h3>
 
@@ -66,7 +66,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 ## 版本更新
 
 - [2023.04] - We establish *"Robust BEV Perception"* leaderboards on [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view). Join the challenge today! :raising_hand:
-- [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](docs/INVITE.md) page. :beers:
+- [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](./INVITE_CN.md) page. :beers:
 - [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
 
 
@@ -76,8 +76,8 @@ Visit our [project page]() to explore more examples. :blue_car:
 - [开始实验](#开始实验)
 - [模型库](#模型库)
 - [鲁棒性基线](#鲁棒性基线)
-- [BEV模型标定](#BEV模型标定)
-- [生成"损坏"数据](#生成"损坏"数据)
+- [BEV模型标定](#bev模型标定)
+- [生成"损坏"数据](#生成损坏数据)
 - [更新计划](#更新计划)
 - [引用](#引用)
 - [许可](#许可)
@@ -85,7 +85,7 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## 安装
-Kindly refer to [INSTALL.md](docs/INSTALL.md) for the installation details.
+Kindly refer to [安装.md](./INSTALL_CN.md) for the installation details.
 
 
 ## 数据准备
@@ -94,12 +94,12 @@ Our datasets are hosted by [OpenDataLab](https://opendatalab.com/).
 ><img src="https://raw.githubusercontent.com/opendatalab/dsdl-sdk/2ae5264a7ce1ae6116720478f8fa9e59556bed41/resources/opendatalab.svg" width="32%"/><br>
 > OpenDataLab is a pioneering open data platform for the large AI model era, making datasets accessible. By using OpenDataLab, researchers can obtain free formatted datasets in various fields.
 
-Kindly refer to [DATA_PREPARE.md](docs/DATA_PREPARE.md) for the details to prepare the `nuScenes` and `nuScenes-C` datasets.
+Kindly refer to [数据准备.md](./DATA_PREPARE_CN.md) for the details to prepare the `nuScenes` and `nuScenes-C` datasets.
 
 
 ## 开始实验
 
-Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about this codebase.
+Kindly refer to [开始实验.md](./GET_STARTED_CN.md) to learn more usage about this codebase.
 
 
 ## 模型库
@@ -169,11 +169,11 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 
 ## 鲁棒性基线
 
-**:triangular_ruler: Metrics:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
+**:triangular_ruler: 指标:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
 - **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
 - **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
 
-**:gear: Notation:** Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation. For more detailed experimental results, please refer to [RESULTS.md](docs/RESULTS.md).
+**:gear: 注释:** Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation. For more detailed experimental results, please refer to [实验结果.md](./RESULTS_CN.md).
 
 | Model | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | :- | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -207,7 +207,7 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | [BEVFusion<sub>LiDAR</sub>](docs/results/BEVFusion-LiDAR.md) | - | - | 0.6928 | - | - | - | - | - | - | - | - |
 | [BEVFusion<sub>C+L</sub>](docs/results/BEVFusion-Fusion.md) | 43.80 | 97.41 | 0.7138 | 0.6963 | 0.6931 | 0.7044 | 0.6977 | 0.7018 | 0.6787	 | - | - | 
 
-<p align="center"> <img src="docs/figs/stats.png"> </p>
+<p align="center"> <img src="./figs/stats.png"> </p>
 
 
 ## BEV模型标定
@@ -241,19 +241,19 @@ Kindly refer to [GET_STARTED.md](docs/GET_STARTED.md) to learn more usage about 
 | [SOLOFusion<sub>long</sub>](docs/results/SOLOFusion-Long.md) | ✗ | ✓ | ✓ | ✗ | ResNet | CNN | 704×256 | 97.99 | 64.42 | 0.4850 |
 | [SOLOFusion<sub>fusion</sub>](docs/results/SOLOFusion.md) | ✗ | ✓ | ✓ | ✓ | ResNet | CNN | 704×256 | 92.86 | 64.53 | 0.5381 | 
 
-**Note:** *Pretrain* denotes models initialized from the FCOS3D checkpoint. *Temporal* indicates whether temporal information is used. *Depth* denotes models with an explicit depth estimation branch. *CBGS* highlight models use the class-balanced group-sampling strategy.
+**注:** *Pretrain* denotes models initialized from the FCOS3D checkpoint. *Temporal* indicates whether temporal information is used. *Depth* denotes models with an explicit depth estimation branch. *CBGS* highlight models use the class-balanced group-sampling strategy.
 
 
 
 ## 生成"损坏"数据
-You can manage to create your own "RoboBEV" corrpution sets! Follow the instructions listed in [CREATE.md](docs/CREATE.md).
+You can manage to create your own "RoboBEV" corrpution sets! Follow the instructions listed in [数据生成.md](./CREATE_CN.md).
 
 
 ## 更新计划
 - [x] 初始更新已放出. 🚀
-- [x] Add scripts for creating common corruptions.
-- [ ] Add download link of nuScenes-C.
-- [x] Add evaluation scripts on corruption sets.
+- [x] 新增生成"损坏"数据的运行脚本.
+- [ ] 新增nuScenes-C数据集下载链接.
+- [x] 新增模型评测的运行脚本.
 - [ ] Establish benchmark for BEV map segmentation.
 - [ ] Establish benchmark for multi-camera depth estimation.
 - [ ] Establish benchmark for multi-camera semantic occupancy prediction.
@@ -284,7 +284,7 @@ If you find this work helpful, please kindly consider citing the following:
 ## 许可
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
 <br />
-This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>, while some specific operations in this codebase might be with other licenses. Please refer to [LICENSE.md](docs/LICENSE.md) for a more careful check, if you are using our code for commercial matters.
+This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>, while some specific operations in this codebase might be with other licenses. Please refer to [许可.md](./LICENSE_CN.md) for a more careful check, if you are using our code for commercial matters.
 
 
 ## 致谢
