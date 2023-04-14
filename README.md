@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="" target='_blank'>
+  <a href="https://arxiv.org/abs/2304.06719" target='_blank'>
     <img src="https://img.shields.io/badge/Paper-%F0%9F%93%83-blue">
   </a>
   
