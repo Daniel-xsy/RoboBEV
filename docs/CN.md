@@ -53,8 +53,8 @@
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
 | FRONT_LEFT | FRONT | FRONT_RIGHT | FRONT_LEFT | FRONT | FRONT_RIGHT |
-| <img src="docs/figs/front_left_snow.gif" width="120" height="67"> | <img src="docs/figs/front_snow.gif" width="120" height="67"> | <img src="docs/figs/front_right_snow.gif" width="120" height="67"> | <img src="docs/figs/front_left_dark.gif" width="120" height="67"> | <img src="docs/figs/front_dark.gif" width="120" height="67"> | <img src="docs/figs/front_right_dark.gif" width="120" height="67"> |
-| <img src="docs/figs/back_left_snow.gif" width="120" height="67">  | <img src="docs/figs/back_snow.gif" width="120" height="67">  | <img src="docs/figs/back_right_snow.gif" width="120" height="67">  | <img src="docs/figs/back_left_dark.gif" width="120" height="67">  | <img src="docs/figs/back_dark.gif" width="120" height="67">  | <img src="docs/figs/back_right_dark.gif" width="120" height="67">  |
+| <img src="./figs/front_left_snow.gif" width="120" height="67"> | <img src="./figs/front_snow.gif" width="120" height="67"> | <img src="./figs/front_right_snow.gif" width="120" height="67"> | <img src="./figs/front_left_dark.gif" width="120" height="67"> | <img src="./figs/front_dark.gif" width="120" height="67"> | <img src="./figs/front_right_dark.gif" width="120" height="67"> |
+| <img src="./figs/back_left_snow.gif" width="120" height="67">  | <img src="./figs/back_snow.gif" width="120" height="67">  | <img src="./figs/back_right_snow.gif" width="120" height="67">  | <img src="./figs/back_left_dark.gif" width="120" height="67">  | <img src="./figs/back_dark.gif" width="120" height="67">  | <img src="./figs/back_right_dark.gif" width="120" height="67">  |
 | BACK_LEFT  | BACK  | BACK_RIGHT  | BACK_LEFT  | BACK  | BACK_RIGHT  |
 | | | | | | |
 
