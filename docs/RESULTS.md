@@ -1,12 +1,12 @@
 <img src="./figs/logo2.png" align="right" width="30%">
 
-# Benchmark Results
+# Benchmark Result
 
 ## Corruption Error (CE)
 
-### 📐 Metric Setting
+### :triangular_ruler: Metric Setting
 
-The Corruption Error (CE) for a model $A$ under corruption $i$ across 3 severity levels is:
+The Corruption Error (CE) for a model $A$ under corruption $i$ across 3 severity levels is calculated as:
 
 $$
 \text{CE}_i^{\text{Model}A} = \frac{\sum_{l=1}((1 - \text{NDS})_{i,l}^{\text{Model}A})}{\sum_{l=1}((1 - \text{NDS})_{i,l}^{\text{Baseline}})} .
@@ -20,7 +20,7 @@ $$
 
 where $N=8$ denotes the number of corruption types in our benchmark. We choose DETR3D as the baseline to calculate CE metric.
 
-### 📊 Benchmark
+### :bar_chart: Benchmark
 
 | Model | NDS | mCE (%) $\downarrow$ | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | :- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -54,10 +54,11 @@ where $N=8$ denotes the number of corruption types in our benchmark. We choose D
 | [BEVFusion<sub>LiDAR</sub>](docs/results/BEVFusion-LiDAR.md) | 0.6928 | - | - | - | - | - | - | - | - | - |
 | [BEVFusion<sub>C+L</sub>](docs/results/BEVFusion-Fusion.md) | 0.7138 | 43.80 | 42.53 | 41.50 | 43.32 | 41.19 | 49.72 | 44.54 | - | - |
 
+
 ## Resilience Rate (RR)
 
-### 📐Metric Setting
-The Resilience Rate (RR) for a model $A$ under corruption $i$ across 3 severity levels is:
+### :triangular_ruler: Metric Setting
+The Resilience Rate (RR) for a model $A$ under corruption $i$ across 3 severity levels is calculated as:
 
 $$
 \text{RR}_i^{\text{Model}A} = \frac{\sum_{l=1}(\text{NDS}_{i,l}^{\text{Model}A})}{3\times \text{NDS}_{\text{clean}}^{\text{Model}A}} .
@@ -71,7 +72,7 @@ $$
 
 where $N=8$ denotes the number of corruption types in our benchmark.
 
-### 📊 Benchmark
+### :bar_chart: Benchmark
 
 | Model | NDS |mRR (%) $\uparrow$ | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | :- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
