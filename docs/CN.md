@@ -32,7 +32,7 @@
   </a>
   
   <a href="" target='_blank'>
-    <img src="https://img.shields.io/badge/Demo-%F0%9F%8E%AC-yellow">
+    <img src="https://img.shields.io/badge/演示-%F0%9F%8E%AC-yellow">
   </a>
   
   <a href="" target='_blank'>
@@ -48,24 +48,24 @@
 
 ## 项目概览
 
-`RoboBEV` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) perception under natural data corruptions and domain shift. It includes eight corruption types that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
+`RoboBEV` 是首个为在自然数据"损坏"和域迁移条件下, 基于相机的鸟瞰图 (BEV) 感知量身定制的鲁棒性评估基线。该基线包括了以下八种可能出现在驾驶场景中的数据"损坏"类型: <sup>1</sup>传感器故障损坏、<sup>2</sup>运动和数据处理损坏、<sup>3</sup>光照条件损坏和<sup>4</sup>天气条件损坏。
 
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
-| FRONT_LEFT | FRONT | FRONT_RIGHT | FRONT_LEFT | FRONT | FRONT_RIGHT |
+| 左前视角 | 前视角 | 右前视角 | 左前视角 | 前视角 | 右前视角 |
 | <img src="./figs/front_left_snow.gif" width="120" height="67"> | <img src="./figs/front_snow.gif" width="120" height="67"> | <img src="./figs/front_right_snow.gif" width="120" height="67"> | <img src="./figs/front_left_dark.gif" width="120" height="67"> | <img src="./figs/front_dark.gif" width="120" height="67"> | <img src="./figs/front_right_dark.gif" width="120" height="67"> |
 | <img src="./figs/back_left_snow.gif" width="120" height="67">  | <img src="./figs/back_snow.gif" width="120" height="67">  | <img src="./figs/back_right_snow.gif" width="120" height="67">  | <img src="./figs/back_left_dark.gif" width="120" height="67">  | <img src="./figs/back_dark.gif" width="120" height="67">  | <img src="./figs/back_right_dark.gif" width="120" height="67">  |
-| BACK_LEFT  | BACK  | BACK_RIGHT  | BACK_LEFT  | BACK  | BACK_RIGHT  |
+| 左后视角 | 后视角 | 右后视角 | 左后视角 | 后视角 | 右后视角 |
 | | | | | | |
 
-Visit our [project page]() to explore more examples. :blue_car:
+请参阅我们的 [项目主页]() 以获取更多细节与实例。 :blue_car:
 
 
 
 
 ## 版本更新
 
-- [2023.04] - We establish *"Robust BEV Perception"* leaderboards on [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view). Join the challenge today! :raising_hand:
+- [2023.04] - 我们在 [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view) 平台搭建了 *"鲁棒BEV感知"* 基线。现在就加入鲁棒性评测吧！:raising_hand:
 - [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](./INVITE_CN.md) page. :beers:
 - [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
 
@@ -85,27 +85,27 @@ Visit our [project page]() to explore more examples. :blue_car:
 
 
 ## 安装
-Kindly refer to [安装.md](./INSTALL_CN.md) for the installation details.
+请参阅 [安装.md](./INSTALL_CN.md) 以获取更多有关环境安装的细节。
 
 
 ## 数据准备
 
-Our datasets are hosted by [OpenDataLab](https://opendatalab.com/).
+我们的数据集由 [OpenDataLab](https://opendatalab.com/) 平台搭载。
 ><img src="https://raw.githubusercontent.com/opendatalab/dsdl-sdk/2ae5264a7ce1ae6116720478f8fa9e59556bed41/resources/opendatalab.svg" width="32%"/><br>
-> OpenDataLab is a pioneering open data platform for the large AI model era, making datasets accessible. By using OpenDataLab, researchers can obtain free formatted datasets in various fields.
+> OpenDataLab 是一个引领AI大模型时代的数据开源开放平台。OpenDataLab 为人工智能研究者提供免费开源的数据集，通过该平台，研究者可以获得格式统一的各领域经典数据集。
 
-Kindly refer to [数据准备.md](./DATA_PREPARE_CN.md) for the details to prepare the `nuScenes` and `nuScenes-C` datasets.
+请参阅 [数据准备.md](./DATA_PREPARE_CN.md) 以获取更多有关准备 `nuScenes` 和 `nuScenes-C` 数据集的细节。
 
 
 ## 开始实验
 
-Kindly refer to [开始实验.md](./GET_STARTED_CN.md) to learn more usage about this codebase.
+请参阅 [开始实验.md](./GET_STARTED_CN.md) 以获取更多有关如何使用本代码库的细节。
 
 
 ## 模型库
 
 <details open>
-<summary>&nbsp<b>Camera-Only BEV Detection</b></summary>
+<summary>&nbsp<b>基于多视角相机的BEV检测模型</b></summary>
 
 > - [ ] **[Fast-BEV](https://arxiv.org/abs/2301.12511), arXiv 2023.** <sup>[**`[Code]`**](https://github.com/Sense-GVT/Fast-BEV)</sup>
 > - [x] **[SOLOFusion](https://arxiv.org/abs/2210.02443), ICLR 2023.** <sup>[**`[Code]`**](https://github.com/Divadi/SOLOFusion)</sup>
@@ -129,13 +129,13 @@ Kindly refer to [开始实验.md](./GET_STARTED_CN.md) to learn more usage about
 </details>
 
 <details open>
-<summary>&nbsp<b>Camera-Only Monocular 3D Detection</b></summary>
+<summary>&nbsp<b>基于单目相机的3D物体检测模型</b></summary>
 
 > - [x] **[FCOS3D](https://openaccess.thecvf.com/content/ICCV2021W/3DODI/html/Wang_FCOS3D_Fully_Convolutional_One-Stage_Monocular_3D_Object_Detection_ICCVW_2021_paper.html), ICCVW 2021.** <sup>[**`[Code]`**](https://github.com/open-mmlab/mmdetection3d)</sup>
 </details>
 
 <details open>
-<summary>&nbsp<b>LiDAR-Camera Fusion BEV Detection</b></summary>
+<summary>&nbsp<b>基于相机与激光雷达融合的BEV检测模型</b></summary>
 
 > - [ ] **[BEVDistill](https://arxiv.org/abs/2211.09386), ICLR 2023.** <sup>[**`[Code]`**](https://github.com/zehuichen123/BEVDistill)</sup>
 > - [x] **[BEVFusion](https://arxiv.org/abs/2205.13542), ICRA 2023.** <sup>[**`[Code]`**](https://github.com/mit-han-lab/bevfusion)</sup>
@@ -144,7 +144,7 @@ Kindly refer to [开始实验.md](./GET_STARTED_CN.md) to learn more usage about
 </details>
 
 <details open>
-<summary>&nbsp<b>Camera-Only BEV Map Segmentation</b></summary>
+<summary>&nbsp<b>基于多视角相机的BEV图分割模型</b></summary>
 
 > - [ ] **[LaRa](https://arxiv.org/abs/2206.13294), CoRL 2022.** <sup>[**`[Code]`**](https://github.com/valeoai/LaRa)</sup>
 > - [x] **[CVT](https://arxiv.org/abs/2205.02833), CVPR 2022.** <sup>[**`[Code]`**](https://github.com/bradyz/cross_view_transformers)</sup>
@@ -152,14 +152,14 @@ Kindly refer to [开始实验.md](./GET_STARTED_CN.md) to learn more usage about
 </details>
 
 <details open>
-<summary>&nbsp<b>Multi-Camera Depth Estimation</b></summary>
+<summary>&nbsp<b>基于多视角相机的深度估计模型</b></summary>
 
 > - [ ] **[SurroundDepth](https://arxiv.org/abs/2204.03636), CoRL 2022.** <sup>[**`[Code]`**](https://github.com/weiyithu/SurroundDepth)</sup>
 
 </details>
 
 <details open>
-<summary>&nbsp<b>Multi-Camera Semantic Occupancy Prediction</b></summary>
+<summary>&nbsp<b>基于多视角相机的语义占用模型</b></summary>
 
 > - [ ] **[SurroundOcc](), arXiv 2023.** <sup>[**`[Code]`**](https://github.com/weiyithu/SurroundOcc)</sup>
 > - [ ] **[TPVFormer](https://arxiv.org/abs/2302.07817), CVPR, 2023.** <sup>[**`[Code]`**](https://github.com/wzzheng/TPVFormer)</sup>
