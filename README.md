@@ -35,7 +35,7 @@
     <img src="https://img.shields.io/badge/Demo-%F0%9F%8E%AC-yellow">
   </a>
   
-  <a href="" target='_blank'>
+  <a href="docs/CN.md" target='_blank'>
     <img src="https://img.shields.io/badge/%E4%B8%AD%E8%AF%91%E7%89%88-%F0%9F%90%BC-lightyellow">
   </a>
   
