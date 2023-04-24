@@ -27,11 +27,11 @@
     <img src="https://img.shields.io/badge/论文-%F0%9F%93%83-blue">
   </a>
   
-  <a href="" target='_blank'>
+  <a href="https://daniel-xsy.github.io/robobev/" target='_blank'>
     <img src="https://img.shields.io/badge/主页-%F0%9F%94%97-lightblue">
   </a>
   
-  <a href="" target='_blank'>
+  <a href="https://daniel-xsy.github.io/robobev/" target='_blank'>
     <img src="https://img.shields.io/badge/演示-%F0%9F%8E%AC-yellow">
   </a>
   
@@ -58,7 +58,7 @@
 | 左后视角 | 后视角 | 右后视角 | 左后视角 | 后视角 | 右后视角 |
 | | | | | | |
 
-请参阅我们的 [项目主页]() 以获取更多细节与实例。 :blue_car:
+请参阅我们的 [项目主页](https://daniel-xsy.github.io/robobev/) 以获取更多细节与实例。 :blue_car:
 
 
 
@@ -66,8 +66,8 @@
 ## 版本更新
 
 - [2023.04] - 我们在 [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view) 平台搭建了 *"鲁棒BEV感知"* 基线。现在就加入鲁棒性评测吧！:raising_hand:
-- [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](./INVITE_CN.md) page. :beers:
-- [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
+- [2023.02] - 我们邀请每一位BEV爱好者参与到 *"鲁棒BEV感知"* 基线中来!  更多细节，请[阅读此页面](https://github.com/Daniel-xsy/RoboBEV/blob/master/docs/INVITE.md)。:beers:
+- [2023.01] - 推出 "RoboBEV"! 在这个初始版本中，**11**个BEV检测算法和**1**个单目3D检测算法已经在**8**个"损坏"类型和**3**种严重程度下进行了基准测试。
 
 
 ## 大纲
@@ -169,13 +169,13 @@
 
 ## 鲁棒性基线
 
-**:triangular_ruler: 指标:** The *nuScenes Detection Score (NDS)* is consistently used as the main indicator for evaluating model performance in our benchmark. The following two metrics are adopted to compare between models' robustness:
-- **mCE (the lower the better):** The *average corruption error* (in percentage) of a candidate model compared to the baseline model, which is calculated among all corruption types across three severity levels.
-- **mRR (the higher the better):** The *average resilience rate* (in percentage) of a candidate model compared to its "clean" performance, which is calculated among all corruption types across three severity levels.
+**:triangular_ruler: 指标:** 在我们的基准中，*nuScenes Detection Score (NDS)* 被用作评价模型性能的主要指标。我们采用以下两个指标来比较模型的鲁棒性:
+- **mCE (越低越好):** 候选模型的*平均损坏误差 (百分比)*，这是在三种严重程度的所有"损坏"类型中与基线模型相比计算出来的。
+- **mRR (越高越好):** 候选模型的*平均复原率 (百分比)* ，这是在三种严重程度的所有"损坏"类型中与它的"干净"性能相比计算出来的。
 
-**:gear: 注释:** Symbol <sup>:star:</sup> denotes the baseline model adopted in *mCE* calculation. For more detailed experimental results, please refer to [实验结果.md](./RESULTS_CN.md).
+**:gear: 注释:** 符号 <sup>:star:</sup> 表示 *mCE* 计算中采用的基线模型。更详细的实验结果，请参考 [实验结果.md](./RESULTS_CN.md).
 
-| Model | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
+| 模型 | mCE (%) $\downarrow$ | mRR (%) $\uparrow$ | Clean | Cam Crash | Frame Lost | Color Quant | Motion Blur | Bright | Low Light | Fog | Snow |
 | :- | :-: | :-: |:-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | [DETR3D](docs/results/DETR3D.md)<sup>:star:</sup> | 100.00 | 70.77 | 0.4224 | 0.2859 | 0.2604 | 0.3177 | 0.2661 | 0.4002 | 0.2786 | 0.3912 | 0.1913 |
 | |
@@ -212,7 +212,7 @@
 
 ## BEV模型标定
 
-| Model | Pretrain | Temporal | Depth | CBGS | Backbone | Encoder<sub>BEV</sub> | Input Size | mCE (%) | mRR (%) | NDS | 
+| 模型 | 预训练 | 时序建模 | 深度估计 | CBGS | 骨干网络 | BEV编码器 | 图像尺寸 | mCE (%) | mRR (%) | NDS | 
 | :- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | [DETR3D](docs/results/DETR3D.md) | ✓ | ✗ | ✗ | ✗ | ResNet | Attention | 1600×900 | 100.00 | 70.77 | 0.4224 | 
 | [DETR3D<sub>CBGS</sub>](docs/results/DETR3D-w-cbgs.md) | ✓ | ✗ | ✗ | ✓ | ResNet | Attention | 1600×900 | 99.21 | 70.02 | 0.4341 |
@@ -241,12 +241,11 @@
 | [SOLOFusion<sub>long</sub>](docs/results/SOLOFusion-Long.md) | ✗ | ✓ | ✓ | ✗ | ResNet | CNN | 704×256 | 97.99 | 64.42 | 0.4850 |
 | [SOLOFusion<sub>fusion</sub>](docs/results/SOLOFusion.md) | ✗ | ✓ | ✓ | ✓ | ResNet | CNN | 704×256 | 92.86 | 64.53 | 0.5381 | 
 
-**注:** *Pretrain* denotes models initialized from the FCOS3D checkpoint. *Temporal* indicates whether temporal information is used. *Depth* denotes models with an explicit depth estimation branch. *CBGS* highlight models use the class-balanced group-sampling strategy.
-
+**注:** *预训练*表示从FCOS3D初始化的模型。*时序建模*表示是否使用了时间信息。*深度估计*表示具有显式深度估计分支的模型。*CBGS*表示模型使用类平衡的分组采样策略。
 
 
 ## 生成"损坏"数据
-You can manage to create your own "RoboBEV" corrpution sets! Follow the instructions listed in [数据生成.md](./CREATE_CN.md).
+你可以创建你自己的 "RoboBEV" 数据集! 请参考文件：[数据生成.md](./CREATE_CN.md).
 
 
 ## 更新计划
@@ -254,14 +253,14 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 - [x] 新增生成"损坏"数据的运行脚本.
 - [ ] 新增nuScenes-C数据集下载链接.
 - [x] 新增模型评测的运行脚本.
-- [ ] Establish benchmark for BEV map segmentation.
-- [ ] Establish benchmark for multi-camera depth estimation.
-- [ ] Establish benchmark for multi-camera semantic occupancy prediction.
+- [ ] 新增BEV地图分割模型.
+- [ ] 新增多视角深度估计模型.
+- [ ] 新增多视角语义分割模型.
 - [ ] ...
 
 
 ## 引用
-If you find this work helpful, please kindly consider citing the following:
+如果你认为这项工作对你有帮助，请考虑引用以下内容:
 
 ```bibtex
 @article{xie2023robobev,
@@ -284,15 +283,14 @@ If you find this work helpful, please kindly consider citing the following:
 ## 许可
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
 <br />
-This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>, while some specific operations in this codebase might be with other licenses. Please refer to [许可.md](./LICENSE_CN.md) for a more careful check, if you are using our code for commercial matters.
-
+这项工作是在 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a> 下进行的。这个代码库中的一些模型可能是采用其他许可证。如果你将我们的代码用于商业用途， 请参考 [许可.md](./LICENSE_CN.md) 以进行更仔细的检查。
 
 ## 致谢
-This work is developed based on the [MMDetection3D](https://github.com/open-mmlab/mmdetection3d) codebase.
+这项工作是基于 [MMDetection3D](https://github.com/open-mmlab/mmdetection3d) 代码库.
 
 ><img src="https://github.com/open-mmlab/mmdetection3d/blob/main/resources/mmdet3d-logo.png" width="30%"/><br>
-> MMDetection3D is an open source object detection toolbox based on PyTorch, towards the next-generation platform for general 3D detection. It is a part of the OpenMMLab project developed by MMLab.
+> MMDetection3D 是一个基于PyTorch的开源目标检测工具箱，面向下一代通用三维检测平台。它是由MMLab开发的OpenMMLab项目的一部分。
 
-:heart: We thank Jiangmiao Pang and Tai Wang for their insightful discussions and feedback. We thank the [OpenDataLab](https://opendatalab.com/) platform for hosting our datasets.
+:heart: 我们感谢 Jiangmiao Pang 和 Tai Wang 的建设性的讨论和反馈，感谢 [OpenDataLab](https://opendatalab.com/) 平台托管我们的数据集。
 
 
