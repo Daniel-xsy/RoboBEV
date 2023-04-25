@@ -18,10 +18,10 @@ The split dataset is shown as follows:
 Boston     |       350 scenes       |      117 scenes      |
 Singapore |       287 scenes       |       96 scenes       |
 ||
-Day  |         751 scenes       |       -        |
+Day  |         563 scenes       |       188 scenes       |
 Night  |         74 scenes       |       25 scenes       |
 ||
-Dry  |         685 scenes       |       -       |
+Dry  |         514 scenes       |       171 scenes       |
 Rain  |         124 scenes       |       41 scenes       |
 
 Please kindly refer to [CREATE.md](../docs/CREATE.md) and [GET_STARTED.md](../docs/GET_STARTED.md) for more details.
