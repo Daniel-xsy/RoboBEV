@@ -110,7 +110,7 @@ corruptions = ['CameraCrash', 'FrameLost', 'MotionBlur', 'ColorQuant', 'Brightne
 First copy the [`custom_nuscenes`](../uda/custom_nuscenes/) and [`uda_nuscenes.py`](../uda/projects/mmdet3d_plugin/datasets/uda_nuscenes.py) to the model folder:
 ```bash
 cp -r uda/custom_nuscenes zoo/<MODEL>/
-cp uda/projects/mmdet3d_plugin/datasets/uda_nuscenes.py uda/custom_nuscenes zoo/<MODEL>/projects/mmdet3d_plugin/datasets
+cp uda/projects/mmdet3d_plugin/datasets/uda_nuscenes.py zoo/<MODEL>/projects/mmdet3d_plugin/datasets
 ```
 Add the `UDANuScenesDataset` module to `datasets/__init__.py` to [register](https://mmcv.readthedocs.io/en/latest/understand_mmcv/registry.html)
 
