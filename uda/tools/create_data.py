@@ -29,8 +29,28 @@ def custom_nuscenes_data_prep(root_path,
         out_dir (str): Output directory of the groundtruth database info.
         max_sweeps (int): Number of input consecutive frames. Default: 10
     """
-    nuscenes_converter.custom_create_nuscenes_infos(
-        root_path, info_prefix, version=version, domain_version=domain_version, out_dir=out_dir, max_sweeps=max_sweeps)
+    # nuscenes_converter.custom_create_nuscenes_infos(
+    #     root_path, info_prefix, version=version, domain_version=domain_version, out_dir=out_dir, max_sweeps=max_sweeps)
+
+    # 2D annotation used for monocular approaches (e.g., FCOS3D)
+    # comment the following lines to speed up if you don't need 
+    # monocular annotations
+    if domain_version == 'city2city':
+        domain_prefixes = ['boston', 'sing']
+    elif domain_version == 'day2night':
+        domain_prefixes = ['daytime', 'night']
+    elif domain_version == 'dry2rain':
+        domain_prefixes = ['dry', 'rain']
+    else:
+        raise NotImplementedError
+        
+    for domain_prefix in domain_prefixes:
+        info_train_path = osp.join(out_dir, f'{info_prefix}_infos_{domain_prefix}_train.pkl')
+        info_val_path = osp.join(out_dir, f'{info_prefix}_infos_{domain_prefix}_val.pkl')
+        nuscenes_converter.export_2d_annotation(
+            root_path, info_train_path, version=version)
+        nuscenes_converter.export_2d_annotation(
+            root_path, info_val_path, version=version)
 
 
 def nuscenes_data_prep(root_path,
