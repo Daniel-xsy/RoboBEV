@@ -65,7 +65,7 @@ anno_root = '/nvme/konglingdong/models/RoboDet/data/uda/'
 
 data = dict(
     samples_per_gpu=2,
-    workers_per_gpu=2,
+    workers_per_gpu=4,
     train=dict(
         data_root=data_root,
         ann_file=anno_root + 'nuscenes_infos_boston_train_mono3d.coco.json',
@@ -75,12 +75,14 @@ data = dict(
         type='UDANuScenesMonoDataset',
         data_root=data_root,
         ann_file=anno_root + 'nuscenes_infos_boston_val_mono3d.coco.json',
+        domain='city2city-bos',
         img_prefix=data_root,
         pipeline=test_pipeline),
     test=dict(
         type='UDANuScenesMonoDataset',
         data_root=data_root,
         ann_file=anno_root + 'nuscenes_infos_boston_val_mono3d.coco.json',
+        domain='city2city-bos',
         img_prefix=data_root,
         pipeline=test_pipeline),)
 # optimizer
