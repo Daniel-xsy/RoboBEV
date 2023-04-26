@@ -81,6 +81,7 @@ class UDANuScenesMonoDataset(CocoDataset):
                  eval_version='detection_cvpr_2019',
                  use_valid_flag=False,
                  version='v1.0-trainval',
+                 domain='city2city-bos',
                  **kwargs):
         super().__init__(**kwargs)
         self.data_root = data_root
@@ -92,6 +93,7 @@ class UDANuScenesMonoDataset(CocoDataset):
         self.use_valid_flag = use_valid_flag
         self.bbox_code_size = 9
         self.version = version
+        self.domain = domain
         if self.eval_version is not None:
             from nuscenes.eval.detection.config import config_factory
             self.eval_detection_configs = config_factory(self.eval_version)
@@ -421,7 +423,7 @@ class UDANuScenesMonoDataset(CocoDataset):
             nusc,
             config=self.eval_detection_configs,
             result_path=result_path,
-            eval_set=eval_set_map[self.version],
+            eval_set=eval_set_map[self.domain],
             output_dir=output_dir,
             verbose=False)
         nusc_eval.main(render_curves=True)
