@@ -48,7 +48,11 @@
 
 ## About
 
-`RoboBEV` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) perception under natural data corruptions and domain shift. It includes eight corruption types that are likely to appear in driving scenarios, ranging from <sup>1</sup>sensor failure, <sup>2</sup>motion & data processing, <sup>3</sup>lighting conditions, and <sup>4</sup>weather conditions.
+`RoboBEV` is the first robustness evaluation benchmark tailored for camera-based bird's eye view (BEV) perception under natural **data corruption** and **domain shift**, which are cases that have a high likelihood to occur in real-world deployments.
+
+**[Common Corruption]** - We investigate **eight** data corruption types that are likely to appear in driving scenarios, ranging from <sup>1</sup>`sensor failure`, <sup>2</sup>`motion & data processing`, <sup>3</sup>`lighting conditions`, and <sup>4</sup>`weather conditions`.
+
+**[Domain Shift]** - We benchmark the adaptation performance of BEV models from **three** aspects, including <sup>1</sup>`city-to-city`, <sup>2</sup>`day-to-night`, and <sup>3</sup>`dry-to-rain`.
 
 | | | | | | |
 | :--------: | :---: | :---------: | :--------: | :---: | :---------: |
