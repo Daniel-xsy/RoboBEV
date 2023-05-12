@@ -26,9 +26,17 @@ class Custom_LoadMultiViewImageFromFiles(object):
         color_type (str): Color type of the file. Defaults to 'unchanged'.
     """
 
-    def __init__(self, to_float32=False, color_type='unchanged', corruption=None, severity=None, corruption_root=None):
+    def __init__(self, 
+                 to_float32=False, 
+                 color_type='unchanged', 
+                 file_client_args=dict(backend='disk'),
+                 corruption=None, 
+                 severity=None, 
+                 corruption_root=None):
         self.to_float32 = to_float32
         self.color_type = color_type
+        self.file_client_args = file_client_args.copy()
+        self.file_client = None
         self.corruption = corruption
         self.severity = severity
         self.corruption_root = corruption_root
@@ -54,16 +62,22 @@ class Custom_LoadMultiViewImageFromFiles(object):
                 - scale_factor (float): Scale factor.
                 - img_norm_cfg (dict): Normalization configuration of images.
         """
+
+        if self.file_client is None:
+            self.file_client = mmcv.FileClient(**self.file_client_args)
+
         orig_filenames = results['img_filename']
         # img is of shape (h, w, c, num_views)
-
-        filenames = [os.path.split(filename)[1] for filename in orig_filenames]
-        subfolders = [os.path.split(os.path.split(filename)[0])[1] for filename in orig_filenames]
-        filenames = [os.path.join(subfolder, filename) for subfolder, filename in zip(subfolders, filenames)]
-        filenames = [get_corruption_path(self.corruption_root, self.corruption, self.severity, filename) for filename in filenames]
+        if self.corruption != 'Clean':
+            filenames = [os.path.split(filename)[1] for filename in orig_filenames]
+            subfolders = [os.path.split(os.path.split(filename)[0])[1] for filename in orig_filenames]
+            filenames = [os.path.join(subfolder, filename) for subfolder, filename in zip(subfolders, filenames)]
+            filenames = [get_corruption_path(self.corruption_root, self.corruption, self.severity, filename) for filename in filenames]
+        else:
+            filenames = orig_filenames
 
         img = np.stack(
-            [mmcv.imread(name, self.color_type) for name in filenames], axis=-1)
+            [mmcv.imfrombytes(self.file_client.get(name), flag=self.color_type) for name in filenames], axis=-1)
         if self.to_float32:
             img = img.astype(np.float32)
         results['filename'] = filenames
