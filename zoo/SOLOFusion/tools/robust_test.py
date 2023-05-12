@@ -191,6 +191,7 @@ def main():
 
     # build the dataloader
     dataset = build_dataset(cfg.data.test)
+    a = dataset[0]
 
     data_loader = build_dataloader(
         dataset,
@@ -243,7 +244,8 @@ def main():
         logging.write(f'### Evaluating {corruption}\n')
 
         for severity in ['easy', 'mid', 'hard']:
-            logging.write(f'#### Severity {severity}\n')
+            if corruption != 'Clean':
+                logging.write(f'#### Severity {severity}\n')
             data_loader.dataset.pipeline.transforms[0].corruption = corruption
             data_loader.dataset.pipeline.transforms[0].severity = severity
             outputs = multi_gpu_test(model, data_loader, args.tmpdir,
@@ -272,9 +274,13 @@ def main():
                     results_dict['severity'] = severity
                     results_dict_list.append(results_dict)
                     collect_metric(results_dict, logging)
-        if rank == 0:
-            logging.write(f'#### Average\n')
-            collect_average_metric(results_dict_list, logging)
+
+                if corruption == 'Clean':
+                    break
+        if corruption != 'Clean':
+            if rank == 0:
+                logging.write(f'#### Average\n')
+                collect_average_metric(results_dict_list, logging)
 
 
 if __name__ == '__main__':
