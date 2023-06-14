@@ -43,7 +43,9 @@ The `domain` config includes `city2city`, `day2night`, and `dry2rain`.
 
 ### nuScenes-C
 
-The dataset is now available at [OpenDataLab](https://opendatalab.com/home), you can download the dataset [here](https://opendatalab.com/nuScenes-C). Unpack the compressed file(s) into `/data/sets/nuscenes-c` and your folder structure should end up looking like this:
+The dataset is now available at [OpenDataLab](https://opendatalab.com/home), you can download the dataset [here](https://opendatalab.com/nuScenes-C). The dataset used in this work only contains the `raw/image/nuScenes-C.tar.gz` file. If you want to use the `raw/pointcloud` part, please refer to [Robo3D](https://github.com/ldkong1205/Robo3D).
+
+Unpack the compressed file(s) into `/data/sets/nuscenes-c` and your folder structure should end up looking like this:
 
 ```
 └── nuscenes-c  
