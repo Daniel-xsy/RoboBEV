@@ -68,7 +68,7 @@ Visit our [project page](https://daniel-xsy.github.io/robobev/) to explore more 
 
 
 ## Updates
-- [2023.06] - The nuScenes-C dataset is now available at [OpenDataLab](https://opendatalab.com/nuScenes-C)!🚀
+- [2023.06] - The nuScenes-C dataset is now available at [OpenDataLab](https://opendatalab.com/nuScenes-C)! 🚀
 - [2023.04] - We establish *"Robust BEV Perception"* leaderboards on [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view). Join the challenge today! :raising_hand:
 - [2023.02] - We invite every BEV enthusiast to participate in the *robust BEV perception* benchmark! For more details, please read [this](docs/INVITE.md) page. :beers:
 - [2023.01] - Launch of `RoboBEV`! In this initial version, **11** BEV detection algorithms and **1** monocular 3D detection algorithm have been benchmarked under **8** corruption types across **3** severity levels.
