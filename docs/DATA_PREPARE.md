@@ -43,15 +43,27 @@ The `domain` config includes `city2city`, `day2night`, and `dry2rain`.
 
 ### nuScenes-C
 
-This dataset is pending release for a careful check of potential IP issues. If you would like to test the robustness of your model in the current stage, please seek a solution from the following two options:
-- Get in touch with us; include the inference code and the model checkpoint and we will evaluate it for you.
-- Generate the corruption sets by yourself and evaluate the model performance accordingly. Kindly refer to more details in [this](https://github.com/Daniel-xsy/RoboBEV/blob/master/docs/CREATE.md) page.
+The dataset is now available at [OpenDataLab](https://opendatalab.com/home), you can download the dataset [here](https://opendatalab.com/nuScenes-C). Unpack the compressed file(s) into `/data/sets/nuscenes-c` and your folder structure should end up looking like this:
 
+```
+└── nuscenes-c  
+    ├── Camera
+    │   ├── easy <- contains folders the same as
+    │   │           in `nuscenes/samples` folder
+    │   ├── mid
+    │   └── hard
+    │
+    ├── Frame
+    │   ├── easy 
+    │   ├── mid
+    │   └── hard
+    │
+    └── ...
+```
 
 ### References
 
 Please note that you should cite the corresponding paper(s) once you use these datasets.
-
 ```bibtex
 @inproceedings{caesar2020nuscenes,
     author = {H. Caesar and V. Bankiti and A. H. Lang and S. Vora and V. E. Liong and Q. Xu and A. Krishnan and Y. Pan and G. Baldan and O. Beijbom},
@@ -59,6 +71,14 @@ Please note that you should cite the corresponding paper(s) once you use these d
     booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
     pages = {11621--11631},
     year = {2020}
+}
+```
+```bibtex
+@article{xie2023robobev,
+    title = {RoboBEV: Towards Robust Bird's Eye View Perception under Corruptions},
+    author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
+    journal = {arXiv preprint arXiv:2304.06719}, 
+    year = {2023}
 }
 ```
 
