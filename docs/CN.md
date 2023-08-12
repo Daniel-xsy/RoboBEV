@@ -65,7 +65,7 @@
 
 ## 版本更新
 - [2023.06] - nuScenes-C 数据集现已发布在[OpenDataLab](https://opendatalab.com/nuScenes-C)平台！🚀
-- [2023.04] - 我们在 [Paper-with-Code](https://paperswithcode.com/paper/robobev-towards-robust-bird-s-eye-view) 平台搭建了 *"鲁棒BEV感知"* 基线。现在就加入鲁棒性评测吧！:raising_hand:
+- [2023.04] - 我们在 [Paper-with-Code](https://paperswithcode.com/sota/robust-camera-only-3d-object-detection-on) 平台搭建了 *"鲁棒BEV感知"* 基线。现在就加入鲁棒性评测吧！:raising_hand:
 - [2023.02] - 我们邀请每一位BEV爱好者参与到 *"鲁棒BEV感知"* 基线中来!  更多细节，请[阅读此页面](https://github.com/Daniel-xsy/RoboBEV/blob/master/docs/INVITE.md)。:beers:
 - [2023.01] - 推出 "RoboBEV"! 在这个初始版本中，**11**个BEV检测算法和**1**个单目3D检测算法已经在**8**个"损坏"类型和**3**种严重程度下进行了基准测试。
 
