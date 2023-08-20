@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
-python $(dirname "$0")/create_data.py \
+python /cpfs01/user/xieshaoyuan/code/RoboBEV/uda/tools/create_data.py \
 nuscenes \
---root-path /data/nuScenes \
---out-dir '/data/nuScenes' \
+--root-path /cpfs01/shared/llmit/llmit_hdd/xieshaoyuan/nuScenes \
+--out-dir '/cpfs01/user/xieshaoyuan/code/RoboBEV/data/uda_new' \
 --version 'v1.0' \
---domain 'dry2rain' \
---extra-tag nuscenes
+--domain 'city2city' \
+--extra-tag nuscenes \
+--canbus /cpfs01/shared/llmit/llmit_hdd/xieshaoyuan/nuScenes

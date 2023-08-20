@@ -7,6 +7,7 @@ from tools.data_converter.create_gt_database import create_groundtruth_database
 
 
 def custom_nuscenes_data_prep(root_path,
+                       can_bus_root_path,
                        info_prefix,
                        version,
                        domain_version,
@@ -29,8 +30,8 @@ def custom_nuscenes_data_prep(root_path,
         out_dir (str): Output directory of the groundtruth database info.
         max_sweeps (int): Number of input consecutive frames. Default: 10
     """
-    # nuscenes_converter.custom_create_nuscenes_infos(
-    #     root_path, info_prefix, version=version, domain_version=domain_version, out_dir=out_dir, max_sweeps=max_sweeps)
+    nuscenes_converter.custom_create_nuscenes_infos(
+        root_path, can_bus_root_path, info_prefix, version=version, domain_version=domain_version, out_dir=out_dir, max_sweeps=max_sweeps)
 
     # 2D annotation used for monocular approaches (e.g., FCOS3D)
     # comment the following lines to speed up if you don't need 
@@ -99,6 +100,11 @@ parser.add_argument(
     default='./data/kitti',
     help='specify the root path of dataset')
 parser.add_argument(
+    '--canbus',
+    type=str,
+    default='./data',
+    help='specify the root path of nuScenes canbus')
+parser.add_argument(
     '--version',
     type=str,
     default='v1.0',
@@ -158,6 +164,7 @@ if __name__ == '__main__':
         train_version = f'{args.version}-trainval'
         custom_nuscenes_data_prep(
             root_path=args.root_path,
+            can_bus_root_path=args.canbus,
             info_prefix=args.extra_tag,
             version=train_version,
             domain_version=args.domain,

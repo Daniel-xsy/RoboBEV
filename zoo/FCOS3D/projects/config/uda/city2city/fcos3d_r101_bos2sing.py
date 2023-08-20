@@ -1,8 +1,8 @@
 _base_ = [
-    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/datasets/nus-mono3d.py', 
-    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/models/fcos3d.py',
-    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/schedules/mmdet_schedule_1x.py', 
-    '/nvme/konglingdong/models/mmdetection3d/configs/_base_/default_runtime.py'
+    '/cpfs01/user/xieshaoyuan/code/mmdetection3d/configs/_base_/datasets/nus-mono3d.py', 
+    '/cpfs01/user/xieshaoyuan/code/mmdetection3d/configs/_base_/models/fcos3d.py',
+    '/cpfs01/user/xieshaoyuan/code/mmdetection3d/configs/_base_/schedules/mmdet_schedule_1x.py', 
+    '/cpfs01/user/xieshaoyuan/code/mmdetection3d/configs/_base_/default_runtime.py'
 ]
 
 plugin=True
@@ -20,8 +20,14 @@ class_names = [
 ]
 img_norm_cfg = dict(
     mean=[103.530, 116.280, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
+
+data_root = '/cpfs01/shared/llmit/llmit_hdd/xieshaoyuan/nuScenes/'
+anno_root = '/cpfs01/user/xieshaoyuan/code/RoboBEV/data/uda/'
+
+replace_dict = {"/nvme/share/data/sets/nuScenes/": data_root}
+
 train_pipeline = [
-    dict(type='LoadImageFromFileMono3D'),
+    dict(type='LoadImageFromFileMono3D', replace_dict=replace_dict),
     dict(
         type='LoadAnnotations3D',
         with_bbox=True,
@@ -43,7 +49,7 @@ train_pipeline = [
         ]),
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFileMono3D'),
+    dict(type='LoadImageFromFileMono3D', replace_dict=replace_dict),
     dict(
         type='MultiScaleFlipAug',
         scale_factor=1.0,
@@ -60,12 +66,9 @@ test_pipeline = [
         ])
 ]
 
-data_root = '/nvme/konglingdong/data/sets/nuScenes/'
-anno_root = '/nvme/konglingdong/models/RoboDet/data/uda/'
-
 data = dict(
-    samples_per_gpu=2,
-    workers_per_gpu=4,
+    samples_per_gpu=16,
+    workers_per_gpu=8,
     train=dict(
         data_root=data_root,
         ann_file=anno_root + 'nuscenes_infos_boston_train_mono3d.coco.json',
