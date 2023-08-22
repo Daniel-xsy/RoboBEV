@@ -278,9 +278,9 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 - [x] Add scripts for creating common corruptions.
 - [x] Add download link of nuScenes-C.
 - [x] Add evaluation scripts on corruption sets.
-- [ ] Establish benchmark for BEV map segmentation.
-- [ ] Establish benchmark for multi-camera depth estimation.
-- [ ] Establish benchmark for multi-camera semantic occupancy prediction.
+- [x] Establish benchmark for BEV map segmentation.
+- [x] Establish benchmark for multi-camera depth estimation.
+- [x] Establish benchmark for multi-camera semantic occupancy prediction.
 - [ ] ...
 
 
