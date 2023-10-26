@@ -1,0 +1,3 @@
+python pixel_anaylyze.py --image_list /mnt/petrelfs/xieshaoyuan/models/RoboBEV/corruptions/nusc-generate-night-easy.txt --save_path ./hist/nusc-generate-night-easy.png --title 'nuScenes Dark-2'
+python pixel_anaylyze.py --image_list /mnt/petrelfs/xieshaoyuan/models/RoboBEV/corruptions/nusc-generate-night-mid.txt --save_path ./hist/nusc-generate-night-mid.png --title 'nuScenes Dark-3'
+python pixel_anaylyze.py --image_list /mnt/petrelfs/xieshaoyuan/models/RoboBEV/corruptions/nusc-generate-night-hard.txt --save_path ./hist/nusc-generate-night-hard.png --title 'nuScenes Dark-4'
