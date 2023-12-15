@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2304.06719" target='_blank'>
+  <a href="https://www.researchgate.net/profile/Lingdong-Kong-3/publication/375059592_Benchmarking_and_Analyzing_Bird's_Eye_View_Perception_Robustness_to_Corruptions/links/653d9ab7ff8d8f507cd48518/Benchmarking-and-Analyzing-Birds-Eye-View-Perception-Robustness-to-Corruptions.pdf" target='_blank'>
     <img src="https://img.shields.io/badge/论文-%F0%9F%93%83-blue">
   </a>
   
