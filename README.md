@@ -10,13 +10,13 @@
       <a href="https://scholar.google.com/citations?user=-j1j7TkAAAAJ" target='_blank'>Lingdong Kong</a><sup>2,3</sup>&nbsp;&nbsp;
       <a href="https://scholar.google.com/citations?user=QDXADSEAAAAJ" target='_blank'>Wenwei Zhang</a><sup>2,4</sup>&nbsp;&nbsp;
       <a href="https://scholar.google.com/citations?user=YUKPVCoAAAAJ" target='_blank'>Jiawei Ren</a><sup>4</sup>&nbsp;&nbsp;
-      <a href="https://scholar.google.com/citations?user=lSDISOcAAAAJ" target='_blank'>Liang Pan</a><sup>4</sup>&nbsp;&nbsp;
+      <a href="https://scholar.google.com/citations?user=lSDISOcAAAAJ" target='_blank'>Liang Pan</a><sup>2</sup>&nbsp;&nbsp;
       <a href="https://scholar.google.com/citations?user=eGD0b7IAAAAJ" target='_blank'>Kai Chen</a><sup>2</sup>&nbsp;&nbsp;
       <a href="https://scholar.google.com/citations?user=lc45xlcAAAAJ" target='_blank'>Ziwei Liu</a><sup>4</sup>
     <br>
-    <small><sup>1</sup>HUST&nbsp;&nbsp;</small>
+    <small><sup>1</sup>University of California, Irvine&nbsp;&nbsp;</small>
     <small><sup>2</sup>Shanghai AI Laboratory&nbsp;&nbsp;</small>
-    <small><sup>3</sup>NUS&nbsp;&nbsp;</small>
+    <small><sup>3</sup>National University of Singapore&nbsp;&nbsp;</small>
     <small><sup>4</sup>S-Lab, Nanyang Technological University</small>
   </p>
 
