@@ -293,6 +293,14 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 If you find this work helpful, please kindly consider citing the following:
 
 ```bibtex
+@article{xie2024benchmarking,
+    title = {Benchmarking and Improving Bird's Eye View Perception Robustness in Autonomous Driving},
+    author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
+    journal = {arXiv preprint arXiv:2405.17426}, 
+    year = {2024}
+}
+```
+```bibtex
 @article{xie2023robobev,
     title = {RoboBEV: Towards Robust Bird's Eye View Perception under Corruptions},
     author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
