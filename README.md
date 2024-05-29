@@ -69,7 +69,21 @@ Visit our [project page](https://daniel-xsy.github.io/robobev/) to explore more 
 
 ## Updates
 
-- \[2024.01\] - The [toolkit](https://github.com/robodrive-24/toolkit) tailored for the [RoboDrive Challenge](https://robodrive-24.github.io/) has been released. :hammer_and_wrench:
+- \[2024.05\] - Check out the technical report of this competition: [The RoboDrive Challenge: Drive Anytime Anywhere in Any Condition](https://arxiv.org/abs/2405.08816) :blue_car:.
+- \[2024.05\] - The slides of the 2024 RoboDrive Workshop are available [here](https://robodrive-24.github.io/workshop.pdf) :arrow_heading_up:.
+- \[2024.05\] - The video recordings are available on [YouTube](https://youtu.be/83_FxdXNNQk) :arrow_heading_up: and [Bilibili](https://www.bilibili.com/video/BV11H4y1M7mp) :arrow_heading_up:.
+- \[2024.05\] - We are glad to announce the winning teams of the [2024 RoboDrive Challenge](https://robodrive-24.github.io/):
+  - **Track 1: Robust BEV Detection**
+    - :1st_place_medal: `DeepVision`, :2nd_place_medal: `Ponyville Autonauts Ltd`, :3rd_place_medal: `CyberBEV` 
+  - **Track 2: Robust Map Segmentation**
+    - :1st_place_medal: `SafeDrive-SSR`, :2nd_place_medal: `CrazyFriday`, :3rd_place_medal: `Samsung Research`
+  - **Track 3: Robust Occupancy Prediction**
+    - :1st_place_medal: `ViewFormer`, :2nd_place_medal: `APEC Blue`, :3rd_place_medal: `hm.unilab`
+  - **Track 4: Robust Depth Estimation**
+    - :1st_place_medal: `HIT-AIIA`, :2nd_place_medal: `BUAA-Trans`, :3rd_place_medal: `CUSTZS`
+  - **Track 5: Robust Multi-Modal BEV Detection**
+    - :1st_place_medal: `safedrive-promax`, :2nd_place_medal: `Ponyville Autonauts Ltd`, :3rd_place_medal: `HITSZrobodrive`
+- \[2024.01\] - The [toolkit](https://github.com/robodrive-24/toolkit) tailored for the [2024 RoboDrive Challenge](https://robodrive-24.github.io/) has been released. :hammer_and_wrench:
 - \[2023.12\] - We are hosting the [RoboDrive Challenge](https://robodrive-24.github.io/) at [ICRA 2024](https://2024.ieee-icra.org/). :blue_car:
 - \[2023.06\] - The nuScenes-C dataset is now available at [OpenDataLab](https://opendatalab.com/nuScenes-C)! 🚀
 - \[2023.04\] - We establish *"Robust BEV Perception"* leaderboards on [Paper-with-Code](https://paperswithcode.com/sota/robust-camera-only-3d-object-detection-on). Join the challenge today! :raising_hand:
