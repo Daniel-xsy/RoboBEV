@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/figs/logo.png" align="center" width="25%">
   
-  <h3 align="center"><strong>Benchmarking and Improving Bird's Eye View Perception Robustness in Autonomous Driving</strong></h3>
+  <h3 align="center"><strong>Benchmarking and Improving Bird's Eye View Perception Robustness</br>in Autonomous Driving</strong></h3>
 
   <p align="center">
       <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a><sup>1</sup>&nbsp;&nbsp;
