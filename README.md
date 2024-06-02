@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/figs/logo.png" align="center" width="25%">
   
-  <h3 align="center"><strong>Towards Robust Bird's Eye View Perception under Common Corruption and Domain Shift</strong></h3>
+  <h3 align="center"><strong>Benchmarking and Improving Bird's Eye View Perception Robustness in Autonomous Driving</strong></h3>
 
   <p align="center">
       <a href="https://scholar.google.com/citations?user=s1m55YoAAAAJ" target='_blank'>Shaoyuan Xie</a><sup>1</sup>&nbsp;&nbsp;
@@ -69,7 +69,8 @@ Visit our [project page](https://daniel-xsy.github.io/robobev/) to explore more 
 
 ## Updates
 
-- \[2024.05\] - Check out the technical report of this competition: [The RoboDrive Challenge: Drive Anytime Anywhere in Any Condition](https://arxiv.org/abs/2405.08816) :blue_car:.
+- \[2024.06\] - Check out our updated paper for robust BEV perception: [Benchmarking and Improving Bird's Eye View Perception Robustness in Autonomous Driving](https://arxiv.org/abs/2405.17426). :fuelpump:
+- \[2024.05\] - Check out the technical report of this competition: [The RoboDrive Challenge: Drive Anytime Anywhere in Any Condition](https://arxiv.org/abs/2405.08816). :blue_car:
 - \[2024.05\] - The slides of the 2024 RoboDrive Workshop are available [here](https://robodrive-24.github.io/workshop.pdf) :arrow_heading_up:.
 - \[2024.05\] - The video recordings are available on [YouTube](https://youtu.be/83_FxdXNNQk) :arrow_heading_up: and [Bilibili](https://www.bilibili.com/video/BV11H4y1M7mp) :arrow_heading_up:.
 - \[2024.05\] - We are glad to announce the winning teams of the [2024 RoboDrive Challenge](https://robodrive-24.github.io/):
