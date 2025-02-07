@@ -308,11 +308,12 @@ You can manage to create your own "RoboBEV" corrpution sets! Follow the instruct
 If you find this work helpful, please kindly consider citing the following:
 
 ```bibtex
-@article{xie2024benchmarking,
-    title = {Benchmarking and Improving Bird's Eye View Perception Robustness in Autonomous Driving},
-    author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
-    journal = {arXiv preprint arXiv:2405.17426}, 
-    year = {2024}
+@article{xie2025benchmarking,
+  title={Benchmarking and Improving Bird's Eye View Perception Robustness in Autonomous Driving},
+  author={Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2025},
+  publisher={IEEE}
 }
 ```
 ```bibtex
@@ -320,14 +321,6 @@ If you find this work helpful, please kindly consider citing the following:
     title = {RoboBEV: Towards Robust Bird's Eye View Perception under Corruptions},
     author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
     journal = {arXiv preprint arXiv:2304.06719}, 
-    year = {2023}
-}
-```
-```bibtex
-@misc{xie2023robobev_codebase,
-    title = {The RoboBEV Benchmark for Robust Bird's Eye View Detection under Common Corruption and Domain Shift},
-    author = {Xie, Shaoyuan and Kong, Lingdong and Zhang, Wenwei and Ren, Jiawei and Pan, Liang and Chen, Kai and Liu, Ziwei},
-    howpublished = {\url{https://github.com/Daniel-xsy/RoboBEV}},
     year = {2023}
 }
 ```
