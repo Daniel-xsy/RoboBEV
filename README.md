@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2405.17426" target='_blank'>
+  <a href="https://ieeexplore.ieee.org/abstract/document/10857618" target='_blank'>
     <img src="https://img.shields.io/badge/Paper-%F0%9F%93%83-blue">
   </a>
   
